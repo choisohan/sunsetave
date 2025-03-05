@@ -1,42 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
-import { RawShaderMaterial, Vector2 ,Vector3, Vector4, DoubleSide, SphereGeometry , meshStandardMaterial} from 'three';
+import { RawShaderMaterial, Vector2 , Vector4 } from 'three';
+import { useModel } from '../contexts/modelContext';
 
-export const House =(props) => {
 
+export default function House(props){
+  const modelContext = useModel();
+  const [object, setObject] = useState();
 
-  const [model, setModel] = useState(null);
-
+  // Get Model File
   useEffect(()=>{
-    if ( props.models ) {
+    if ( modelContext ) {
 
-      // Find Geometry By Name
-      props.models.traverse((child) => {
-          const i =  parseInt(child.name.match(/-?\d+\.?\d*/g)) 
-          if ( child.isMesh && i == props.geo) {
+
+
+      modelContext.children.forEach((child) => {
+          const i =   parseInt(child.name.match(/-?\d+\.?\d*/g)) 
+          if ( child.isMesh && i == 1 ) { // Find Geometry By Name
             var clone =  SkeletonUtils.clone(child); 
-            
             // Set Position
-            clone.position.x = props.position.x;
-            clone.position.y = props.position.y; 
-            clone.position.z = props.position.z; 
+            clone.position.x = 0;// props.position.x;
+            clone.position.y = 0;//props.position.y; 
+            clone.position.z = 0;//props.position.z; 
 
             // Replace Materials
             clone.material= clone.material.map( ( mat, i) =>{
-              return HouseMaterial(mat.map, props.UDIM[i] ); 
+              return HouseMaterial( mat.map , mat.specularMap, 0 ); 
             })
 
-            setModel( clone )
+            setObject( clone )
           }
       });
     }
 
+  },[modelContext])
 
-  },[props])
 
-
-  if(model){
-   return <primitive object={model} />
+  // Render
+  if(object){
+    return <primitive object={object} />
   }
 
 
@@ -44,7 +46,7 @@ export const House =(props) => {
 
 
 
-export const HouseMaterial = (map, x)=>  new RawShaderMaterial({
+export const HouseMaterial = (map,paperMap, x)=>  new RawShaderMaterial({
   vertexShader: `
   uniform mat4 projectionMatrix;
   uniform mat4 viewMatrix;
@@ -76,7 +78,8 @@ export const HouseMaterial = (map, x)=>  new RawShaderMaterial({
     varying vec2 vUv;
     varying vec3 vNormal;
 
-    uniform sampler2D uTexture; 
+    uniform sampler2D uMap; 
+    uniform sampler2D uPaperMap; 
     uniform vec2 uUDIM; 
 
     uniform vec4 LightPosition;
@@ -91,9 +94,10 @@ export const HouseMaterial = (map, x)=>  new RawShaderMaterial({
         float lighting = dot(s, n) ; 
         lighting = smoothstep( 0.0 , 1.0, lighting ) +.5;
         lighting= clamp(0., 1., lighting  );
-        vec3 diffuseMap = texture2D( uTexture , _UV).xyz ;
+        vec3 diffuseMap = texture2D( uMap , _UV).xyz ;
+        float paperMap = texture2D( uPaperMap , fract(vUv  * 10. ) ).x ;
 
-        return diffuseMap * lighting;
+        return diffuseMap * lighting * paperMap ;
     }
 
       void main(){
@@ -105,7 +109,8 @@ export const HouseMaterial = (map, x)=>  new RawShaderMaterial({
       }
     `,
     uniforms:{
-        uTexture: { value: map },
+        uMap: { value: map },
+        uPaperMap : {value : paperMap } ,
         uUDIM : {value: new Vector2(x) },
         LightPosition: { value: new Vector4(-500,-500,500, -0) },
     },
