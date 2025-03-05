@@ -1,37 +1,52 @@
-import React,{useRef,useEffect} from 'react'
-import { useLoader } from '@react-three/fiber';
+import React,{ useEffect, useState} from 'react'
+import { useLoader , Canvas} from '@react-three/fiber';
 import { FBXLoader } from 'three/examples/jsm/Addons.js';
-import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { MeshStandardMaterial, MeshBasicMaterial, DirectionalLight  , TextureLoader , NearestFilter } from 'three';
+import { NearestFilter , ClampToEdgeWrapping} from 'three';
+import {House} from './House';
+
 
 export default function Scene(){
-    const houseModels = useLoader(FBXLoader, '/models/houses.fbx')
-    const texture = useLoader(TextureLoader, "/models/house_proxy.png"); 
-    const modelRef = useRef();
+    const models = useLoader(FBXLoader, '/models/houses.fbx')
 
 
     useEffect(() => {
-        if ( houseModels ) {
-            houseModels.traverse((child) => {
+
+        if ( models ) {
+            models.traverse((child) => {
+
                 if (child.isMesh) {
-                    texture.minFilter = NearestFilter;
-                    texture.magFilter = NearestFilter;
-                    texture.generateMipmaps = false;
-                    child.material = new MeshStandardMaterial({map : texture });
+
+                    child.material.forEach(mat => {
+                        mat.map.minFilter = NearestFilter;
+                        mat.map.magFilter = NearestFilter;
+                        mat.map.generateMipmaps = false;
+                        mat.map.wrapS = mat.map.wrapT = ClampToEdgeWrapping; //prevent bleeding
+                        mat.needsUpdate = true;
+
+                    });
                 }
               });
         }
-      }, [houseModels, texture]);
+      }, [models]);
+
 
     return (
-        <Canvas style={{width:'100vw',height:'100vh'}}>
+        <Canvas style={{width:'100vw',height:'100vh', background: 'white'}}>
+
 
             <OrbitControls />
 
             <directionalLight position={[0, 5, 5]} intensity={1} />
             <ambientLight />
 
-            <primitive  ref={modelRef} object={houseModels} scale={1} />
+            <House models= {models} geo={4} position={{x: 2,y:0, z: 0}} UDIM={[1,0]} />
+            <House models= {models} geo={1} position={{x: 0,y:0, z: 0}}  UDIM={[0,1]} />
+            <House models= {models} geo={2}  position={{x: -2,y:0, z: 0}}  UDIM={[1,0]} />
+
+            <House models= {models} geo={3} position={{x: 3,y:0, z: 2}} UDIM={[0,1]} />
+            <House models= {models} geo={4} position={{x: 0,y:0, z: 2}}  UDIM={[1,0]} />
+            <House models= {models} geo={1} position={{x: -3,y:0, z: 2}} UDIM={[0,0]}  />
+
         </Canvas>)
 }
