@@ -6,39 +6,43 @@ import { useModel } from '../contexts/modelContext';
 
 export default function House(props){
   const modelContext = useModel();
-  const [object, setObject] = useState();
+  const [mesh, setMesh] = useState();
+  const [material,setMaterial] = useState();
+  const [property, setProperty] = useState({ name:'house_01', position : [0,0,0] , mapUDIMs: [0,0] } );
 
-  // Get Model File
   useEffect(()=>{
     if ( modelContext ) {
-
-
-
-      modelContext.children.forEach((child) => {
-          const i =   parseInt(child.name.match(/-?\d+\.?\d*/g)) 
-          if ( child.isMesh && i == 1 ) { // Find Geometry By Name
-            var clone =  SkeletonUtils.clone(child); 
-            // Set Position
-            clone.position.x = 0;// props.position.x;
-            clone.position.y = 0;//props.position.y; 
-            clone.position.z = 0;//props.position.z; 
-
-            // Replace Materials
-            clone.material= clone.material.map( ( mat, i) =>{
-              return HouseMaterial( mat.map , mat.specularMap, 0 ); 
-            })
-
-            setObject( clone )
-          }
-      });
+      updateMesh();
     }
+  },[ modelContext , property ])
 
-  },[modelContext])
 
+  function updateMesh(){
+
+      const meshSearchByName = modelContext.children.filter(c => c.name == property.name ); 
+      setMesh( ()=>{
+        const clonedMesh =  SkeletonUtils.clone( meshSearchByName[0]);
+
+        if(clonedMesh.material){
+          setMaterial(()=>{
+            return clonedMesh.material.map( (mat,i) =>{
+              const _mat = HouseMaterial(); 
+              _mat.uniforms.uMap.value = mat.map;
+              _mat.uniforms.uPaperMap.value = mat.specularMap;
+              _mat.uniforms.uUDIM.value = new Vector2( property.mapUDIMs[i] , 0.0 );
+              return _mat;
+            })
+          })
+        }
+
+        return clonedMesh
+      })
+    
+  }
 
   // Render
-  if(object){
-    return <primitive object={object} />
+  if(mesh){
+    return <primitive object={mesh} position ={property.position} material={material} />
   }
 
 
@@ -46,7 +50,7 @@ export default function House(props){
 
 
 
-export const HouseMaterial = (map,paperMap, x)=>  new RawShaderMaterial({
+export const HouseMaterial = ()=>  new RawShaderMaterial({
   vertexShader: `
   uniform mat4 projectionMatrix;
   uniform mat4 viewMatrix;
@@ -109,9 +113,9 @@ export const HouseMaterial = (map,paperMap, x)=>  new RawShaderMaterial({
       }
     `,
     uniforms:{
-        uMap: { value: map },
-        uPaperMap : {value : paperMap } ,
-        uUDIM : {value: new Vector2(x) },
+        uMap: { value: null },
+        uPaperMap : {value : null } ,
+        uUDIM : {value: new Vector2(0.) },
         LightPosition: { value: new Vector4(-500,-500,500, -0) },
     },
     //transparent: false, 

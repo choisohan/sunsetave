@@ -16,8 +16,12 @@ export function ModelProvider({children}){
 
     useEffect(()=>{
         const sortedModels = _model;
+
         sortedModels.traverse((child) => {
             if (child.isMesh) {
+                child.position.x = 0;
+                child.position.y = 0;
+                child.position.z = 0;
                 child.material.forEach(mat => {
                     mat.map.magFilter = NearestFilter;
                     mat.map.generateMipmaps = false;
@@ -27,6 +31,7 @@ export function ModelProvider({children}){
                 });
             }
         });
+       
         setModels({ ...sortedModels })
     },[_model])
 
