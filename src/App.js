@@ -1,11 +1,14 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HouseBuilder from './components/HouseBuilder';
 import { ModelProvider } from './contexts/modelContext';
 import About from './pages/About';
 import Avenue from './components/Avenue';
+import { useEffect } from 'react';
+
+import { fetchCalendar } from './components/ReadCalendar';
 
 function App() {
+
   return (
     <ModelProvider>
 
