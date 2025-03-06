@@ -36,6 +36,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
       uniform sampler2D uMap; 
       uniform sampler2D uPaperMap; 
       uniform vec2 uUDIM; 
+      uniform bool uMouseOver; 
   
       uniform vec4 LightPosition;
   
@@ -50,6 +51,9 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           lighting = smoothstep( 0.0 , 1.0, lighting ) +.5;
           lighting= clamp(0., 1., lighting  );
           vec3 diffuseMap = texture2D( uMap , _UV).xyz ;
+          if(uMouseOver){
+            diffuseMap +=vec3(.33);
+          }
           float paperMap = texture2D( uPaperMap , fract(vUv  * 10. ) ).x ;
   
           return diffuseMap * lighting * paperMap ;
@@ -68,6 +72,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           uPaperMap : {value : null } ,
           uUDIM : {value: new Vector2(0.) },
           LightPosition: { value: new Vector4(-500,-500,500, -0) },
+          uMouseOver: { value : false }
       },
       //transparent: false, 
       //side: DoubleSide 
