@@ -8,8 +8,12 @@ export default function House(props){
   const modelContext = useModel();
   const [mesh, setMesh] = useState();
   const [materials, setMaterials] = useState();
-  const [property, setProperty] = useState({ name:'house_01', position : [0,0,0] , mapUDIMs: [0,0] } );
+  const [property, setProperty] = useState({ name:'house_01', x:0,y:0, mapUDIMs: [0,0] } );
 
+
+  useEffect(()=>{
+    setProperty(_props=>({..._props, ...props.property}))
+  },[props.property])
 
   useEffect(()=>{
     if ( modelContext ) {
@@ -31,7 +35,6 @@ export default function House(props){
               _mat.uniforms.uMap.value = mat.map;
               _mat.uniforms.uPaperMap.value = mat.specularMap;
               _mat.uniforms.uUDIM.value = new Vector2( property.mapUDIMs[i] , 0.0 );
-              //_mat.needsUpdate();
               return _mat; 
           })
           setMaterials(_materials);
@@ -56,15 +59,10 @@ export default function House(props){
   }
 
 
-  function onClick(){
-    console.log('A house is clicked')
-  }
-
   // Render
   if(mesh){
-    return <primitive object={mesh} position ={property.position} material={materials}
-                      onPointerOver={()=>{onMouseOver(true)}} onPointerOut={()=>{onMouseOver(false)}} onClick={onClick}
-                      />
+    return <mesh position ={[property.x, 0, property.y]} onPointerOver={()=>{onMouseOver(true)}} onPointerOut={()=>{onMouseOver(false)}} onClick={()=>{props.onClick()}}>
+        <primitive object={mesh}  material={materials}/></mesh>
   }
 
 

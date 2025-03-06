@@ -1,10 +1,12 @@
 import React from 'react'
-import Scene from './Scenes'
 import House from './House'
+import { Canvas } from '@react-three/fiber'
+
+
 export default function HouseBuilder() {
   return (
-    <Scene>
+    <Canvas style={{width:'800px',height:'500px'}}  camera={{position: [2,5,7], fov: 50}} >
         <House />
-    </Scene>
+    </Canvas>
   )
 }
