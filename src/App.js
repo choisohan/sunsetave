@@ -1,13 +1,22 @@
 import './App.css';
-import Scenes from './components/Scenes';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HouseBuilder from './components/HouseBuilder';
 import { ModelProvider } from './contexts/modelContext';
+import About from './pages/About';
+import Avenue from './components/Avenue';
 
 function App() {
   return (
-      <ModelProvider>
-        <HouseBuilder />
-      </ModelProvider>
+    <ModelProvider>
+
+    <Router>
+    <Routes>
+        <Route path="/" element={<Avenue />} />
+        <Route path="/about" element={<About />} />
+    </Routes>
+  </Router>
+  </ModelProvider>
+
   );
 }
 
