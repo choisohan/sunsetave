@@ -3,6 +3,7 @@ import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
 import { Vector2  } from 'three';
 import { useModel } from '../contexts/modelContext';
 import { HouseMaterial } from '../shaders/houseMaterial';
+import { Html } from '@react-three/drei';
 
 export default function House(props){
   const modelContext = useModel();
@@ -61,8 +62,16 @@ export default function House(props){
 
   // Render
   if(mesh){
-    return <mesh position ={[property.x, 0, property.y]} onPointerOver={()=>{onMouseOver(true)}} onPointerOut={()=>{onMouseOver(false)}} onClick={()=>{props.onClick()}}>
-        <primitive object={mesh}  material={materials}/></mesh>
+    return <mesh position ={[property.x, 0, property.y]}
+                onPointerOver={()=>{onMouseOver(true)}}
+                onPointerOut={()=>{onMouseOver(false)}}
+                onClick={()=>{props.onClick()}}>
+        <primitive object={mesh}  material={materials}/>
+        <Html position={[0, 1, 0]} center>
+          <div>Hello</div>
+        </Html>
+        
+        </mesh>
   }
 
 
