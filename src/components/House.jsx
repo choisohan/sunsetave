@@ -11,7 +11,7 @@ export default function House(props){
   const modelContext = useModel();
   const [mesh, setMesh] = useState();
   const [materials, setMaterials] = useState();
-  const [property, setProperty] = useState({ name:'house_01', x:0,y:0, mapUDIMs: [0,0] } );
+  const [property, setProperty] = useState({ name:'house_01', x:0,y:0, mapUDIMs: [0,0] , time: 0 } );
 
 
   useEffect(()=>{
@@ -50,6 +50,7 @@ export default function House(props){
               _mat.uniforms.uMap.value = mat.map;
               _mat.uniforms.uPaperMap.value = mat.specularMap;
               _mat.uniforms.uUDIM.value = new Vector2( property.mapUDIMs[i] , 0.0 );
+              _mat.uniforms.uTime.value = property.time;
               return _mat; 
           })
           setMaterials(_materials);

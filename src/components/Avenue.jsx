@@ -11,7 +11,7 @@ export default function Avenue() {
 
 
   const [items, setItems] = useState([
-    {x:0, name:'house_02' },{x:-2},{x:2, name:'house_04'}
+    {x:-2, name:'house_02' , time: .5 },{x:0, time: .25},{x:2, name:'house_04'}
   ])
 
   const [selectedItem, setSelectedItem] = useState();
