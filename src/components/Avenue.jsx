@@ -3,6 +3,8 @@ import House from './House'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { GroundPlane } from './Ground'
+import HouseBuilder from './HouseBuilder'
+
 
 
 export default function Avenue() {
@@ -12,6 +14,8 @@ export default function Avenue() {
   ])
 
   const [selectedItem, setSelectedItem] = useState();
+
+  const [editMode, setEditMode] = useState(false)
 
 
   const moveObject = newPosition =>{
@@ -28,10 +32,11 @@ export default function Avenue() {
 
 
   return (
+    <div>
     <Canvas style={{width:'100vw',height:'100vh'}}  camera={{position: [2,5,7], fov: 50}} >
       
       <OrbitControls />
-      <GroundPlane editMode={ selectedItem?true:false } onPointerMove={moveObject} onFinish={()=>{setSelectedItem()}} />
+      <GroundPlane editMode={ editMode&&selectedItem?true:false } onPointerMove={moveObject} onFinish={()=>{setSelectedItem()}} />
 
       
       {items.map( (item,i) =>
@@ -40,5 +45,20 @@ export default function Avenue() {
 
 
     </Canvas>
-  )
+
+    <div style={{position:'fixed',zIndex:1, bottom:5, right:5}}>
+      <button onClick={()=>{setEditMode(x=> !x)}}>{editMode?"Exit Edit Mode":"Enter Edit Mode"}</button>
+    </div>
+
+
+    {selectedItem && !editMode ? <SlideBar><HouseBuilder property={selectedItem} /></SlideBar> : null }
+
+    </div>)
+
+}
+
+const SlideBar = (props)=>{
+  return <div style={{position:"fixed", zIndex:2, top:0, right:0, width:'400px', background:"grey", height:"100%"}}>
+    {props.children}
+  </div>
 }
