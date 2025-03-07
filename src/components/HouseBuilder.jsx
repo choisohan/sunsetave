@@ -33,14 +33,14 @@ export default function HouseBuilder(props) {
   }
 
   return (
-  <div>
+  <div style={{display:'flex', width:'100%', maxWidth:'600px', gap:'10px'}} >
 
-    <Canvas style={{width:'300px',height:'300px', background:'lightGray'}}  camera={{position: [4,3,8], fov: 15}} >
+    <Canvas style={{aspectRatio:1.725}} camera={{position: [4,3,8], fov: 15}} >
       <OrbitControls />
       <House property ={property}/>
     </Canvas>
 
-    <div>
+    <div className='options'>
       <OptionSelector onChange={swapGeometry} >Geometry</OptionSelector>
       <OptionSelector onChange={ d =>{swapMap(0,d)} } >Roof</OptionSelector>
       <OptionSelector onChange={ d =>{swapMap(1,d)} } >Wall</OptionSelector>
@@ -51,9 +51,9 @@ export default function HouseBuilder(props) {
 
 
 const OptionSelector = props =>{
-  return <div>
-    <button onClick={()=>{props.onChange(-1)}}>⬅️</button>
+  return <div className='optionSelector'>
+    <button onClick={()=>{props.onChange(-1)}}>←</button>
     {props.children}
-    <button onClick={()=>{props.onChange(+1)}}>➡️</button>
+    <button onClick={()=>{props.onChange(+1)}}>→</button>
     </div>
 } 

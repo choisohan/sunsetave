@@ -1,0 +1,58 @@
+
+.about{
+    margin: 50px;
+    text-align: center;
+    place-items:center;
+    display: flex;
+    flex-direction: column;
+    gap:25px;
+}
+
+h1{
+    font-size: 100px;
+    font-weight: bolder;
+}
+h2{
+    font-size:60px;
+    font-weight:normal;
+}
+h3{
+    font-size: 30px;
+    font-weight: lighter;
+
+}
+
+canvas{
+    background-color: lightgray;
+}
+
+.optionSelector{
+    display: flex;
+    position: relative;
+    min-width: 120px;
+    text-align: center;
+    place-content:center;
+}
+.optionSelector button{
+    border: 0;
+    padding: 5px;
+    border-radius: 5px;
+}
+.optionSelector button:hover{
+    transform: scale(120%);
+    z-index: 2;
+}
+.optionSelector :first-child{
+    left: 0;
+    position: absolute;
+}
+
+.optionSelector :last-child{
+    right: 0;
+    position: absolute;
+}
+.options{
+    display: flex;
+    gap:20px;
+    flex-direction: column;
+}

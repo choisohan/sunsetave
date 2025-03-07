@@ -34,7 +34,7 @@ export default function Avenue() {
 
   return (
     <div>
-    <Canvas style={{width:'100vw',height:'100vh'}}  camera={{position: [2,5,7], fov: 50}} >
+    <Canvas camera={{position: [2,5,7], fov: 50}} style={{width:'100vw', height:'100vh'}}>
       
       <OrbitControls />
       <GroundPlane editMode={ editMode&&selectedItem?true:false } onPointerMove={moveObject} onFinish={()=>{setSelectedItem()}} />

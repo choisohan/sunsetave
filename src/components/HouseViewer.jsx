@@ -19,7 +19,7 @@ export default function HouseViewer(props) {
 
   return (
     <div>
-        <Canvas style={{width:'100%',height:'100%'}}  camera={{position: [2,5,7], fov: 50}}>
+        <Canvas camera={{position: [2,5,7], fov: 50}}>
             <House property={property} />
         </Canvas>
     </div>
