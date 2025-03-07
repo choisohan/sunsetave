@@ -4,6 +4,8 @@ import { Vector2  } from 'three';
 import { useModel } from '../contexts/modelContext';
 import { HouseMaterial } from '../shaders/houseMaterial';
 import { Html } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+
 
 export default function House(props){
   const modelContext = useModel();
@@ -21,6 +23,18 @@ export default function House(props){
       updateMesh();
     }
   },[ modelContext , property ])
+
+
+
+  //Tempoary Timelapse
+  useFrame(()=>{
+    if(materials){
+      materials.forEach( mat =>{
+        mat.uniforms.uTime.value = .01 + mat.uniforms.uTime.value ;
+      })
+    }
+  })
+
 
 
   function updateMesh(){
@@ -66,7 +80,9 @@ export default function House(props){
                 onPointerOver={()=>{onMouseOver(true)}}
                 onPointerOut={()=>{onMouseOver(false)}}
                 onClick={()=>{props.onClick()}}>
+
         <primitive object={mesh}  material={materials}/>
+
         <Html position={[0, 1, 0]} center>
           <div>Hello</div>
         </Html>

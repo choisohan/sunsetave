@@ -67,6 +67,6 @@ const SlideBar = (props)=>{
 
 const PlayerButtons = ()=>{
   return(<div>
-    <button>Play</button>
+    <button>▶</button>
   </div>)
 }
