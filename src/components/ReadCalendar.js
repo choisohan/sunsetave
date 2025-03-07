@@ -2,8 +2,7 @@ import ICAL from "ical.js";
 
 
 
-export const fetchCalendar = async () => {
-    const icalUrl = "/calendar/ical/8c063daee6e0ebb0eac75293727a2b85d9024b26c96fd2ad4f9a7489bbf835a1%40group.calendar.google.com/public/basic.ics"; // Replace with your iCal URL
+export const fetchCalendar = async (icalUrl) => {
 
     try {
         const response = await fetch(icalUrl);
@@ -22,6 +21,7 @@ export const fetchCalendar = async () => {
                end: vevent.endDate.toString(),
            };
        });
+       return text
 
     } catch (error) {
         console.error("Error fetching iCalendar:", error);

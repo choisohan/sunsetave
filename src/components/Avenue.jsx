@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import House from './House'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
@@ -8,6 +8,7 @@ import HouseBuilder from './HouseBuilder'
 
 
 export default function Avenue() {
+
 
   const [items, setItems] = useState([
     {x:0, name:'house_02' },{x:-2},{x:2, name:'house_04'}
@@ -47,6 +48,7 @@ export default function Avenue() {
     </Canvas>
 
     <div style={{position:'fixed',zIndex:1, bottom:5, right:5}}>
+      <PlayerButtons />
       <button onClick={()=>{setEditMode(x=> !x)}}>{editMode?"Exit Edit Mode":"Enter Edit Mode"}</button>
     </div>
 
@@ -61,4 +63,10 @@ const SlideBar = (props)=>{
   return <div style={{position:"fixed", zIndex:2, top:0, right:0, width:'400px', background:"grey", height:"100%"}}>
     {props.children}
   </div>
+}
+
+const PlayerButtons = ()=>{
+  return(<div>
+    <button>Play</button>
+  </div>)
 }

@@ -3,18 +3,27 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ModelProvider } from './contexts/modelContext';
 import About from './pages/About';
 import Avenue from './components/Avenue';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { fetchCalendar } from './components/ReadCalendar';
+import HouseViewer from './components/HouseViewer';
 
 function App() {
+
+  const [iCalURL, setIcalURL] = useState();
+
+  useEffect(()=>{
+    const params = new URLSearchParams(window.location.search);
+    const icalURL = params.get("url");
+    console.log('icalURL?', icalURL)
+    setIcalURL(icalURL);
+  },[])
 
   return (
     <ModelProvider>
 
     <Router>
     <Routes>
-        <Route path="/" element={<Avenue />} />
+        <Route path="/" element={ !iCalURL ? <Avenue /> : <HouseViewer url={iCalURL} />} />
         <Route path="/about" element={<About />} />
     </Routes>
   </Router>
