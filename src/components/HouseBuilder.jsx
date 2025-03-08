@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import House from './House'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
+import { randInt } from 'three/src/math/MathUtils.js';
 
 
 export default function HouseBuilder(props) {
@@ -32,6 +33,13 @@ export default function HouseBuilder(props) {
     setProperty(x=>({...x, mapUDIMs : newUDIMs}))
   }
 
+  const generateRandom = ()=>{
+    swapGeometry(randInt(1,4));
+    swapMap(0,randInt(0,4));
+    swapMap(1,randInt(0,4));
+
+  }
+
   return (
   <div style={{display:'flex', width:'100%', maxWidth:'600px', gap:'10px'}} >
 
@@ -44,6 +52,7 @@ export default function HouseBuilder(props) {
       <OptionSelector onChange={swapGeometry} >Geometry</OptionSelector>
       <OptionSelector onChange={ d =>{swapMap(0,d)} } >Roof</OptionSelector>
       <OptionSelector onChange={ d =>{swapMap(1,d)} } >Wall</OptionSelector>
+      <button onClick={generateRandom}>R</button>
     </div>
   </div>
   )
