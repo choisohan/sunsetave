@@ -3,59 +3,88 @@ import House from './House'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { randInt } from 'three/src/math/MathUtils.js';
-
+import { useModel, useTexture } from '../contexts/modelContext';
 
 export default function HouseBuilder(props) {
-  const [property, setProperty]= useState({name:'house_03', mapUDIMs: [0,0] });
+  const [property, setProperty]= useState({name:'house_A1', roof:'R1', wall:'W1', windows:'W1' });
+  const modelContext = useModel(); 
+  const textureContext = useTexture(); 
+  const [houseModels, setHouseModels] = useState([]);
+  const [currentInt, setCurrentInt] = useState(0)
 
   useEffect(()=>{
     setProperty(_property=>({..._property,...props.property}))
   },[props.property])
 
+  useEffect(()=>{
+    setHouseModels(Object.values(modelContext).filter(m=>m.name.includes('house')))
+  },[modelContext])
+
   const swapGeometry=(changeNumb)=>{
-    const maxNumb = 4; 
-    const currentNumb = parseInt(property.name.split('_')[1])
-    var newNumb = currentNumb + changeNumb; 
+
+    const maxNumb = setHouseModels.length; 
+    var newNumb = currentInt + changeNumb; 
     if(newNumb>maxNumb){ newNumb = 1}
     if(newNumb < 1){ newNumb = maxNumb}
+    setCurrentInt(newNumb);
 
-    setProperty(x=>({...x, name: "house_"+String(newNumb).padStart(2,"0") }))
+    const newHouseMesh = houseModels[newNumb]
+    setProperty(x=>({...x, name: newHouseMesh.name }))
+    
   }
 
-  const swapMap = ( i, changeNumb)=>{
-    
-    const maxNumb = 9; 
-    var newUDIMs = property.mapUDIMs;
-    newUDIMs[i] += changeNumb;
-    if(newUDIMs[i]>maxNumb){ newUDIMs[i] = 0}
-    if(newUDIMs[i] < 0){ newUDIMs[i] = maxNumb}
+  const swapMap = ( selectedSection, changeNumb)=>{
+    const mapOptions = Object.keys(textureContext).filter(key=> key.includes(selectedSection) ).map(name=> name.split('/')[1]);
+    const maxNumb = mapOptions.length; 
+    const currentName = property[selectedSection]; 
 
-    setProperty(x=>({...x, mapUDIMs : newUDIMs}))
+    const currentIndex =mapOptions.indexOf(currentName);
+    var nextIndex = currentIndex + changeNumb; 
+    if(nextIndex>=maxNumb){nextIndex = 0}
+    if(nextIndex < 0){ nextIndex = maxNumb-1}
+
+
+    setProperty(_property =>{
+      const copy = {..._property};
+      copy[selectedSection] = mapOptions[nextIndex]
+      return copy; 
+    })
   }
 
   const generateRandom = ()=>{
     swapGeometry(randInt(1,4));
-    swapMap(0,randInt(0,4));
-    swapMap(1,randInt(0,4));
-
+    swapMap('roof',randInt(0,0));
+    swapMap('wall',randInt(0,0));
+    swapMap('windows',randInt(0,0));
   }
 
-  return (
-  <div style={{display:'flex', width:'100%', maxWidth:'600px', gap:'10px'}} >
+  return (<>
+    <div style={{display:'flex', width:'100%', maxWidth:'600px', gap:'10px'}} >
 
-    <Canvas style={{aspectRatio:1.725}} camera={{position: [4,3,8], fov: 15}} >
-      <OrbitControls />
-      <House property ={property}/>
-    </Canvas>
+      <Canvas style={{aspectRatio:1.725}} camera={{position: [2,1,3], fov: 15}} >
+        <OrbitControls />
+        <House property ={property}/>
+      </Canvas>
 
-    <div className='options'>
-      <OptionSelector onChange={swapGeometry} >Geometry</OptionSelector>
-      <OptionSelector onChange={ d =>{swapMap(0,d)} } >Roof</OptionSelector>
-      <OptionSelector onChange={ d =>{swapMap(1,d)} } >Wall</OptionSelector>
-      <button onClick={generateRandom}>R</button>
+      <div className='options'>
+        <OptionSelector onChange={swapGeometry} >Geometry</OptionSelector>
+        <OptionSelector onChange={ d =>{swapMap('roof',d)} } >Roof</OptionSelector>
+        <OptionSelector onChange={ d =>{swapMap('wall',d)} } >Wall</OptionSelector>
+        <OptionSelector onChange={ d =>{swapMap('windows',d)} } >Windows</OptionSelector>
+        <button onClick={generateRandom}>R</button>
+
+      </div>
+
+
     </div>
-  </div>
+    
+    <div>
+      Out
+    </div>
+  
+    </>
   )
+
 }
 
 

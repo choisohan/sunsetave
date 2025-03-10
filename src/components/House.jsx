@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
-import { Vector2  } from 'three';
-import { useModel } from '../contexts/modelContext';
-import { HouseMaterial } from '../shaders/houseMaterial';
+import { useModel , useTexture } from '../contexts/modelContext';
 import { Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 
 
 export default function House(props){
   const modelContext = useModel();
+  const TextureContext = useTexture(); 
   const [mesh, setMesh] = useState();
-  const [materials, setMaterials] = useState();
-  const [property, setProperty] = useState({ name:'house_01', x:0,y:0, mapUDIMs: [0,0] , time: 0 } );
+  //const [materials, setMaterials] = useState();
+  const [property, setProperty] = useState({ name:'house_A1', x:0,y:0, roof:'R1', windows:'W1', wall: 'W1',  time: 0 } );
 
 
   useEffect(()=>{
@@ -22,48 +21,55 @@ export default function House(props){
     if ( modelContext ) {
       updateMesh();
     }
-  },[ modelContext , property ])
+  },[ modelContext , TextureContext , property ])
 
 
 
   //Tempoary Timelapse
   useFrame(()=>{
+    /*
     if(materials){
       materials.forEach( mat =>{
         mat.uniforms.uTime.value = .01 + mat.uniforms.uTime.value ;
       })
     }
+    */
   })
 
+  const updateMap = (_mat) =>{
+    if(_mat.name in property){
+      const texturefullName = _mat.name + '/'+ property[_mat.name]
+      _mat.uniforms.uMap.value =TextureContext[texturefullName]
+    }
+  }
 
 
   function updateMesh(){
 
-      const meshSearchByName = modelContext.children.filter(c => c.name == property.name ); 
-      setMesh( ()=>{
-        const clonedMesh =  SkeletonUtils.clone( meshSearchByName[0]);
+    var meshFound = modelContext[property.name]; 
+    if(!meshFound){
+      meshFound = Object.values(modelContext)[0]
+    }
 
-        if(clonedMesh.material){
+    setMesh( ()=>{
+      const newMesh =   SkeletonUtils.clone( meshFound );
+      
+      if(Array.isArray(newMesh.material)){
+        newMesh.material.forEach( mat =>updateMap(mat))
+      }
 
-          const _materials = clonedMesh.material.map( (mat,i) =>{
-              const _mat = HouseMaterial(); 
-              _mat.uniforms.uMap.value = mat.map;
-              _mat.uniforms.uPaperMap.value = mat.specularMap;
-              _mat.uniforms.uUDIM.value = new Vector2( property.mapUDIMs[i] , 0.0 );
-              _mat.uniforms.uTime.value = property.time;
-              return _mat; 
-          })
-          setMaterials(_materials);
+      //setMaterials(clonedMesh.material);
+
+      return newMesh
+    })
 
 
-        }
 
-        return clonedMesh
-      })
     
   }
 
   function onMouseOver(_isMouseOver){
+    /*
     setMaterials ( _mats=>
       _mats.map(mat => {
         mat.uniforms.uMouseOver.value = _isMouseOver;
@@ -71,6 +77,7 @@ export default function House(props){
         return mat 
       }
     ))
+      */
 
   }
 
@@ -82,7 +89,7 @@ export default function House(props){
                 onPointerOut={()=>{onMouseOver(false)}}
                 onClick={()=>{props.onClick()}}>
 
-        <primitive object={mesh}  material={materials}/>
+        <primitive object={mesh}/>
 
         <Html position={[0, 1, 0]} center>
           <div>Hello</div>

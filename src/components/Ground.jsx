@@ -16,7 +16,6 @@ export function GroundPlane(props) {
 
     useEffect(()=>{
         setEditMode(props.editMode);
-        console.log( 'DONE')
     },[props.editMode] )
 
     const onPointerMove = evt=>{
@@ -44,7 +43,6 @@ export function GroundPlane(props) {
         }
     }
     const onFinish = ()=>{
-        //console.log('finish')
         props.onFinish()
     }
 
