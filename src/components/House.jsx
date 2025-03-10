@@ -9,7 +9,6 @@ export default function House(props){
   const modelContext = useModel();
   const TextureContext = useTexture(); 
   const [mesh, setMesh] = useState();
-  //const [materials, setMaterials] = useState();
   const [property, setProperty] = useState({ name:'house_A1', x:0,y:0, roof:'R1', windows:'W1', wall: 'W1',  time: 0 } );
 
 
@@ -20,6 +19,7 @@ export default function House(props){
   useEffect(()=>{
     if ( modelContext ) {
       updateMesh();
+
     }
   },[ modelContext , TextureContext , property ])
 
@@ -27,19 +27,18 @@ export default function House(props){
 
   //Tempoary Timelapse
   useFrame(()=>{
-    /*
-    if(materials){
-      materials.forEach( mat =>{
+    if(mesh.material){
+      mesh.material.forEach( mat =>{
         mat.uniforms.uTime.value = .01 + mat.uniforms.uTime.value ;
       })
     }
-    */
   })
 
   const updateMap = (_mat) =>{
     if(_mat.name in property){
       const texturefullName = _mat.name + '/'+ property[_mat.name]
       _mat.uniforms.uMap.value =TextureContext[texturefullName]
+      _mat.uniforms.uTime.value= property.time
     }
   }
 
@@ -47,6 +46,7 @@ export default function House(props){
   function updateMesh(){
 
     var meshFound = modelContext[property.name]; 
+    console.log( modelContext )
     if(!meshFound){
       meshFound = Object.values(modelContext)[0]
     }
@@ -58,8 +58,6 @@ export default function House(props){
         newMesh.material.forEach( mat =>updateMap(mat))
       }
 
-      //setMaterials(clonedMesh.material);
-
       return newMesh
     })
 
@@ -69,16 +67,10 @@ export default function House(props){
   }
 
   function onMouseOver(_isMouseOver){
-    /*
-    setMaterials ( _mats=>
-      _mats.map(mat => {
-        mat.uniforms.uMouseOver.value = _isMouseOver;
-        mat.needsUpdate = true;  
-        return mat 
-      }
-    ))
-      */
-
+    mesh.material.forEach(mat=>{
+      mat.uniforms.uMouseOver.value = _isMouseOver;
+      mat.needsUpdate = true;  
+    })
   }
 
 

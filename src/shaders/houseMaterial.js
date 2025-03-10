@@ -1,4 +1,4 @@
-import { RawShaderMaterial, Vector2 , Vector4 } from 'three';
+import { DoubleSide, RawShaderMaterial, Vector2 , Vector4 } from 'three';
 
 
 export const HouseMaterial = ()=>  new RawShaderMaterial({
@@ -41,7 +41,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
     #define PI 3.1415926538
 
   
-      vec3 phong(vec2 _UV) {
+      vec4 phong(vec2 _UV) {
           float time = fract(uTime);
           float angle =  (time-.5)  *PI *2. ;
 
@@ -68,14 +68,14 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           vec3 lighting =mix(  shadedColor , lightColor , dotResult);
 
           
-          vec3 diffuseMap = texture2D( uMap , _UV).xyz *.75 +.25 ;
+          vec4 diffuseMap = texture2D( uMap , _UV);//.xyz *.75 +.25 ;
           
           if(uMouseOver){
-            diffuseMap +=vec3(.33);
+            diffuseMap.xyz +=vec3(.33);
           }
           float paperMap = texture2D( uPaperMap , fract(vUv  * 10. ) ).x ;
   
-          return diffuseMap * lighting * paperMap ;
+          return vec4( diffuseMap.rgb * lighting * paperMap, diffuseMap.a); ;
       }
   
         void main(){
@@ -83,16 +83,21 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
             vec2 modifiedUv = vUv;
             modifiedUv.x += 0.1* uUDIM.x ; // adjust as needed
   
-            gl_FragColor= vec4( phong(modifiedUv) ,1.);
+            gl_FragColor= phong(modifiedUv) ;
         }
       `,
       uniforms:{
+        
           uMap: { value: null },
           uPaperMap : {value : null } ,
           uUDIM : {value: new Vector2(0.) },
           uMouseOver: { value : false },
           uTime: { value : 0.5 } //24 * 60 = 1440
       },
-      //transparent: false, 
-      //side: DoubleSide 
+    //  transparent: true, 
+   //   depthWrite:true,
+    //  depthTest: true,
+   //   side: DoubleSide,
+
+      
   })
