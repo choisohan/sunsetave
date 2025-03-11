@@ -27,7 +27,7 @@ export default function House(props){
 
   //Tempoary Timelapse
   useFrame(()=>{
-    if(mesh.material){
+    if(mesh && mesh.material){
       mesh.material.forEach( mat =>{
         mat.uniforms.uTime.value = .01 + mat.uniforms.uTime.value ;
       })
@@ -46,7 +46,6 @@ export default function House(props){
   function updateMesh(){
 
     var meshFound = modelContext[property.name]; 
-    console.log( modelContext )
     if(!meshFound){
       meshFound = Object.values(modelContext)[0]
     }
