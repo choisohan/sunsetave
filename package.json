@@ -2,7 +2,6 @@
   "name": "sunsetave",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://calendar.google.com",
   "dependencies": {
     "@react-three/drei": "^10.0.3",
     "@react-three/fiber": "^9.0.4",
