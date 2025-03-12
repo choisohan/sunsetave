@@ -3,17 +3,32 @@ import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
 import { useModel , useTexture } from '../contexts/modelContext';
 import { Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
+import moment from 'moment-timezone';
 
+
+const NormalizedCurrentTime = ( timezone )=>{
+  const currentMoment = moment().tz(timezone)
+  const minutesOfDay = currentMoment.hour() * 60 + currentMoment.minute();
+  return  minutesOfDay / 1440;
+}
 
 export default function House(props){
   const modelContext = useModel();
   const TextureContext = useTexture(); 
   const [mesh, setMesh] = useState();
-  const [property, setProperty] = useState({ name:'house_A1', x:0,y:0, roof:'R1', windows:'W1', wall: 'W1',  time: 0 } );
+  const [property, setProperty] = useState({
+    name:'house_A1', x:0,y:0, roof:'R1', windows:'W1', wall: 'W1',  time: 0,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+  } );
+
+
 
 
   useEffect(()=>{
-    setProperty(_props=>({..._props, ...props.property}))
+    setProperty(_props =>{
+        const normTime = NormalizedCurrentTime(props.property.timezone).toFixed(2) ;
+        return {..._props, ...props.property , time: parseFloat(normTime)}}
+    )
   },[props.property])
 
   useEffect(()=>{

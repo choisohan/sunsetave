@@ -20,9 +20,14 @@ export default function Avenue() {
     fetchData();
   },[])
 
+  
+
+
 
   const [items, setItems] = useState([
-    {x:-1, name:'house_A2' , time: .5 , roof:'R1',wall:'W1',windows:'W1' },{x:0, name:'house_A3' ,time: .25},{x:1.5, name:'house_A4'}
+    {x:-1, name:'house_A2' , time: .5 , roof:'R1',wall:'W1',windows:'W1' , timezone: "Europe/London"},
+    {x:0, name:'house_A3' ,time: .25 , timezone: "America/Vancouver" },
+    {x:1.5, name:'house_A4' , timezone: "Asia/Hong_Kong" }
   ])
 
   const [selectedItem, setSelectedItem] = useState();
