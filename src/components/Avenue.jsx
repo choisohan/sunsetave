@@ -5,19 +5,18 @@ import { OrbitControls } from '@react-three/drei'
 import { GroundPlane } from './Ground'
 import HouseBuilder from './HouseBuilder'
 
-import { SampleCalendar } from '../calendar/SampleCalendars'
+import { SampleCalendars } from '../calendar/SampleCalendars'
 import { SortCalendarData } from '../calendar/SortEvents'
 
 
 export default function Avenue() {
 
   useEffect( ()=>{
-
     const fetchData = async () => {
-      const sorted = await SortCalendarData(SampleCalendar);
-      console.log('calendar is sorted', sorted); // Do something with the sorted data
+      SampleCalendars.forEach(cal=>{
+        //const sorted = await SortCalendarData(cal);
+      })
     };
-
     fetchData();
   },[])
 
