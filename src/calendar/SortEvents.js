@@ -23,17 +23,24 @@ const WeekRange = ( tz , offset )=>{
 
 
 export const GetDayArrayFromRRule = (event, _timezone)=>{
+    const lastWeek = new Date();
+    lastWeek.setDate(new Date().getDate() - 7);
+
+
     const rule = new RRule({ // Convert JSON to RRule
         freq: freqMap[event.rrule.freq], 
-        interval: event.rrule.interval,
-        until: new Date(event.rrule.until) 
+        interval: event.rrule.interval || null ,
+        until: event.rrule.until   ? new Date(event.rrule.until): null,
+        dtstart: lastWeek,
+        count: 10,  // todo :limit for performance
     });
 
     return rule.all().map( d=> {
         const minutes = moment(event.end).diff(moment(event.start),'minutes');
-        var dm = moment(d).tz(_timezone) 
-        return {start : dm , end : dm.clone().add( minutes, 'minutes')  }
+        var start = moment(d).tz(_timezone)
+        return {start : start , end : start.clone().add( minutes, 'minutes')  }
     })
+
 }
 
 
@@ -60,6 +67,19 @@ export const SortCalendarData = async (_calendar)=>{
 
     return {..._calendar, events: await Promise.all(promises).then( () =>{
         arr = arr.sort((a, b) =>  a.startMoment.diff(b.startMoment));
+
+        arr.forEach( (evt, i )=>{
+            console.log( i , evt.summary, evt.start)
+        })
         return(arr);
     })}
+}
+
+export const getCurrentEventIndex = (events)=>{
+    const now = moment();
+    const closest = events.reduce((a, b) =>
+        Math.abs(b.startMoment.diff(now)) < Math.abs(a.startMoment.diff(now)) ? b : a
+      );
+    return events.indexOf(closest)
+      
 }

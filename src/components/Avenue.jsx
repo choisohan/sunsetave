@@ -16,9 +16,9 @@ export default function Avenue() {
     {x:0, name:'house_A3' ,time: .25 , timezone: "America/Vancouver"  ,id: 'sample/Mozart' },
     {x:1.5, name:'house_A4' , timezone: "Asia/Hong_Kong" , id: 'sample/Darwin'}
     */
-   {id : 'sample/?Darwin' , x:-1  },
+   {id : 'sample/?SampleCalendar' , x:-1  },
    {id : 'sample/?BruceLee' , x:0 },
-   {id : 'sample/?Einstein' , x:1 },
+  {id : 'sample/?Einstein' , x:1 },
    //{id : '8c063daee6e0ebb0eac75293727a2b85d9024b26c96fd2ad4f9a7489bbf835a1'}
   ])
 

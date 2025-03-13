@@ -7,6 +7,7 @@ import moment from 'moment-timezone';
 
 import {SampleCalendars} from '../calendar/SampleCalendars'
 import { fetchCalendar } from '../calendar/FetchCalendar';
+import { getCurrentEventIndex, SortCalendarData } from '../calendar/SortEvents';
 
 
 
@@ -14,16 +15,13 @@ export default function House(props){
   const modelContext = useModel();
   const TextureContext = useTexture(); 
   const [mesh, setMesh] = useState();
+  const [currentEventIndex, setCurrentEventIndex] = useState(null)
   
 
   const [property, setProperty] = useState({
     id: 'sample/?SampleCalendar' ,
     x:0,y:0, roof:'R1', windows:'W1', wall: 'W1',  time: 0,    
   });
-
-
-
-
 
   useEffect(()=>{
     if(props.property.id){
@@ -32,6 +30,8 @@ export default function House(props){
         setProperty(_property =>(
           {..._property, ...props.property , ...calendar, time: normTime  }
         ))
+
+        setCurrentEventIndex(getCurrentEventIndex(calendar.events))
       })
     }
   },[props.property])
@@ -111,8 +111,8 @@ export default function House(props){
 
         <primitive object={mesh}/>
 
-        <Html position={[0, 1, 0]} center>
-          <div>Hello</div>
+        <Html position={[0, .75, 0]} center>
+          <div>{property.events ? property.events[currentEventIndex].summary : null }</div>
         </Html>
         
         </mesh>
@@ -130,11 +130,12 @@ const NormalizedCurrentTime = ( timezone )=>{
 
 
 const FindCalendar = async(_id)=>{
+  var cal; 
   if(_id.includes('sample/?')){
     _id = _id.split('sample/?')[1];
-    return await SampleCalendars[_id]
+    cal = await SampleCalendars[_id]
   }else{
-    const cal =  await fetchCalendar(_id);
-    return cal 
+    cal =  await fetchCalendar(_id);
   }
+  return await SortCalendarData(cal);
 }
