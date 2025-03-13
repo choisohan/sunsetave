@@ -3,8 +3,10 @@ import ICAL from "ical.js";
 
 //http://localhost:3000/?url=8c063daee6e0ebb0eac75293727a2b85d9024b26c96fd2ad4f9a7489bbf835a1
 export const fetchCalendar = async (icalUrl) => {
+
     const serverURL = 'https://unruly-calm-sorrel.glitch.me'
-    fetch(serverURL+'/fetch-ical',{
+
+    return fetch(serverURL+'/fetch-ical',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',  
@@ -14,13 +16,14 @@ export const fetchCalendar = async (icalUrl) => {
         })
     })  
     .then(response => response.json())  
-    .then(data => {
+    .then(async data => {
 
         const jcalData = ICAL.parse(data.icalData);
         const comp = new ICAL.Component(jcalData);
         const vevents = comp.getAllSubcomponents("vevent");
 
         const parsedEvents = vevents.map(event => {
+
             const vevent = new ICAL.Event(event);
             const rruleProp = event.getFirstPropertyValue("rrule");
             const rrule = rruleProp ? new ICAL.Recur(rruleProp) : null;
@@ -34,14 +37,16 @@ export const fetchCalendar = async (icalUrl) => {
             };
         });
 
-        const calendarData =  {
-            name: comp.getFirstPropertyValue("x-wr-calname") ,
-            description: comp.getFirstPropertyValue("x-wr-caldesc") ,
-            timezone: comp.getFirstPropertyValue("x-wr-timezone") ,
-            events:parsedEvents
-        }
-        console.log(calendarData )
-
+        return Promise.resolve(parsedEvents).then(eventArray=>
+        {
+            const calendarData =  {
+                name: comp.getFirstPropertyValue("x-wr-calname") ,
+                description: comp.getFirstPropertyValue("x-wr-caldesc") ,
+                timezone: comp.getFirstPropertyValue("x-wr-timezone") ,
+                events: eventArray
+            }
+            return calendarData
+        })
         
     })
     .catch(error => {

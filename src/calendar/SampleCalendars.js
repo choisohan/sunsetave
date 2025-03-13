@@ -1,5 +1,5 @@
-export const SampleCalendars =[
-    {
+export const SampleCalendars ={
+    "SampleCalendar" : {
         name: "SampleCalendar",
         description: "This is SampleCalendar Description!",
         timezone: "America/Vancouver",
@@ -17,7 +17,7 @@ export const SampleCalendars =[
             }
         ]
     },
-    {
+    "Mozart": {
         name:"Mozart",
         timezone:"Europe/Vienna",
         description:"Mozart's House",
@@ -67,7 +67,7 @@ export const SampleCalendars =[
         ]
         
     },
-    {
+    "Darwin":{
         name:"Darwin",
         timezone:"Europe/London",
         description:"Darwin's House",
@@ -126,7 +126,7 @@ export const SampleCalendars =[
                 rrule: { freq: "DAILY" }
             }
     ]},
-    {
+    "Freud": {
         name:"Freud",
         timezone:"Europe/Vienna",
         description:"Freud's House",
@@ -168,7 +168,7 @@ export const SampleCalendars =[
                 rrule: { freq: "DAILY" }
             }
         ]},
-    {
+    "VanGogh":{
         name:"Van Gogh",
         timezone: "Europe/Paris",
         description: "Painter",
@@ -205,7 +205,7 @@ export const SampleCalendars =[
             }
         ]
         },
-    {
+    'BruceLee':{
         name:'Bruce Lee',
         timezone:"Asia/Hong_Kong",
         description:"Bruce's House",
@@ -265,7 +265,7 @@ export const SampleCalendars =[
                 rrule: { freq: "DAILY" }
             }
         ]},
-    {
+    "Einstein":{
         name:"Einstein",
         timezone: "America/New_York",
         events:[
@@ -318,4 +318,4 @@ export const SampleCalendars =[
                 rrule: { freq: "DAILY" }
             }
         ]}
-]
+    }

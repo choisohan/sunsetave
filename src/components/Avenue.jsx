@@ -5,29 +5,21 @@ import { OrbitControls } from '@react-three/drei'
 import { GroundPlane } from './Ground'
 import HouseBuilder from './HouseBuilder'
 
-import { SampleCalendars } from '../calendar/SampleCalendars'
-import { SortCalendarData } from '../calendar/SortEvents'
 
 
 export default function Avenue() {
 
-  useEffect( ()=>{
-    const fetchData = async () => {
-      SampleCalendars.forEach(cal=>{
-        //const sorted = await SortCalendarData(cal);
-      })
-    };
-    fetchData();
-  },[])
-
-  
-
-
 
   const [items, setItems] = useState([
-    {x:-1, name:'house_A2' , time: .5 , roof:'R1',wall:'W1',windows:'W1' , timezone: "Europe/London"},
-    {x:0, name:'house_A3' ,time: .25 , timezone: "America/Vancouver" },
-    {x:1.5, name:'house_A4' , timezone: "Asia/Hong_Kong" }
+    /*
+    {x:-1, name:'house_A2' , time: .5 , roof:'R1',wall:'W1',windows:'W1' , timezone: "Europe/London" , id: 'sample/SampleCalendar' },
+    {x:0, name:'house_A3' ,time: .25 , timezone: "America/Vancouver"  ,id: 'sample/Mozart' },
+    {x:1.5, name:'house_A4' , timezone: "Asia/Hong_Kong" , id: 'sample/Darwin'}
+    */
+   {id : 'sample/?Darwin' , x:-1  },
+   {id : 'sample/?BruceLee' , x:0 },
+   {id : 'sample/?Einstein' , x:1 },
+   //{id : '8c063daee6e0ebb0eac75293727a2b85d9024b26c96fd2ad4f9a7489bbf835a1'}
   ])
 
   const [selectedItem, setSelectedItem] = useState();
