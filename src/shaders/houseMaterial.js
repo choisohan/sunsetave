@@ -71,9 +71,9 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           vec4 diffuseMap = texture2D( uMap , fract(vUv) );//.xyz *.75 +.25 ;
           
           if(uMouseOver){
-            diffuseMap.xyz +=vec3(.33);
+            diffuseMap.xyz +=vec3(.0, .1, .2);
           }
-          float paperMap = texture2D( uPaperMap , fract(vUv) ).x ;
+          float paperMap = texture2D( uPaperMap , fract(vUv) ).x *.66+.33 ;
   
           return vec4( diffuseMap.rgb * lighting * paperMap, diffuseMap.a); ;
       }

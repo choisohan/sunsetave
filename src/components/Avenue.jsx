@@ -6,7 +6,6 @@ import { GroundPlane } from './Ground'
 import HouseBuilder from './HouseBuilder'
 
 
-
 export default function Avenue() {
 
 
@@ -16,9 +15,9 @@ export default function Avenue() {
     {x:0, name:'house_A3' ,time: .25 , timezone: "America/Vancouver"  ,id: 'sample/Mozart' },
     {x:1.5, name:'house_A4' , timezone: "Asia/Hong_Kong" , id: 'sample/Darwin'}
     */
-   {id : 'sample/?SampleCalendar' , x:-2  },
-   {id : 'sample/?BruceLee' , x:0 },
-  //{id : 'sample/?Einstein' , x:1 },
+   {id : 'sample/?SampleCalendar' , x:0  },
+  // {id : 'sample/?BruceLee' , x:0 },
+  // {id : 'sample/?Einstein' , x:1 },
    //{id : '8c063daee6e0ebb0eac75293727a2b85d9024b26c96fd2ad4f9a7489bbf835a1'}
   ])
 
@@ -42,7 +41,7 @@ export default function Avenue() {
 
   return (
     <div>
-    <Canvas camera={{position: [2,5,7], fov: 50}} style={{width:'100vw', height:'100vh'}}>
+    <Canvas camera={{position: [1,2,5], fov: 20}} style={{width:'100vw', height:'100vh'}}>
       
       <OrbitControls />
       <GroundPlane editMode={ editMode&&selectedItem?true:false } onPointerMove={moveObject} onFinish={()=>{setSelectedItem()}} />
@@ -51,7 +50,6 @@ export default function Avenue() {
       {items.map( (item,i) =>
           <House key={i} property ={item} onClick={()=>{onSelection(i)}} />
       )}
-
 
     </Canvas>
 
