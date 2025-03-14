@@ -5,8 +5,8 @@ import { FBXLoader } from "three/examples/jsm/Addons.js";
 import {  NearestFilter , ClampToEdgeWrapping, TextureLoader} from 'three';
 import { HouseMaterial } from "../shaders/houseMaterial";
 
-const ModelContext = React.createContext();
-const TextureContext = React.createContext();
+const HouseModelContext = React.createContext();
+const HouseTextureContext = React.createContext();
 
 
 const useTextures = () => {
@@ -25,7 +25,7 @@ const useTextures = () => {
 
 const swapMaterialToHouse = (_currentMat, _paperTexture)=>{
     const houseMaterial = HouseMaterial();
-    if(_currentMat.name.includes('windows')){
+    if(_currentMat.name.includes('Windows')){
         houseMaterial.transparent=true; 
     }
     houseMaterial.name = _currentMat.name;
@@ -38,12 +38,13 @@ const useFBXModels = ()=>{
     const _paperTexture = useLoader(TextureLoader, '/models/paperTexture.png');
     const _fbxFile = useLoader(FBXLoader, '/models/houses.fbx'); 
     _fbxFile.traverse((child) => {
-        if (child.isMesh && child.name.includes('house')) {
+        if (child.isMesh ) {
 
             child.position.x = 0;
             child.position.y = 0;
             child.position.z = 0;      
 
+            
             if(Array.isArray(child.material)){
                 child.material = child.material.map(m=>swapMaterialToHouse(m, _paperTexture))
 
@@ -51,6 +52,7 @@ const useFBXModels = ()=>{
                 child.material = swapMaterialToHouse(child.material, _paperTexture)
 
             }
+                
             sortedModels[child.name] = child;
         }
     });
@@ -63,18 +65,18 @@ export function ModelProvider({children}){
     const textures = useTextures();
 
 	return (
-        <TextureContext.Provider value={textures}>
-            <ModelContext.Provider value={modelFile}>
+        <HouseTextureContext.Provider value={textures}>
+            <HouseModelContext.Provider value={modelFile}>
                 {children}
-            </ModelContext.Provider>
-        </TextureContext.Provider>
+            </HouseModelContext.Provider>
+        </HouseTextureContext.Provider>
 
 	)
 }
 
-export function useModel(){
-	return useContext(ModelContext)
+export function useHouseModel(){
+	return useContext(HouseModelContext)
 }
 export function useTexture(){
-	return useContext(TextureContext)
+	return useContext(HouseTextureContext)
 }

@@ -41,7 +41,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
     #define PI 3.1415926538
 
   
-      vec4 phong(vec2 _UV) {
+      vec4 phong() {
           float time = fract(uTime);
           float angle =  (time-.5)  *PI *2. ;
 
@@ -68,22 +68,18 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           vec3 lighting =mix(  shadedColor , lightColor , dotResult);
 
           
-          vec4 diffuseMap = texture2D( uMap , _UV);//.xyz *.75 +.25 ;
+          vec4 diffuseMap = texture2D( uMap , fract(vUv) );//.xyz *.75 +.25 ;
           
           if(uMouseOver){
             diffuseMap.xyz +=vec3(.33);
           }
-          float paperMap = texture2D( uPaperMap , fract(vUv  * 10. ) ).x ;
+          float paperMap = texture2D( uPaperMap , fract(vUv) ).x ;
   
           return vec4( diffuseMap.rgb * lighting * paperMap, diffuseMap.a); ;
       }
   
-        void main(){
-            // Create a local copy of vUv to modify
-            vec2 modifiedUv = vUv;
-            modifiedUv.x += 0.1* uUDIM.x ; // adjust as needed
-  
-            gl_FragColor= phong(modifiedUv) ;
+        void main(){  
+            gl_FragColor= phong() ;
         }
       `,
       uniforms:{

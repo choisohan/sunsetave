@@ -3,34 +3,31 @@ import House from './House'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { randInt } from 'three/src/math/MathUtils.js';
-import { useModel, useTexture } from '../contexts/modelContext';
+import { useHouseModel, useTexture } from '../contexts/modelContext';
 
 export default function HouseBuilder(props) {
-  const [property, setProperty]= useState({name:'house_A1', roof:'R1', wall:'W1', windows:'W1' });
-  const modelContext = useModel(); 
+  const [property, setProperty]= useState({mesh:'A1', roof:'R1', wall:'W1', windows:'W1', time: .5 });
+  const modelContext = useHouseModel(); 
   const textureContext = useTexture(); 
-  const [houseModels, setHouseModels] = useState([]);
   const [currentInt, setCurrentInt] = useState(0)
 
   useEffect(()=>{
     setProperty(_property=>({..._property,...props.property}))
   },[props.property])
 
-  useEffect(()=>{
-    setHouseModels(Object.values(modelContext).filter(m=>m.name.includes('house')))
-  },[modelContext])
+
 
   const swapGeometry=(changeNumb)=>{
 
-    const maxNumb = setHouseModels.length; 
+    const maxNumb = Object.keys(modelContext).length-1; 
+
     var newNumb = currentInt + changeNumb; 
     if(newNumb>maxNumb){ newNumb = 1}
     if(newNumb < 1){ newNumb = maxNumb}
     setCurrentInt(newNumb);
 
-    const newHouseMesh = houseModels[newNumb]
-    setProperty(x=>({...x, name: newHouseMesh.name }))
-    
+    const newHouseMesh = Object.values(modelContext)[newNumb]
+    setProperty(x=>({...x, mesh: newHouseMesh.name }))
   }
 
   const swapMap = ( selectedSection, changeNumb)=>{
@@ -38,10 +35,12 @@ export default function HouseBuilder(props) {
     const maxNumb = mapOptions.length; 
     const currentName = property[selectedSection]; 
 
+
     const currentIndex =mapOptions.indexOf(currentName);
     var nextIndex = currentIndex + changeNumb; 
     if(nextIndex>=maxNumb){nextIndex = 0}
     if(nextIndex < 0){ nextIndex = maxNumb-1}
+    //console.log( '🟢swapMap' , currentIndex  , nextIndex)
 
 
     setProperty(_property =>{
@@ -61,9 +60,9 @@ export default function HouseBuilder(props) {
   return (<>
     <div style={{display:'flex', width:'100%', maxWidth:'600px', gap:'10px'}} >
 
-      <Canvas style={{aspectRatio:1.725}} camera={{position: [2,1,3], fov: 15}} >
+      <Canvas style={{aspectRatio:1.725}} camera={{position: [2,2,6], fov: 15}} >
         <OrbitControls />
-        <House property ={property}/>
+        <House property ={property} onClick={()=>{}}/>
       </Canvas>
 
       <div className='options'>

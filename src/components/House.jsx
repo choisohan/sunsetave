@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
-import { useModel , useTexture } from '../contexts/modelContext';
+import { useHouseModel , useTexture } from '../contexts/modelContext';
 import { Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import moment from 'moment-timezone';
@@ -12,7 +12,7 @@ import { getCurrentEventIndex, SortCalendarData } from '../calendar/SortEvents';
 
 
 export default function House(props){
-  const modelContext = useModel();
+  const modelContext = useHouseModel();
   const TextureContext = useTexture(); 
   const [mesh, setMesh] = useState();
   const [currentEventIndex, setCurrentEventIndex] = useState(null)
@@ -30,9 +30,13 @@ export default function House(props){
         setProperty(_property =>(
           {..._property, ...props.property , ...calendar, time: normTime  }
         ))
-
         setCurrentEventIndex(getCurrentEventIndex(calendar.events))
       })
+    }
+    else{
+      setProperty(_property =>(
+        {..._property, ...props.property   }
+      ))
     }
   },[props.property])
 
@@ -45,6 +49,9 @@ export default function House(props){
   },[ modelContext , TextureContext , property ])
 
 
+  useEffect(()=>{
+    console.log( 'mesh updated')
+  },[mesh])
 
   //Tempoary Timelapse
   useFrame(()=>{
@@ -58,8 +65,9 @@ export default function House(props){
   })
 
   const updateMap = (_mat) =>{
-    if(_mat.name in property){
-      const texturefullName = _mat.name + '/'+ property[_mat.name]
+    if(_mat.name.toLowerCase() in property){
+      const texturefullName = _mat.name.toLowerCase() + '/'+ property[_mat.name.toLowerCase()]
+      console.log( texturefullName)
       _mat.uniforms.uMap.value =TextureContext[texturefullName]
       _mat.uniforms.uTime.value= property.time
       console.log( property.name, property.time  )
@@ -74,13 +82,15 @@ export default function House(props){
       meshFound = Object.values(modelContext)[0]
     }
 
+    console.log('updateMesh',meshFound )
+
     setMesh( ()=>{
       const newMesh = SkeletonUtils.clone( meshFound );
-      
-      
       if(Array.isArray(newMesh.material)){
+        console.log('updateMaterial...' , newMesh.material )
         newMesh.material= newMesh.material.map( mat =>{
           var newMat =  mat.clone();
+          console.log(newMat )
           updateMap(newMat)
           return newMat; 
         })
