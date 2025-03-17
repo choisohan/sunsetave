@@ -6,6 +6,7 @@ import Avenue from './components/Avenue';
 import { useEffect, useState } from 'react';
 
 import HouseViewer from './components/HouseViewer';
+import Test from './pages/Test';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
     <Routes>
         <Route path="/" element={ !iCalURL ? <Avenue /> : <HouseViewer url={iCalURL} />} />
         <Route path="/about" element={<About />} />
+        <Route path="/test" element={<Test />} />
     </Routes>
   </Router>
   </ModelProvider>
