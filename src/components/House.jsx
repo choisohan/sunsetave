@@ -122,7 +122,10 @@ export default function House(props){
         <primitive object={mesh}/>
 
         <Html position={[0, .75, 0]} center>
+          {/*
           <div>{property.events ? property.events[currentEventIndex].summary : null }</div>
+          */}
+          <div>{property.time}</div>
         </Html>
         
         </mesh>
