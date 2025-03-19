@@ -26,7 +26,6 @@ const useTextures = () => {
 const swapMaterialToHouse = (_currentMat, _paperTexture)=>{
     const houseMaterial = HouseMaterial();
     if(_currentMat.name.includes('Windows')){
-        houseMaterial.transparent=true; 
         houseMaterial.uniforms.uIsWindow.value = true;
     }
     houseMaterial.name = _currentMat.name;

@@ -1,4 +1,4 @@
-import { DoubleSide, RawShaderMaterial, Vector2 , Vector4 } from 'three';
+import { DoubleSide, NormalBlending, RawShaderMaterial, Vector2 , Vector4 } from 'three';
 
 
 export const HouseMaterial = ()=>  new RawShaderMaterial({
@@ -140,7 +140,8 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
             //diffuseMap.xyz  = reflectedColor;
           }
 
-          return vec4( diffuseMap.rgb * lighting * paperMap, diffuseMap.a); ;
+          if (diffuseMap.a < 0.5) discard; // Cutout effect
+          return vec4( diffuseMap.rgb * lighting * paperMap, 1. ); ;
 
   
       }
@@ -158,10 +159,5 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           uIsWindow:{value: false}, 
           uTime: { value : 0.5 } //24 * 60 = 1440
       },
-    //  transparent: true, 
-   //   depthWrite:true,
-    //  depthTest: true,
-   //   side: DoubleSide,
-
-      
+      transparent: true, 
   })
