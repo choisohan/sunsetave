@@ -5,7 +5,7 @@ import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
 
 
-export default function TerrainMesh(){
+export default function TerrainMesh(props){
     const {camera, raycaster} = useThree();
     const [mesh, setMesh] = useState();
     const _fbxFile = useLoader(FBXLoader, '/models/terrain.fbx'); 
@@ -88,6 +88,7 @@ export default function TerrainMesh(){
         })
 
         setMesh(_fbxFile);
+        props.onMeshUpdate(_fbxFile);
 
     },[_fbxFile])
 

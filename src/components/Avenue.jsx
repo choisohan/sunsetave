@@ -46,9 +46,11 @@ export default function Avenue() {
     <div>
     <Canvas camera={{position: [1,2,5], fov: 20}} style={{width:'100vw', height:'100vh'}}>
 
+      {/*
       <EffectComposer> 
         <Pixelation granularity={4} />
       </EffectComposer>
+      */}
       
       <OrbitControls />
       <GroundPlane editMode={ editMode&&selectedItem?true:false } onPointerMove={moveObject} onFinish={()=>{setSelectedItem()}} />
