@@ -4,6 +4,9 @@ import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { GroundPlane } from './Ground'
 import HouseBuilder from './HouseBuilder'
+import {EffectComposer, Pixelation  } from '@react-three/postprocessing'
+
+
 
 
 export default function Avenue() {
@@ -42,6 +45,10 @@ export default function Avenue() {
   return (
     <div>
     <Canvas camera={{position: [1,2,5], fov: 20}} style={{width:'100vw', height:'100vh'}}>
+
+      <EffectComposer> 
+        <Pixelation granularity={4} />
+      </EffectComposer>
       
       <OrbitControls />
       <GroundPlane editMode={ editMode&&selectedItem?true:false } onPointerMove={moveObject} onFinish={()=>{setSelectedItem()}} />
