@@ -68,9 +68,6 @@ export const SortCalendarData = async (_calendar)=>{
     return {..._calendar, events: await Promise.all(promises).then( () =>{
         arr = arr.sort((a, b) =>  a.startMoment.diff(b.startMoment));
 
-        arr.forEach( (evt, i )=>{
-            console.log( i , evt.summary, evt.start)
-        })
         return(arr);
     })}
 }

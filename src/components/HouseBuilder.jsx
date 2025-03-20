@@ -31,9 +31,7 @@ export default function HouseBuilder(props) {
   }
 
   const swapMap = ( selectedSection, changeNumb)=>{
-    console.log('🔴SWAP')
     const mapOptions = Object.keys(textureContext).filter(key=> key.includes(selectedSection) ).map(name=> name.split('/')[1]);
-    console.log( '🗺️mapOptions : ',mapOptions )
     const maxNumb = mapOptions.length; 
     const currentName = property[selectedSection]; 
 
@@ -42,7 +40,6 @@ export default function HouseBuilder(props) {
     var nextIndex = currentIndex + changeNumb; 
     if(nextIndex>=maxNumb){nextIndex = 0}
     if(nextIndex < 0){ nextIndex = maxNumb-1}
-    //console.log( '🟢swapMap' , currentIndex  , nextIndex)
 
 
     setProperty(_property =>{

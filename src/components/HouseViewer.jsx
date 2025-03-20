@@ -14,7 +14,6 @@ export default function HouseViewer(props) {
     useEffect(()=>{
         Promise.resolve( fetchCalendar(props.url) ).then(data=>{
 
-          console.log( '[HouseViewer]',props.url ,data )
         })
     },[props.url])
 

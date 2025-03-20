@@ -15,7 +15,6 @@ function App() {
   useEffect(()=>{
     const params = new URLSearchParams(window.location.search);
     const icalURL = params.get("url");
-    console.log('icalURL?', icalURL)
     setIcalURL(icalURL);
   },[])
 

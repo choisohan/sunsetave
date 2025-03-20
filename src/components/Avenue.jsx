@@ -4,10 +4,11 @@ import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { GroundPlane } from './Ground'
 import HouseBuilder from './HouseBuilder'
-import {EffectComposer, Pixelation   } from '@react-three/postprocessing'
+import {EffectComposer, Pixelation, ToneMapping   } from '@react-three/postprocessing'
 import Sky from './Sky'
 import { Vector3 } from 'three'
 
+import {GrayscaleEffect} from './PixelationEffect'
 
 export default function Avenue() {
 
@@ -46,15 +47,15 @@ export default function Avenue() {
     <div>
     <Canvas camera={{position: [0,1,5], fov: 20}} style={{width:'100vw', height:'100vh'}}>
 
-      <Sky />
-      <EffectComposer> 
-             {/*<Pixelation granularity={4} />
-             */}
+      
 
+      <EffectComposer>
+        <primitive object={new GrayscaleEffect({ intensity: 0.8 })} />
       </EffectComposer>
+
       <OrbitControls target={new Vector3(0,0,-2)}/>
       <GroundPlane editMode={ editMode&&selectedItem?true:false } onPointerMove={moveObject} onFinish={()=>{setSelectedItem()}} />
-
+      <Sky />
       
       {items.map( (item,i) =>
           <House key={i} property ={item} onClick={()=>{onSelection(i)}} />

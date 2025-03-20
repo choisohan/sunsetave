@@ -49,9 +49,7 @@ export default function House(props){
   },[ modelContext , TextureContext , property ])
 
 
-  useEffect(()=>{
-    console.log( 'mesh updated')
-  },[mesh])
+
 
   //Tempoary Timelapse
   useFrame(()=>{
@@ -79,16 +77,11 @@ export default function House(props){
     if(!meshFound){
       meshFound = Object.values(modelContext)[0]
     }
-
-    console.log('updateMesh',meshFound )
-
     setMesh( ()=>{
       const newMesh = SkeletonUtils.clone( meshFound );
       if(Array.isArray(newMesh.material)){
-        console.log('updateMaterial...' , newMesh.material )
         newMesh.material= newMesh.material.map( mat =>{
           var newMat =  mat.clone();
-          console.log(newMat )
           updateMap(newMat)
           return newMat; 
         })
