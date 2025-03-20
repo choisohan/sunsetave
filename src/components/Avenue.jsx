@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import House from './House'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { GroundPlane } from './Ground'
 import HouseBuilder from './HouseBuilder'
-import {EffectComposer, Pixelation, ToneMapping   } from '@react-three/postprocessing'
+import {EffectComposer  } from '@react-three/postprocessing'
 import Sky from './Sky'
-import { Vector3 } from 'three'
+import { Vector3  , NoToneMapping , LinearEncoding, SRGBColorSpace } from 'three'
+import {PixelationEffect} from '../shaders/CustomPostProcessing'
+import { acesFilmicToneMapping } from 'three/tsl'
 
-import {GrayscaleEffect} from './PixelationEffect'
 
 export default function Avenue() {
 
@@ -45,12 +46,11 @@ export default function Avenue() {
 
   return (
     <div>
-    <Canvas camera={{position: [0,1,5], fov: 20}} style={{width:'100vw', height:'100vh'}}>
+    <Canvas camera={{position: [0,1,5], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
 
-      
 
       <EffectComposer>
-        <primitive object={new GrayscaleEffect({ intensity: 0.8 })} />
+        <primitive object={new PixelationEffect()} />
       </EffectComposer>
 
       <OrbitControls target={new Vector3(0,0,-2)}/>
