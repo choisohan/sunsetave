@@ -67,10 +67,8 @@ export default function House(props){
   const updateMap = (_mat) =>{
     if(_mat.name.toLowerCase() in property){
       const texturefullName = _mat.name.toLowerCase() + '/'+ property[_mat.name.toLowerCase()]
-      console.log( texturefullName)
       _mat.uniforms.uMap.value =TextureContext[texturefullName]
       _mat.uniforms.uTime.value= property.time
-      console.log( property.name, property.time  )
     }
   }
 
