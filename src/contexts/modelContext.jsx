@@ -10,7 +10,12 @@ const HouseTextureContext = React.createContext();
 
 
 const useTextures = () => {
-    const nameArr = ["roof/R1", "wall/W1", "windows/W1"];
+    const nameArr = ["roof/R1","roof/R2","roof/R3", "roof/R4","roof/R5",
+                        "wall/W1","wall/W2","wall/W3","wall/W4","wall/W5",
+                        "windows/W1","windows/W2","windows/W3","windows/W4","windows/W5",
+                        "signs/S1",
+                    
+                    ];
     const textureFiles = useLoader(TextureLoader, nameArr.map(name => `/textures/${name}.png`))
     const textures = {};
     nameArr.forEach( (name,i)=>{

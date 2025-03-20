@@ -141,7 +141,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           }
 
           if (diffuseMap.a < 0.5) discard; // Cutout effect
-          return vec4( diffuseMap.rgb * lighting * paperMap, 1. ); ;
+          return vec4( diffuseMap.rgb * lighting , 1. ); ;
 
   
       }

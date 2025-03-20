@@ -31,7 +31,9 @@ export default function HouseBuilder(props) {
   }
 
   const swapMap = ( selectedSection, changeNumb)=>{
+    console.log('🔴SWAP')
     const mapOptions = Object.keys(textureContext).filter(key=> key.includes(selectedSection) ).map(name=> name.split('/')[1]);
+    console.log( '🗺️mapOptions : ',mapOptions )
     const maxNumb = mapOptions.length; 
     const currentName = property[selectedSection]; 
 
@@ -52,9 +54,11 @@ export default function HouseBuilder(props) {
 
   const generateRandom = ()=>{
     swapGeometry(randInt(1,4));
-    swapMap('roof',randInt(0,0));
-    swapMap('wall',randInt(0,0));
-    swapMap('windows',randInt(0,0));
+    swapMap('roof',randInt(0,5));
+    swapMap('wall',randInt(0,5));
+    swapMap('windows',randInt(0,5));
+    swapMap('signs',randInt(0,0));
+
   }
 
   return (<>
@@ -70,6 +74,7 @@ export default function HouseBuilder(props) {
         <OptionSelector onChange={ d =>{swapMap('roof',d)} } >Roof</OptionSelector>
         <OptionSelector onChange={ d =>{swapMap('wall',d)} } >Wall</OptionSelector>
         <OptionSelector onChange={ d =>{swapMap('windows',d)} } >Windows</OptionSelector>
+        <OptionSelector onChange={ d =>{swapMap('signs',d)} } >Signs</OptionSelector>
         <button onClick={generateRandom}>R</button>
 
       </div>
