@@ -37,7 +37,7 @@ class PixelationEffect extends Effect {
         //color.rgb = pow( color.rgb , vec3(2.5) ); 
 
         //
-        outputColor = color; 
+        outputColor.rgb = pow( color.rgb , vec3(2.5) ); 
         outputColor.a = 1.;
 
 
@@ -57,14 +57,14 @@ class PixelationEffect extends Effect {
 
 const Pixelate = ()=> {
 
-  const p =5; 
+  const p =4; 
   const {scene, camera} =useThree();
   const [pixelSize, setPixelSize] = useState(p); 
 
     // Listen for camera zoom or FOV changes
 
     const updatePixelSize = (e) => {
-      setPixelSize( ps => Math.max(p, ps - e.deltaY/122 ) );
+      setPixelSize( ps => Math.max(p, ps - e.deltaY/200 ) );
     };
 
     useEffect(() => {

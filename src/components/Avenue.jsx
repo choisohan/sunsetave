@@ -1,24 +1,18 @@
 import React, {  useEffect, useState } from 'react'
 import House from './House'
-import { Canvas, useThree } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { GroundPlane } from './Ground'
 import HouseBuilder from './HouseBuilder'
-import {EffectComposer  } from '@react-three/postprocessing'
 import Sky from './Sky'
-import { Vector3  , NoToneMapping , LinearEncoding, SRGBColorSpace } from 'three'
+import { Vector3 } from 'three'
 import {Pixelate} from '../shaders/CustomPostProcessing'
-
+import CameraControls from './CameraControls'
 
 export default function Avenue() {
 
 
   const [items, setItems] = useState([
-    /*
-    {x:-1, name:'house_A2' , time: .5 , roof:'R1',wall:'W1',windows:'W1' , timezone: "Europe/London" , id: 'sample/SampleCalendar' },
-    {x:0, name:'house_A3' ,time: .25 , timezone: "America/Vancouver"  ,id: 'sample/Mozart' },
-    {x:1.5, name:'house_A4' , timezone: "Asia/Hong_Kong" , id: 'sample/Darwin'}
-    */
    {id : 'sample/?SampleCalendar' , x:0  },
    {id : 'sample/?BruceLee' , x:-.5 },
    {id : 'sample/?Einstein' , x:0.5},
@@ -43,13 +37,18 @@ export default function Avenue() {
   
 
 
+
+
   return (
     <div>
     <Canvas camera={{position: [0,1,5], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
 
 
     <Pixelate />
-      <OrbitControls target={new Vector3(0,0,0)} />
+    <CameraControls />
+
+
+
       <GroundPlane editMode={ editMode&&selectedItem?true:false } onPointerMove={moveObject} onFinish={()=>{setSelectedItem()}} />
       <Sky />
       
