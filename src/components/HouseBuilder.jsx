@@ -4,9 +4,12 @@ import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { randInt } from 'three/src/math/MathUtils.js';
 import { useHouseModel, useTexture } from '../contexts/modelContext';
+import Sky from './Sky';
+import { Pixelate } from '../shaders/CustomPostProcessing';
+
 
 export default function HouseBuilder(props) {
-  const [property, setProperty]= useState({mesh:'A1', roof:'R1', wall:'W1', windows:'W1', time: .5 });
+  const [property, setProperty]= useState({mesh:'A1', roof:'R1', wall:'W1', windows:'W1', time: .35 });
   const modelContext = useHouseModel(); 
   const textureContext = useTexture(); 
   const [currentInt, setCurrentInt] = useState(0)
@@ -64,6 +67,8 @@ export default function HouseBuilder(props) {
       <Canvas style={{aspectRatio:1.725}} camera={{position: [2,2,6], fov: 15}} >
         <OrbitControls />
         <House property ={property} onClick={()=>{}}/>
+          <Sky />
+          <Pixelate />
       </Canvas>
 
       <div className='options'>

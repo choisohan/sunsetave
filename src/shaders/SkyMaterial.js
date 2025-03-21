@@ -44,7 +44,7 @@ void main()
             vec3 topColor = vec3(0.031,0.286,0.741);
             vec3 bottomColor =  vec3(0.557, 1.0, 0.984);
 
-            float ramp =  smoothstep(.0, 500.  , vPosition.y );
+            float ramp =  smoothstep(.0, 1000.  , vPosition.y );
             return mix( bottomColor, topColor, ramp );
         }
         void main(){ 

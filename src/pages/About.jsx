@@ -1,7 +1,6 @@
 import React from 'react'
 import HouseBuilder from '../components/HouseBuilder'
 import '../styles/about.css'
-
 export default function About() {
   return (
     <div className='about'>
