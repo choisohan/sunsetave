@@ -8,7 +8,7 @@ import moment from 'moment-timezone';
 import {SampleCalendars} from '../calendar/SampleCalendars'
 import { fetchCalendar } from '../calendar/FetchCalendar';
 import { getCurrentEventIndex, SortCalendarData } from '../calendar/SortEvents';
-
+import { Vector3 } from 'three';
 
 
 export default function House(props){
@@ -16,12 +16,13 @@ export default function House(props){
   const TextureContext = useTexture(); 
   const [mesh, setMesh] = useState();
   const [currentEventIndex, setCurrentEventIndex] = useState(null)
-  
-
   const [property, setProperty] = useState({
     id: 'sample/?SampleCalendar' ,
     x:0,y:0, roof:'R1', windows:'W1', wall: 'W1',  time: 0,    
   });
+  const [isHovered, setIsHovered] = useState(false); 
+  const meshRef = useRef();
+
 
   useEffect(()=>{
     if(props.property.id){
@@ -30,6 +31,7 @@ export default function House(props){
         setProperty(_property =>(
           {..._property, ...props.property , ...calendar, time: normTime  }
         ))
+        console.log( property)
         setCurrentEventIndex(getCurrentEventIndex(calendar.events))
       })
     }
@@ -52,15 +54,15 @@ export default function House(props){
 
 
   //Tempoary Timelapse
+  /*
   useFrame(()=>{
-    /*
     if(mesh && mesh.material){
       mesh.material.forEach( mat =>{
-        mat.uniforms.uTime.value = .01 + mat.uniforms.uTime.value ;
+        mat.uniforms.uTime.value = .001 + mat.uniforms.uTime.value ;
       })
     }
-      */
   })
+    */
 
   const updateMap = (_mat) =>{
     if(_mat.name.toLowerCase() in property){
@@ -95,34 +97,42 @@ export default function House(props){
     
   }
 
-  function onMouseOver(_isMouseOver){
-    mesh.material.forEach(mat=>{
-      mat.uniforms.uMouseOver.value = _isMouseOver;
-      mat.needsUpdate = true;  
-    })
-  }
+
+  useFrame(()=>{
+    if(!meshRef.current) return;
+
+    if(isHovered){
+      meshRef.current.scale.lerp( new Vector3(.9,1.2,.9),.5 )
+    }
+    else{
+      meshRef.current.scale.lerp( new Vector3(1.,1.,1.),.5 )
+    }
+
+  })
 
 
   // Render
-  if(mesh){
-    return <mesh position ={[property.x, 0, property.y]}
-                onPointerOver={()=>{onMouseOver(true)}}
-                onPointerOut={()=>{onMouseOver(false)}}
+  if(mesh && property.events ){
+    return <mesh ref={meshRef}
+                position ={[property.x, 0, property.y]}
+                onPointerEnter={()=>{setIsHovered(true)}}
+                onPointerOut={()=>{setIsHovered(false)}}
                 onClick={()=>{props.onClick()}}>
 
         <primitive object={mesh}/>
-
-        <Html position={[0, .75, 0]} center>
-          {/*
-          <div>{property.events ? property.events[currentEventIndex].summary : null }</div>
-          */}
-          <div>{property.time}</div>
-        </Html>
-        
+            <EventStateBubble content={ property.events[currentEventIndex].summary }/>
         </mesh>
   }
 
 
+}
+
+const EventStateBubble = (props)=>{
+  return <Html position={[0, .85, -0.25]} center style={{
+    background:'white', padding: '5px'
+    }}>
+    {props.content}
+    </Html>
 }
 
 
