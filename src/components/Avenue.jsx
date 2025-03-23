@@ -43,19 +43,16 @@ export default function Avenue() {
     <div>
     <Canvas camera={{position: [0,1,5], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
 
+    <CameraControls />
+    <Sky />
 
     <Pixelate />
-    <CameraControls />
+    {items.map( (item,i) =>
+        <House key={i} property ={item} onClick={()=>{onSelection(i)}} />
+    )}
 
-
-
-      <GroundPlane editMode={ editMode&&selectedItem?true:false } onPointerMove={moveObject} onFinish={()=>{setSelectedItem()}} />
-      <Sky />
-      
-      {items.map( (item,i) =>
-          <House key={i} property ={item} onClick={()=>{onSelection(i)}} />
-      )}
-
+     
+    <GroundPlane editMode={ editMode&&selectedItem?true:false } onPointerMove={moveObject} onFinish={()=>{setSelectedItem()}} />
     </Canvas>
 
     <div style={{position:'fixed',zIndex:1, bottom:5, right:5}}>

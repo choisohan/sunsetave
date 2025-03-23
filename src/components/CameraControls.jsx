@@ -22,7 +22,7 @@ export default function CameraControls() {
   return (
         <OrbitControls
           onEnd={onEnd}
-          target={new Vector3(0,0.05,0)}
+          target={new Vector3(0,0.35,0)}
           maxDolly ={0}
           minPolarAngle={0} 
           maxPolarAngle={Math.PI / 2} 

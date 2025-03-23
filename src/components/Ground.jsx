@@ -48,7 +48,7 @@ export function GroundPlane(props) {
 
   return (
     <mesh ref={planeRef} position={[0, 0, 0]} onPointerMove={onPointerMove} onPointerDown={onFinish}>
-      <boxGeometry args={[10, 0, 10]} />
+      <boxGeometry args={[3, 0, 4]} />
       <meshBasicMaterial color="lightGray" />
     </mesh>
   );
