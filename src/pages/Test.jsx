@@ -4,6 +4,7 @@ import { OrbitControls } from '@react-three/drei'
 import TerrainMesh from '../components/TerrainMesh'
 import Sky from '../components/Sky'
 import { Pixelate } from '../shaders/CustomPostProcessing'
+import { SkyMaterial } from '../shaders/SkyMaterial'
 
 export default function Test() {
 
@@ -19,13 +20,12 @@ export default function Test() {
 
 
     return (
-    <div><Canvas style={{width:'100vw', height:'100vh'}}  camera={{position: [15,15,15], fov: 20}} >
+    <div><Canvas style={{width:'100vw', height:'100vh'}}  camera={{position: [1,1,1], fov: 20}} >
         <OrbitControls />
        
-        <Sky />
         <Pixelate />
-        <mesh >
-                <boxGeometry args = {[0.5, 0.5,.5]} />
+        <mesh material ={SkyMaterial()} >
+            <boxGeometry args = {[1,0.1,1]} />
         </mesh>
 {/**
  *  <TerrainMesh onMeshUpdate={onMeshUpdate} />

@@ -18,23 +18,23 @@ export default function House(props){
   const [currentEventIndex, setCurrentEventIndex] = useState(null)
   const [property, setProperty] = useState({
     id: 'sample/?SampleCalendar' ,
-    x:0,y:0, roof:'R1', windows:'W1', wall: 'W1',  time: 0,    
+    roof:'R1', windows:'W1', wall: 'W1',  time: 0,
   });
   const [isHovered, setIsHovered] = useState(false); 
   const meshRef = useRef();
 
 
   useEffect(()=>{
-    if(props.property.id){
+    if( props.property.id !==property.id ){
       FindCalendar(props.property.id).then( calendar =>{
         const normTime = NormalizedCurrentTime(calendar.timezone) ;
         setProperty(_property =>(
           {..._property, ...props.property , ...calendar, time: normTime  }
         ))
-        console.log( property)
         setCurrentEventIndex(getCurrentEventIndex(calendar.events))
       })
     }
+    
     else{
       setProperty(_property =>(
         {..._property, ...props.property   }
@@ -43,10 +43,13 @@ export default function House(props){
   },[props.property])
 
 
+
+
+
+
   useEffect(()=>{
     if ( modelContext ) {
       updateMesh();
-
     }
   },[ modelContext , TextureContext , property ])
 
@@ -114,12 +117,13 @@ export default function House(props){
   // Render
   if(mesh && property.events ){
     return <mesh ref={meshRef}
-                position ={[property.x, 0, property.y]}
+                position ={ property.position ||  [0,0,0] }
+                rotation = {property.rotation ||  [0,0,0] } 
                 onPointerEnter={()=>{setIsHovered(true)}}
                 onPointerOut={()=>{setIsHovered(false)}}
                 onClick={()=>{props.onClick()}}>
 
-        <primitive object={mesh}/>
+        <primitive object={mesh} scale={[1.2,1.2,1.2]}/>
             <EventStateBubble content={ property.events[currentEventIndex].summary }/>
         </mesh>
   }

@@ -1,4 +1,4 @@
-import { DoubleSide, NormalBlending, RawShaderMaterial, Vector2 , Vector4 } from 'three';
+import {  RawShaderMaterial, Vector2  } from 'three';
 
 
 export const HouseMaterial = ()=>  new RawShaderMaterial({

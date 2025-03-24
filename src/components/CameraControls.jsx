@@ -29,7 +29,7 @@ export default function CameraControls() {
           minAzimuthAngle={-Math.PI / 4} 
           maxAzimuthAngle={Math.PI / 4} 
           minDistance={0} 
-          maxDistance={10}
+          maxDistance={25}
           enablePan={true} />
     
   )
