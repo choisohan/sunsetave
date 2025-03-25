@@ -3,10 +3,8 @@ import {  useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 
 
-export const OceanMaterial = () => {
+export const OceanMaterial = (SkyColorMap, time ) => {
     
-    const SkyColorMap = useLoader(TextureLoader, '/textures/env/skyColormap.png');
-
     return new RawShaderMaterial({
     vertexShader:`
         uniform mat4 projectionMatrix;
@@ -49,19 +47,35 @@ export const OceanMaterial = () => {
         uniform float uTime; 
 
         void main(){
-            vec3 color = vec3(.0);
+
+            vec3 skyColorBottom = texture2D( uSkyColorMap, vec2( 0.0/5. +.1,fract(uTime)) ).xyz;
+            vec3 skyColorMiddle = texture2D( uSkyColorMap, vec2( 1.0/5.+.1 , fract(uTime)) ).xyz;
+            vec3 skyColorTop = texture2D( uSkyColorMap, vec2( 2.0/5. +.1, fract(uTime) ) ).xyz;
+            vec3 cloudShadow = texture2D( uSkyColorMap, vec2( 3.0/5. +.1, fract(uTime) ) ).xyz;
+            vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
 
 
-            float horizon = 1.- distance(.0, vViewDir.x*.1) ;
-            color = mix(vec3(.0) ,vec3(1.), horizon ) ;
+            float riffleAmount = 1. ; 
+            float horizon = sin( vViewDir.z * riffleAmount )  ; 
+            horizon = floor( horizon * 3. )/3. ;
+            horizon *=.25; 
+            horizon += 1.- distance(.1, vViewDir.x*.1);
+
+           horizon = step(.8, horizon);
+
+           vec3 highlight = mix( skyColorBottom, cloudHighlight,vViewDir.y);
+           vec3 baseColor =  mix( skyColorMiddle, cloudShadow,vViewDir.y);
+           vec3 color = mix(baseColor , highlight , horizon ) ;
+
             gl_FragColor= vec4(color, 1. ) ;
+
 
         }
         `,
         transparent: false, 
         uniforms:{
-            uSkyColorMap : {value: SkyColorMap},
-            uTime : { value : .5 }, //define sky color and move the cloud
+            uSkyColorMap : {value: SkyColorMap },
+            uTime : { value : time  }, //define sky color and move the cloud
             uCloudiness: {value : 0. },  // desaturate the color of sky
             uSeason : {value : .5 } //eg. 0 = spring, .25 = summer, .5 = fall, .75 = weather
         }

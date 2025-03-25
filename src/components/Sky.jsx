@@ -2,19 +2,17 @@ import React from 'react'
 import { SkyMaterial } from '../shaders/SkyMaterial'
 import { useState } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { OceanMaterial } from '../shaders/WaterMaterial';
+import { useSkyColorMap, useTime } from '../contexts/envContext';
+
+
 
 export default function Sky() {
+    const skyColorMap = useSkyColorMap();
+    const time = useTime();
 
-    const [skymat, setSkyMat] = useState(SkyMaterial());
+    const [skymat, setSkyMat] = useState(SkyMaterial(skyColorMap, time ));
 
-    /*
-    useFrame(()=>{
-      if( skymat ){
-        const uTime = (skymat.uniforms.uTime.value+ .0025);
-        skymat.uniforms.uTime.value = uTime;
-      }
-    })
-      */
 
 
 

@@ -5,7 +5,7 @@ import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
 import { GridMaterial } from '../shaders/GridMaterial';
 import { OceanMaterial } from '../shaders/WaterMaterial';
-
+import { useSkyColorMap , useTime  } from '../contexts/envContext';
 
 
 
@@ -16,6 +16,8 @@ export default function TerrainMesh(props){
     const [selectedCell, setSelectedCell] = useState();
 
     const [gridMesh, setGridMesh] = useState();
+    const skyColorMap = useSkyColorMap();
+    const time = useTime();
 
 
 
@@ -33,7 +35,7 @@ export default function TerrainMesh(props){
             else if(child.isMesh && child.parent.name != 'grid'){
 
                 if(child.name.includes('water')){
-                    child.material = OceanMaterial()
+                    child.material = OceanMaterial(skyColorMap, time)
                 }else{
                     child.material = new MeshBasicMaterial({color: child.material.color});
                     
@@ -51,7 +53,8 @@ export default function TerrainMesh(props){
 
 
     const OnMouseOver = (evt)=>{
-        if(!props.editMode) return;
+        if(!props.editMode || !gridMesh) return;
+
         var mouse = new Vector2();
         var intersects;
         mouse.x = ( evt.clientX / window.innerWidth ) * 2 - 1;

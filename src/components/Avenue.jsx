@@ -60,7 +60,7 @@ export default function Avenue() {
 
   return (
     <div>
-    <Canvas camera={{position: [5,7,10], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
+    <Canvas camera={{position: [5,.5,9], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
 
     <CameraControls />
     <Sky />

@@ -24,9 +24,7 @@ export default function Test() {
         <OrbitControls />
        
         <Pixelate />
-        <mesh material ={SkyMaterial()} >
-            <boxGeometry args = {[1,0.1,1]} />
-        </mesh>
+
 {/**
  *  <TerrainMesh onMeshUpdate={onMeshUpdate} />
         {faces.map( f =>(

@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 
 import HouseViewer from './components/HouseViewer';
 import Test from './pages/Test';
+import { EnvProvider } from './contexts/envContext';
 
 function App() {
 
@@ -19,16 +20,20 @@ function App() {
   },[])
 
   return (
-    <ModelProvider>
+    <EnvProvider>
+      <ModelProvider>
 
-    <Router>
-    <Routes>
-        <Route path="/" element={ !iCalURL ? <Avenue /> : <HouseViewer url={iCalURL} />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/test" element={<Test />} />
-    </Routes>
-  </Router>
-  </ModelProvider>
+      <Router>
+      <Routes>
+          <Route path="/" element={ !iCalURL ? <Avenue /> : <HouseViewer url={iCalURL} />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/test" element={<Test />} />
+      </Routes>
+    </Router>
+    </ModelProvider>
+
+    </EnvProvider>
+
 
   );
 }

@@ -1,12 +1,11 @@
 import { BackSide, RawShaderMaterial } from "three";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
-import { useState } from "react";
 
-export const SkyMaterial =  ()=>{
+
+export const SkyMaterial =  (SkyColorMap, time )=>{
     const CloudsMap = useLoader(TextureLoader, '/textures/env/clouds.png');
-    const SkyColorMap = useLoader(TextureLoader, '/textures/env/skyColormap.png');
-
+    //const SkyColorMap = useSkyColorMap(); //useLoader(TextureLoader, '/textures/env/skyColormap.png');
     /*
     const [time,setTime] = useState(0);
 
@@ -27,7 +26,6 @@ export const SkyMaterial =  ()=>{
 
         attribute vec3 normal;
         varying vec3 vNormal;
-        varying vec3 vNormal2;
 
         varying vec3 vPosition;
         varying vec3 vViewDir;
@@ -70,30 +68,34 @@ export const SkyMaterial =  ()=>{
             vec3 cloudShadow = texture2D( uSkyColorMap, vec2( 3.0/5. +.1, fract(uTime) ) ).xyz;
             vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
 
-           // float skyScale = 120.; 
-            color = mix(skyColorBottom, skyColorMiddle , smoothstep(.0, 0.5 , vUv.y) ) ; // smoothstep( .0, 0.5  , vPosition.y / skyScale   )   );
-            color = mix( color , skyColorTop , smoothstep(.5, 1. , vUv.y) ) ;  //smoothstep( .5, 1.   , vPosition.y / skyScale   ) );
+
+            vec2 uv = vUv *2. ; // vPosition.xy *vec2(.005);
+
+
+            color = mix(skyColorBottom, skyColorMiddle , smoothstep(.0, 0.1 , vUv.y) ) ; 
+            color = mix( color , skyColorTop , smoothstep(.1, 1. , vUv.y) ) ;  
 
 
             // 2. Draw Cloud
-            vec2 rotatingUV = fract(  vUv * vec2(1. ,2.) * 2.   + vec2(uTime *-.1 , 0.0)  )     ;
+            vec2 rotatingUV = fract(  uv * vec2(1. ,2.) * 2.   + vec2(uTime *-.1 , 0.0)  )     ;
             vec4 cloudMap = texture2D( uCloudMap,   rotatingUV );
             float cloudShaded = dot( vec3( 0.0,1.0,.0 ) , cloudMap.xyz );
-            float cloudAlpha =  cloudMap.a * smoothstep(.0, 0.5 , vUv.y) ; // step(.5, cloudMap.a) ;
+            float cloudAlpha =  cloudMap.a * smoothstep(.0, 0.5 , uv.y) ; // step(.5, cloudMap.a) ;
             cloudAlpha = step(.35, cloudAlpha ); 
 
             vec3 cloudColored = mix( cloudShadow , cloudHighlight, step(.5,cloudShaded));
             color = mix(color, cloudColored , cloudAlpha);
 
             gl_FragColor= vec4(color, 1. ) ;
+
             
         }
         `,
         side:BackSide,
         uniforms:{
             uCloudMap : {value: CloudsMap},
-            uSkyColorMap : {value: SkyColorMap},
-            uTime : { value : .5 }, //define sky color and move the cloud
+            uSkyColorMap : {value: SkyColorMap },
+            uTime : { value : time  }, //define sky color and move the cloud
             uCloudiness: {value : 0. },  // desaturate the color of sky
             uSeason : {value : .5 } //eg. 0 = spring, .25 = summer, .5 = fall, .75 = weather
         }
