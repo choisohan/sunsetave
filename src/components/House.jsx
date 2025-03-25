@@ -8,7 +8,7 @@ import moment from 'moment-timezone';
 import {SampleCalendars} from '../calendar/SampleCalendars'
 import { fetchCalendar } from '../calendar/FetchCalendar';
 import { getCurrentEventIndex, SortCalendarData } from '../calendar/SortEvents';
-import { Vector3 } from 'three';
+import { Vector3 , Box3 } from 'three';
 
 
 export default function House(props){
@@ -17,11 +17,11 @@ export default function House(props){
   const [mesh, setMesh] = useState();
   const [currentEventIndex, setCurrentEventIndex] = useState(null)
   const [property, setProperty] = useState({
-    id: 'sample/?SampleCalendar' ,
     roof:'R1', windows:'W1', wall: 'W1',  time: 0,
   });
   const [isHovered, setIsHovered] = useState(false); 
   const meshRef = useRef();
+  const [meshHeight, setMeshHeight] = useState(0);
 
 
   useEffect(()=>{
@@ -33,6 +33,7 @@ export default function House(props){
         ))
         setCurrentEventIndex(getCurrentEventIndex(calendar.events))
       })
+
     }
     
     else{
@@ -54,19 +55,6 @@ export default function House(props){
   },[ modelContext , TextureContext , property ])
 
 
-
-
-  //Tempoary Timelapse
-  /*
-  useFrame(()=>{
-    if(mesh && mesh.material){
-      mesh.material.forEach( mat =>{
-        mat.uniforms.uTime.value = .001 + mat.uniforms.uTime.value ;
-      })
-    }
-  })
-    */
-
   const updateMap = (_mat) =>{
     if(_mat.name.toLowerCase() in property){
       const texturefullName = _mat.name.toLowerCase() + '/'+ property[_mat.name.toLowerCase()]
@@ -81,7 +69,12 @@ export default function House(props){
     var meshFound = modelContext[property.mesh]; 
     if(!meshFound){
       meshFound = Object.values(modelContext)[0]
+      const bbox = new Box3().setFromObject(meshFound);
+      const size = new Vector3();
+      bbox.getSize(size);
+      setMeshHeight(size.y);
     }
+  
     setMesh( ()=>{
       const newMesh = SkeletonUtils.clone( meshFound );
       if(Array.isArray(newMesh.material)){
@@ -115,16 +108,16 @@ export default function House(props){
 
 
   // Render
-  if(mesh && property.events ){
+  if( mesh ){
     return <mesh ref={meshRef}
                 position ={ property.position ||  [0,0,0] }
                 rotation = {property.rotation ||  [0,0,0] } 
                 onPointerEnter={()=>{setIsHovered(true)}}
                 onPointerOut={()=>{setIsHovered(false)}}
-                onClick={()=>{props.onClick()}}>
+                onClick={()=>{props.onClick(property)}}>
 
-        <primitive object={mesh} scale={[1.2,1.2,1.2]}/>
-            <EventStateBubble content={ property.events[currentEventIndex].summary }/>
+        <primitive object={mesh}/>
+            <EventStateBubble content={ property.events ? property.events[currentEventIndex].summary :'' } height={meshHeight} />
         </mesh>
   }
 
@@ -132,8 +125,8 @@ export default function House(props){
 }
 
 const EventStateBubble = (props)=>{
-  return <Html position={[0, .85, -0.25]} center style={{
-    background:'white', padding: '5px'
+  return <Html zIndexRange={[0, 1]} style={{ transform: "none" }} position={[0, props.height , -0.25]} center style={{
+    background:'white', padding: '5px' , transform: 'translate(-50%,calc(-100% - 10px))', zIndex:1
     }}>
     {props.content}
     </Html>

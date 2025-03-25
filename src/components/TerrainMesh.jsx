@@ -8,7 +8,6 @@ import { OceanMaterial } from '../shaders/WaterMaterial';
 import { useSkyColorMap , useTime  } from '../contexts/envContext';
 
 
-
 export default function TerrainMesh(props){
     const _fbxFile = useLoader(FBXLoader, '/models/terrain_A.fbx'); 
 
@@ -19,8 +18,14 @@ export default function TerrainMesh(props){
     const skyColorMap = useSkyColorMap();
     const time = useTime();
 
+    const [materials, setMaterials] = useState([]); 
 
 
+    useEffect(()=>{
+        materials.forEach(mat=>{
+            mat.uniforms.uTime.value = time; 
+        })
+    },[time])
 
     useEffect(()=>{
         _fbxFile.traverse(child =>{
@@ -36,6 +41,7 @@ export default function TerrainMesh(props){
 
                 if(child.name.includes('water')){
                     child.material = OceanMaterial(skyColorMap, time)
+                    setMaterials(arr =>[...arr, child.material ]);
                 }else{
                     child.material = new MeshBasicMaterial({color: child.material.color});
                     

@@ -81,7 +81,7 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
             vec4 cloudMap = texture2D( uCloudMap,   rotatingUV );
             float cloudShaded = dot( vec3( 0.0,1.0,.0 ) , cloudMap.xyz );
             float cloudAlpha =  cloudMap.a * smoothstep(.0, 0.5 , uv.y) ; // step(.5, cloudMap.a) ;
-            cloudAlpha = step(.35, cloudAlpha ); 
+            cloudAlpha = step(.5, cloudAlpha ); 
 
             vec3 cloudColored = mix( cloudShadow , cloudHighlight, step(.5,cloudShaded));
             color = mix(color, cloudColored , cloudAlpha);

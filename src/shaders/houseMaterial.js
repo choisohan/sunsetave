@@ -98,12 +98,12 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           vec3 lighting =mix(  shadedColor , lightColor , dotResult);
 
           
-          vec4 diffuseMap = texture2D( uMap , fract(vUv) );//.xyz *.75 +.25 ;
+          vec4 diffuseMap = texture2D( uMap , (vUv) );//.xyz *.75 +.25 ;
           
           if(uMouseOver){
             diffuseMap.xyz =diffuseMap.xyz *.9 + vec3(.0, .1, .2);
           }
-          float paperMap = texture2D( uPaperMap , fract(vUv) ).x *.66+.33 ;
+          float paperMap = texture2D( uPaperMap , (vUv) ).x *.66+.33 ;
 
 
           if(uIsWindow){

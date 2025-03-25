@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SkyMaterial } from '../shaders/SkyMaterial'
 import { useState } from 'react';
 import { useFrame } from '@react-three/fiber';
@@ -15,6 +15,9 @@ export default function Sky() {
 
 
 
+    useEffect(()=>{
+      skymat.uniforms.uTime.value = time; 
+    },[time])
 
   return (
     <mesh scale={[-1, 1, 1]} material={skymat}>

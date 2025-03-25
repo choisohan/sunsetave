@@ -1,24 +1,30 @@
 import React, {  useEffect, useState } from 'react'
 import House from './House'
 import { Canvas } from '@react-three/fiber'
-import HouseBuilder from './HouseBuilder'
 import Sky from './Sky'
 import {Pixelate} from '../shaders/CustomPostProcessing'
 import CameraControls from './CameraControls'
 import TerrainMesh from './TerrainMesh'
+import HouseDetailWindow from './HouseDetailWindow'
+import { FastForwardButton , SkipForwardButton} from './Buttons'
+
+
+
+
+
 
 export default function Avenue() {
 
   const [items, setItems] = useState([
-   {id : 'sample/?SampleCalendar' , cellNumb :8   },
+   {id : 'sample/?SampleCalendar' , cellNumb :7   },
    {id : 'sample/?BruceLee' , cellNumb : 6 },
    {id : 'sample/?Einstein' ,  cellNumb : 5},
-   //{id : '8c063daee6e0ebb0eac75293727a2b85d9024b26c96fd2ad4f9a7489bbf835a1'}
+   {id : 'sample/?Darwin' ,  cellNumb : 8},
   ])
 
   const [selectedItem, setSelectedItem] = useState();
 
-  const [editMode, setEditMode] = useState(true)
+  const [editMode, setEditMode] = useState(false)
   const [grid, setGrid] = useState();
 
   const getTransformByCellNumb = (cellNumb)=>{
@@ -54,12 +60,14 @@ export default function Avenue() {
       itemArr[selectedItem.i] = {...itemArr[selectedItem.i], position: position ,rotation: rotation}
       return itemArr; 
     })
-    
+  }
 
+  const onHouseClicked=(_i, _detailProperty)=>{
+    setSelectedItem({..._detailProperty, i: _i} )  
   }
 
   return (
-    <div>
+    <>
     <Canvas camera={{position: [5,.5,9], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
 
     <CameraControls />
@@ -67,38 +75,26 @@ export default function Avenue() {
 
     <Pixelate />
     {items.map( (item,i) =>
-        <House key={i} property ={item} onClick={()=>{  setSelectedItem( {...items[i], i: i})  }} />
+        <House key={i} property ={item} onClick={_props=>{  onHouseClicked(i, _props )  }} />
     )}
 
 
     <TerrainMesh editMode ={editMode} onGridUpdate={setGrid} onMouseMoveOnGrid={onMouseMoveOnGrid} onComplete={()=>{setSelectedItem()}}/>
      
-    {/*
-    
-    <GroundPlane editMode={ editMode&&selectedItem?true:false } onPointerMove={moveObject} onFinish={()=>{setSelectedItem()}} />
 
-    */}
     </Canvas>
 
     <div style={{position:'fixed',zIndex:1, bottom:5, right:5}}>
-      <PlayerButtons />
+      <FastForwardButton /><SkipForwardButton />
       <button onClick={()=>{setEditMode(x=> !x)}}>{editMode?"Exit Edit Mode":"Enter Edit Mode"}</button>
     </div>
 
+    {!editMode ? <HouseDetailWindow property={selectedItem} onClose={()=>{setSelectedItem(null)}}/>  : null }
 
 
-    </div>)
+
+    </>)
 
 }
 
-const SlideBar = (props)=>{
-  return <div style={{position:"fixed", zIndex:2, top:0, right:0, width:'400px', background:"grey", height:"100%"}}>
-    {props.children}
-  </div>
-}
 
-const PlayerButtons = ()=>{
-  return(<div>
-    <button>▶</button>
-  </div>)
-}

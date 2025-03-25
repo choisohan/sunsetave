@@ -57,14 +57,14 @@ class PixelationEffect extends Effect {
 
 const Pixelate = ()=> {
 
-  const p =4; 
+  const p =3; //pixel size 
   const {scene, camera} =useThree();
   const [pixelSize, setPixelSize] = useState(p); 
 
     // Listen for camera zoom or FOV changes
 
     const updatePixelSize = (e) => {
-      setPixelSize( ps => Math.max(p, ps - e.deltaY/200 ) );
+      setPixelSize( ps => Math.max(p, ps - e.deltaY/300 ) );
     };
 
     useEffect(() => {
