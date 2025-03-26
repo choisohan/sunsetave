@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTime, useUpdateTime } from "../contexts/envContext"
+import AddNewHouseForm from "./AddNewHouseForm";
 
 
 
@@ -45,6 +46,26 @@ export const SkipForwardButton = ()=>{
     updateTime( time+ 1/24 );
   }
   return<button onClick={ onClick} >⏯️</button>
+}
+
+export const ReloadButton = ()=>{
+  return <button>Reload</button>
+}
+
+
+
+
+export const AddNewHouseButton =()=>{
+  const [opened, setOpened] = useState(false);
+  return <>
+  <button onClick={()=>{setOpened(true)}}>Add New House</button>
+  {opened ? <AddNewHouseForm onAddNew={()=>{}}/> :null }
+  </>
+}
+
+
+export const EditModeButton = (props)=>{
+  return <button onClick={()=>{props.setEditMode(!props.editMode)}}>{props.editMode?"Exit Edit Mode":"Enter Edit Mode"}</button>
 }
 
 

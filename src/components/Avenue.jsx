@@ -6,7 +6,7 @@ import {Pixelate} from '../shaders/CustomPostProcessing'
 import CameraControls from './CameraControls'
 import TerrainMesh from './TerrainMesh'
 import HouseDetailWindow from './HouseDetailWindow'
-import { FastForwardButton , SkipForwardButton} from './Buttons'
+import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipForwardButton} from './Buttons'
 
 
 
@@ -86,7 +86,9 @@ export default function Avenue() {
 
     <div style={{position:'fixed',zIndex:1, bottom:5, right:5}}>
       <FastForwardButton /><SkipForwardButton />
-      <button onClick={()=>{setEditMode(x=> !x)}}>{editMode?"Exit Edit Mode":"Enter Edit Mode"}</button>
+      <ReloadButton />
+      <AddNewHouseButton />
+      <EditModeButton editMode={editMode} setEditMode={setEditMode}/>
     </div>
 
     {!editMode ? <HouseDetailWindow property={selectedItem} onClose={()=>{setSelectedItem(null)}}/>  : null }
