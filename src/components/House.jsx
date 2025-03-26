@@ -124,11 +124,16 @@ export default function House(props){
     else{
       meshRef.current.scale.lerp( new Vector3(1.,1.,1.),.5 )
     }
-
   })
 
+  const audioRef = useRef()
   useEffect(()=>{
     gl.domElement.style.cursor = isHovered ? 'pointer': 'default'; 
+    if(isHovered && audioRef.current ){
+      audioRef.current.play().catch(err=>{
+      })
+
+    }
 
   },[isHovered])
    
@@ -145,6 +150,9 @@ export default function House(props){
 
         <primitive object={mesh} />
             <EventStateBubble content={ property.events ? property.events[currentEventIndex].summary :'' } height={meshHeight} />
+            <Html>
+              <audio ref={audioRef} src="/audios/792928__qubodup__mouth-pop-short.wav" />
+            </Html>
         </mesh>
   }
 
