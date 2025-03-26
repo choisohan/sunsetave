@@ -64,10 +64,10 @@ export default function HouseBuilder(props) {
   return (<>
     <div style={{display:'flex', width:'100%', maxWidth:'600px', gap:'10px'}} >
 
-      <Canvas style={{aspectRatio:1.725}} camera={{position: [2,2,6], fov: 15}} >
+      <Canvas style={{aspectRatio:1.725}} camera={{position: [2,1,4], fov: 20 }}>
         <OrbitControls />
         <House property ={property} onClick={()=>{}}/>
-          <Sky />
+          <Sky /> 
           <Pixelate />
       </Canvas>
 

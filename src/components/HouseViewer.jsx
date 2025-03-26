@@ -2,28 +2,38 @@ import React, { useEffect } from 'react'
 import { useState } from 'react';
 import House from './House';
 import { Canvas } from '@react-three/fiber';
-import { fetchCalendar } from '../calendar/FetchCalendar';
-import { OrbitControls } from '@react-three/drei';
+import { useParams } from 'react-router-dom';
+import CameraControls from './CameraControls';
+import { Pixelate } from '../shaders/CustomPostProcessing';
+import Sky from './Sky';
+import TerrainMesh from './TerrainMesh';
+import { FastForwardButton, SkipForwardButton } from './Buttons';
+
 
 export default function HouseViewer(props) {
-
-  const [property, setProperty]= useState({name:'house_A1', mapUDIMs: [0,0] });
-
-    
-
-    useEffect(()=>{
-        Promise.resolve( fetchCalendar(props.url) ).then(data=>{
-
-        })
-    },[props.url])
+  const { param } = useParams();
+  const [property, setProperty]= useState({id: param, cellNumb: 0});
 
 
-  return (
-    <div>
-        <Canvas style={{height:'100vh'}} camera={{position: [2,2,5], fov: 10}}>
-          <OrbitControls />
-          <House property={property} />
-        </Canvas>
-    </div>
-  )
+
+
+return (<>
+<Canvas style={{height:'100vh'}} camera={{position: [0,1,9], fov: 20}}>
+  <CameraControls />
+  <Sky />
+  <TerrainMesh editMode={false} onGridUpdate={()=>{}}/>
+  <Pixelate />
+  <House property={property} onClick={()=>{}}/>
+
+</Canvas>
+
+
+<div className='fixed z-[1] bottom-0 right-0 ' >
+    <FastForwardButton />
+    <SkipForwardButton />
+</div>
+</>
+
+)
+
 }

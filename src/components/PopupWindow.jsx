@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 export default function PopupWindow(props) {
 
   const onClickOutside = (e)=>{
-    if(e.target.className.includes('w-full') ){
+    if(e.target.className.includes('fixed') ){
       props.setIsOpened(false)
     }
   }

@@ -12,14 +12,15 @@ import Clock from './Clock'
 
 
 
-
 export default function Avenue() {
 
+
+
   const [items, setItems] = useState([
-   {id : 'sample/?SampleCalendar' , cellNumb :7   },
-   {id : 'sample/?BruceLee' , cellNumb : 6 },
-   {id : 'sample/?Einstein' ,  cellNumb : 5},
-   {id : 'sample/?Darwin' ,  cellNumb : 8},
+   {id : 'sample&&SampleCalendar' , cellNumb :7   },
+   {id : 'sample&&BruceLee' , cellNumb : 6 },
+   {id : 'sample&&Einstein' ,  cellNumb : 5},
+   {id : 'sample&&Darwin' ,  cellNumb : 8},
   ])
 
   const [selectedItem, setSelectedItem] = useState();
@@ -91,7 +92,7 @@ export default function Avenue() {
      
     </Canvas>
 
-    <div style={{position:'fixed',zIndex:1, bottom:5, right:5}}>
+    <div className='fixed z-[1] bottom-0 right-0 ' >
       <Clock />
       <FastForwardButton /><SkipForwardButton />
       <ReloadButton onClick={()=>{setItems(x=>[...x])}} /> {/* todos : Reload needs more works */}

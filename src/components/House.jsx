@@ -10,6 +10,10 @@ import { fetchCalendar } from '../calendar/FetchCalendar';
 import { getCurrentEventIndex, SortCalendarData } from '../calendar/SortEvents';
 import { Vector3 , Box3 } from 'three';
 import { useThree } from '@react-three/fiber';
+import { useTime, useUpdateTime } from '../contexts/envContext';
+
+
+
 
 export default function House(props){
   const { gl } = useThree(); 
@@ -23,6 +27,9 @@ export default function House(props){
   const [isHovered, setIsHovered] = useState(false); 
   const meshRef = useRef();
   const [meshHeight, setMeshHeight] = useState(0);
+
+  const time = useTime();
+
 
 
   useEffect(()=>{
@@ -63,6 +70,19 @@ export default function House(props){
       _mat.uniforms.uTime.value= property.time
     }
   }
+
+  useEffect(()=>{
+    if(!mesh) return;
+    if( Array.isArray(mesh.material) ){
+      mesh.material.forEach( _mat=>{
+        _mat.uniforms.uTime.value= time
+      })
+    }else{
+      mesh.material.uniforms.uTime.value= time
+    }
+
+
+  },[time])
 
 
   function updateMesh(){
@@ -149,8 +169,8 @@ const NormalizedCurrentTime = ( timezone )=>{
 
 const FindCalendar = async(_id)=>{
   var cal; 
-  if(_id.includes('sample/?')){
-    _id = _id.split('sample/?')[1];
+  if(_id.includes('sample&&')){
+    _id = _id.split('sample&&')[1];
     cal = await SampleCalendars[_id]
   }else{
     cal =  await fetchCalendar(_id);
