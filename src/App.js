@@ -7,6 +7,8 @@ import HouseViewer from './components/HouseViewer';
 import { EnvProvider } from './contexts/envContext';
 import Test from './pages/Test';
 import About from './pages/About';
+import Lookdev from './pages/Lookdev';
+
 function App() {
   return (
     <EnvProvider>
@@ -17,6 +19,7 @@ function App() {
           
           <Route path="/test" element={<Test /> } />
           <Route path="/about" element={<About /> } />
+          <Route path="/dev" element={<Lookdev /> } />
 
           <Route path="/:param" element={<HouseViewer /> } />
 

@@ -20,8 +20,8 @@ export default function Sky() {
     },[time])
 
   return (
-    <mesh scale={[-1, 1, 1]} material={skymat}>
-      <sphereGeometry args={[100, 8, 8]} />
+    <mesh  material={skymat}>
+      <sphereGeometry args={[100, 16, 16]} />
     </mesh>
     )
 }

@@ -38,6 +38,16 @@ export const FastForwardButton = ()=>{
 
 }
 
+export const SkipBackwardButton = ()=>{
+  const time = useTime();
+  const updateTime = useUpdateTime();
+  
+  const onClick = ()=>{
+    updateTime( time- 1/24 );
+  }
+  return<button onClick={ onClick} className="bg-white" >⏪</button>
+}
+
 export const SkipForwardButton = ()=>{
   const time = useTime();
   const updateTime = useUpdateTime();

@@ -5,14 +5,7 @@ import { TextureLoader } from "three";
 
 export const SkyMaterial =  (SkyColorMap, time )=>{
     const CloudsMap = useLoader(TextureLoader, '/textures/env/clouds.png');
-    //const SkyColorMap = useSkyColorMap(); //useLoader(TextureLoader, '/textures/env/skyColormap.png');
-    /*
-    const [time,setTime] = useState(0);
-
-    useFrame (()=>{
-        setTime(x => (x + .1)%1.)
-    })
-        */
+    const PerlinNoiseMap = useLoader(TextureLoader, '/textures/common/PerlinNoise.png');
 
     return new RawShaderMaterial({
         vertexShader:`
@@ -54,14 +47,56 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
 
         uniform sampler2D uCloudMap; 
         uniform sampler2D uSkyColorMap; 
+        uniform sampler2D uPerlinNoiseMap; 
+
         uniform float uTime; 
 
-        void main(){ 
+        uniform float uCloudScale; 
+        uniform float uSkyHeight; 
 
-            vec3 color;
 
-            // 1. Vertically Ramp Sky
+        float SkyRamp(float _uSkyHeight){
+            return 1.-  smoothstep(.0,  _uSkyHeight  , distance(.5, vUv.y)*2. );
+        }
+
+        float CloudScale(){
+            vec2 offset;
+            offset.x = (uTime * -.1 );
+            vec2 uv =  fract(vUv + offset);
+            float noise =  texture2D( uPerlinNoiseMap, uv).x;
+
+            float ramp = SkyRamp(uSkyHeight + .5);
             
+            float result  = ramp - noise  ; 
+            result = smoothstep(-.5,.5 ,  result );
+
+           // result *= step( distance(uv.x, .5)*2., .99); 
+            //result *= step( distance(uv.y, .5)*2., .99); 
+
+
+            return  result;
+        }
+
+        vec2 Clouds( float x, float y ){
+
+            vec2 offset; 
+            offset.x = x+ (uTime * -.1 );
+            offset.y = y; 
+            vec2 rotatingUV =  fract(vUv * vec2(uCloudScale) + offset )  ;
+            vec4 map = texture2D( uCloudMap,   rotatingUV );
+            
+            map.a *= step( distance(rotatingUV.x, .5)*2., .99); 
+            map.a *= step( distance(rotatingUV.y, .5)*2., .99); 
+
+            float shaded = dot( vec3( 0.0,1.0,.0 ) , map.xyz );
+
+            return vec2(shaded , map.a);
+
+        }
+
+
+        void main(){ 
+            // 1. Vertically Ramp Sky
             vec3 skyColorBottom = texture2D( uSkyColorMap, vec2( 0.0/5. +.1,fract(uTime)) ).xyz;
             vec3 skyColorMiddle = texture2D( uSkyColorMap, vec2( 1.0/5.+.1 , fract(uTime)) ).xyz;
             vec3 skyColorTop = texture2D( uSkyColorMap, vec2( 2.0/5. +.1, fract(uTime) ) ).xyz;
@@ -69,24 +104,31 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
             vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
 
 
-            vec2 uv = vUv *2. ; // vPosition.xy *vec2(.005);
+            vec3 color;
+            float skyRamp = SkyRamp(uSkyHeight) ; 
+            color = mix(skyColorBottom, skyColorMiddle , skyRamp ) ; 
+            color = mix( color , skyColorTop , smoothstep(.1, 1. , vUv.y) ) ;   
 
 
-            color = mix(skyColorBottom, skyColorMiddle , smoothstep(.0, 0.1 , vUv.y) ) ; 
-            color = mix( color , skyColorTop , smoothstep(.1, 1. , vUv.y) ) ;  
+
+            vec2 clouds1 = Clouds( .0 ,.0);
+            vec2 clouds2 = Clouds( .73 , .33 );
+
+            vec2 cloudsMixed = mix(clouds1, clouds2, (clouds2.y) );
+            cloudsMixed.x =  step( .5, cloudsMixed.x ); // shaded
+            cloudsMixed.y *=  CloudScale() ;
+            cloudsMixed.y = step( .5, cloudsMixed.y ); // cloudAlpha
 
 
-            // 2. Draw Cloud
-            vec2 rotatingUV = fract(  uv * vec2(1. ,2.) * 2.   + vec2(uTime *-.1 , 0.0)  )     ;
-            vec4 cloudMap = texture2D( uCloudMap,   rotatingUV );
-            float cloudShaded = dot( vec3( 0.0,1.0,.0 ) , cloudMap.xyz );
-            float cloudAlpha =  cloudMap.a * smoothstep(.0, 0.5 , uv.y) ; // step(.5, cloudMap.a) ;
-            cloudAlpha = step(.5, cloudAlpha ); 
 
-            vec3 cloudColored = mix( cloudShadow , cloudHighlight, step(.5,cloudShaded));
-            color = mix(color, cloudColored , cloudAlpha);
+            vec3 cloudColored = mix(cloudShadow, cloudHighlight, cloudsMixed.x );
+            color =  mix(color, cloudColored, cloudsMixed.y);
 
-            gl_FragColor= vec4(color, 1. ) ;
+            gl_FragColor= vec4( color , 1. );
+
+
+            
+
 
             
         }
@@ -94,7 +136,10 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
         side:BackSide,
         uniforms:{
             uCloudMap : {value: CloudsMap},
+            uCloudScale : {value: 2 }, 
+            uSkyHeight :{value: .25},
             uSkyColorMap : {value: SkyColorMap },
+            uPerlinNoiseMap : {value: PerlinNoiseMap },
             uTime : { value : time  }, //define sky color and move the cloud
             uCloudiness: {value : 0. },  // desaturate the color of sky
             uSeason : {value : .5 } //eg. 0 = spring, .25 = summer, .5 = fall, .75 = weather
