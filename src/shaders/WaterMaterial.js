@@ -1,10 +1,12 @@
-import {  RawShaderMaterial } from "three";
+import {  NearestFilter, RawShaderMaterial } from "three";
 import {  useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 
 
-export const OceanMaterial = (SkyColorMap, time ) => {
-    
+export const OceanMaterial = ( SkyColorMap, time ) => {
+    const PerlinNoiseMap =  useLoader(TextureLoader, '/textures/common/PerlinNoise.png');;
+    PerlinNoiseMap.minFilter= NearestFilter;
+
     return new RawShaderMaterial({
     vertexShader:`
         uniform mat4 projectionMatrix;
@@ -44,9 +46,24 @@ export const OceanMaterial = (SkyColorMap, time ) => {
         varying vec3 vViewDir;
 
         uniform sampler2D uSkyColorMap; 
+        uniform sampler2D uPerlinNoiseMap; 
+
         uniform float uTime; 
 
+
+        float Riffle(){
+            vec2 coord = vUv ;
+            coord.y+= (vViewDir.z*.1); 
+            coord= fract(coord);
+            //fract(vViewDir.xy * vec2(.25 , 1. ) *.5); 
+            float result = texture2D( uPerlinNoiseMap, coord).x;
+            return  result; 
+        }
+
+
         void main(){
+
+            vec3 color;
 
             vec3 skyColorBottom = texture2D( uSkyColorMap, vec2( 0.0/5. +.1,fract(uTime)) ).xyz;
             vec3 skyColorMiddle = texture2D( uSkyColorMap, vec2( 1.0/5.+.1 , fract(uTime)) ).xyz;
@@ -55,17 +72,20 @@ export const OceanMaterial = (SkyColorMap, time ) => {
             vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
 
 
-            float riffleAmount = 1. ; 
-            float horizon = sin( vViewDir.z * riffleAmount )  ; 
-            horizon = floor( horizon * 3. )/3. ;
-            horizon *=.25; 
-            horizon += 1.- distance(.1, vViewDir.x*.1);
+            float zDepth = vViewDir.z ; 
+            zDepth= smoothstep(5.0,20., zDepth);
+            color = mix( skyColorMiddle , skyColorTop, zDepth ) ; //Fill base color
 
-           horizon = step(.8, horizon);
 
-           vec3 highlight = mix( skyColorBottom, cloudHighlight,vViewDir.y);
-           vec3 baseColor =  mix( skyColorMiddle, cloudShadow,vViewDir.y);
-           vec3 color = mix(baseColor , highlight , horizon ) ;
+
+            float riffleMask = Riffle();
+
+            float highlightRamp = 1.- min(1., distance(.0, vViewDir.x) *.5) ;
+
+            float oceanMask = riffleMask *  highlightRamp ;
+            oceanMask = step(.5, oceanMask);
+
+            color = mix(color, cloudHighlight, oceanMask); 
 
             gl_FragColor= vec4(color, 1. ) ;
 
@@ -74,6 +94,7 @@ export const OceanMaterial = (SkyColorMap, time ) => {
         `,
         transparent: false, 
         uniforms:{
+            uPerlinNoiseMap : {value: PerlinNoiseMap}, 
             uSkyColorMap : {value: SkyColorMap },
             uTime : { value : time  }, //define sky color and move the cloud
             uCloudiness: {value : 0. },  // desaturate the color of sky

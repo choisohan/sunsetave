@@ -1,10 +1,11 @@
 import { BackSide, RawShaderMaterial } from "three";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { TextureLoader } from "three";
-
+import { TextureLoader ,NearestFilter } from "three";
 
 export const SkyMaterial =  (SkyColorMap, time )=>{
     const CloudsMap = useLoader(TextureLoader, '/textures/env/clouds.png');
+    CloudsMap.minFilter= NearestFilter;
+    
     const PerlinNoiseMap = useLoader(TextureLoader, '/textures/common/PerlinNoise.png');
 
     return new RawShaderMaterial({
@@ -85,8 +86,8 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
             vec2 rotatingUV =  fract(vUv * vec2(uCloudScale) + offset )  ;
             vec4 map = texture2D( uCloudMap,   rotatingUV );
             
-            map.a *= step( distance(rotatingUV.x, .5)*2., .99); 
-            map.a *= step( distance(rotatingUV.y, .5)*2., .99); 
+            //map.a *= step( distance(rotatingUV.x, .5)*2., .99); 
+            //map.a *= step( distance(rotatingUV.y, .5)*2., .99); 
 
             float shaded = dot( vec3( 0.0,1.0,.0 ) , map.xyz );
 
