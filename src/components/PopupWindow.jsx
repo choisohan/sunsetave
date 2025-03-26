@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export default function PopupWindow(props) {
 
   const onClickOutside = (e)=>{
-    if(e.target.className === 'w-full'){
+    if(e.target.className.includes('w-full') ){
       props.setIsOpened(false)
     }
   }
 
+  if(!props.children) return;
 
   return (
     <div className='z-[5] w-full h-full bg-black fixed top-0 left-0 bg-opacity-50 place-content-center place-items-center' onClick={onClickOutside}>

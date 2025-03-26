@@ -11,6 +11,7 @@ export default function HouseDetailWindow(props) {
     return <div className='w-full h-auto'>
     <h3>{props.property.name}</h3>
     <Clock timezone={props.property.timezone}/>
+    <h4>{props.property.timezone}</h4>
     </div>
   }
 
@@ -33,7 +34,7 @@ export default function HouseDetailWindow(props) {
 
   if(props.property) {
     return (
-      <PopupWindow isOpened={true} setIsOpen={()=>{props.onClose()}} >
+      <PopupWindow isOpened={true} setIsOpened={()=>{props.onClose()}} >
           {Header()}
           {CurrentEvent()}
           {NextEvent()}

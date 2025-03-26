@@ -7,7 +7,7 @@ import CameraControls from './CameraControls'
 import TerrainMesh from './TerrainMesh'
 import HouseDetailWindow from './HouseDetailWindow'
 import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipForwardButton} from './Buttons'
-
+import Clock from './Clock'
 
 
 
@@ -23,9 +23,9 @@ export default function Avenue() {
   ])
 
   const [selectedItem, setSelectedItem] = useState();
-
   const [editMode, setEditMode] = useState(false)
   const [grid, setGrid] = useState();
+  const [popup, setPopup] = useState();
 
   const getTransformByCellNumb = (cellNumb)=>{
     if(!cellNumb) cellNumb = 1; 
@@ -64,7 +64,15 @@ export default function Avenue() {
 
   const onHouseClicked=(_i, _detailProperty)=>{
     setSelectedItem({..._detailProperty, i: _i} )  
+    if(!editMode){
+      setPopup( <HouseDetailWindow property={selectedItem}
+        onClose={()=>{
+          setSelectedItem(null);
+          setPopup(null);
+      }}/> );
+    }
   }
+
 
   return (
     <>
@@ -81,17 +89,19 @@ export default function Avenue() {
 
     <TerrainMesh editMode ={editMode} onGridUpdate={setGrid} onMouseMoveOnGrid={onMouseMoveOnGrid} onComplete={()=>{setSelectedItem()}}/>
      
-
     </Canvas>
 
     <div style={{position:'fixed',zIndex:1, bottom:5, right:5}}>
+      <Clock />
       <FastForwardButton /><SkipForwardButton />
-      <ReloadButton />
+      <ReloadButton onClick={()=>{setItems(x=>[...x])}} /> {/* todos : Reload needs more works */}
       <AddNewHouseButton />
       <EditModeButton editMode={editMode} setEditMode={setEditMode}/>
     </div>
 
-    {!editMode ? <HouseDetailWindow property={selectedItem} onClose={()=>{setSelectedItem(null)}}/>  : null }
+
+    {popup}
+
 
 
 

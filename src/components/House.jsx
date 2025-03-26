@@ -9,9 +9,10 @@ import {SampleCalendars} from '../calendar/SampleCalendars'
 import { fetchCalendar } from '../calendar/FetchCalendar';
 import { getCurrentEventIndex, SortCalendarData } from '../calendar/SortEvents';
 import { Vector3 , Box3 } from 'three';
-
+import { useThree } from '@react-three/fiber';
 
 export default function House(props){
+  const { gl } = useThree(); 
   const modelContext = useHouseModel();
   const TextureContext = useTexture(); 
   const [mesh, setMesh] = useState();
@@ -106,6 +107,12 @@ export default function House(props){
 
   })
 
+  useEffect(()=>{
+    gl.domElement.style.cursor = isHovered ? 'pointer': 'default'; 
+
+  },[isHovered])
+   
+
 
   // Render
   if( mesh ){
@@ -116,7 +123,7 @@ export default function House(props){
                 onPointerOut={()=>{setIsHovered(false)}}
                 onClick={()=>{props.onClick(property)}}>
 
-        <primitive object={mesh}/>
+        <primitive object={mesh} />
             <EventStateBubble content={ property.events ? property.events[currentEventIndex].summary :'' } height={meshHeight} />
         </mesh>
   }

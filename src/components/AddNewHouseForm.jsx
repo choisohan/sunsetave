@@ -8,7 +8,7 @@ export default function AddNewHouseForm(props) {
     const [property, setProperty] = useState(null);
 
   return (
-    <PopupWindow isOpened={true} setIsOpened={()=>{}} >
+    <PopupWindow isOpened={true} setIsOpened={()=>{props.onClose()}} >
         <h3>Add a new house to my avenue</h3>
       <input
         type="text"

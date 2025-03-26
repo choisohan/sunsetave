@@ -75,7 +75,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           float time = fract(uTime);
           float angle =  (time-.5)  *PI *2. ;
 
-          vec3 LightDirection = vec3( sin(angle), 0.0, cos(angle));
+          vec3 LightDirection = vec3( sin(angle), 0.33, cos(angle));
           vec3 LightPosition = LightDirection * 10000000. ;
 
           vec3 n = normalize(vNormal);
