@@ -6,8 +6,9 @@ import { FBXLoader } from "three/examples/jsm/Addons.js";
 import { GridMaterial } from '../shaders/GridMaterial';
 import { OceanMaterial } from '../shaders/WaterMaterial';
 import { useSkyColorMap , useTime  } from '../contexts/envContext';
+import BasicMaterial from '../shaders/BasicMaterial';
 
-
+import { NearestFilter } from 'three';
 export default function TerrainMesh(props){
     const _fbxFile = useLoader(FBXLoader, '/models/terrain_A.fbx'); 
 
@@ -43,8 +44,14 @@ export default function TerrainMesh(props){
                     child.material = OceanMaterial(skyColorMap, time)
                     setMaterials(arr =>[...arr, child.material ]);
                 }else{
-                    child.material = new MeshBasicMaterial({color: child.material.color});
-                    
+                    if(child.material.map){
+                        const map = child.material.map;                        
+                        child.material = BasicMaterial(time);
+                        child.material.uniforms.uMap.value = map;
+                        map.minFilter= NearestFilter;
+                        setMaterials(arr =>[...arr, child.material ]);
+                    }
+                                        
                 }
             }
         })

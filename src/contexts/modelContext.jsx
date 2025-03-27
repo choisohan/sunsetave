@@ -28,19 +28,17 @@ const useTextures = () => {
     return textures;
 };
 
-const swapMaterialToHouse = (_currentMat, _paperTexture)=>{
+const swapMaterialToHouse = (_currentMat)=>{
     const houseMaterial = HouseMaterial();
     if(_currentMat.name.includes('Windows')){
         houseMaterial.uniforms.uIsWindow.value = true;
     }
     houseMaterial.name = _currentMat.name;
-    houseMaterial.uniforms.uPaperMap.value = _paperTexture;
     return houseMaterial; 
 }
 
 const useFBXModels = ()=>{
     const sortedModels = {};
-    const _paperTexture = useLoader(TextureLoader, '/models/paperTexture.png');
     const _fbxFile = useLoader(FBXLoader, '/models/houses.fbx'); 
     _fbxFile.traverse((child) => {
         if (child.isMesh ) {
@@ -51,10 +49,10 @@ const useFBXModels = ()=>{
 
             
             if(Array.isArray(child.material)){
-                child.material = child.material.map(m=>swapMaterialToHouse(m, _paperTexture))
+                child.material = child.material.map(m=>swapMaterialToHouse(m))
 
             }else if(child.material){
-                child.material = swapMaterialToHouse(child.material, _paperTexture)
+                child.material = swapMaterialToHouse(child.material)
 
             }
                 

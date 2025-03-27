@@ -9,20 +9,16 @@ import Clock from '../components/Clock'
 import { OceanMaterial } from '../shaders/WaterMaterial'
 import { useTime } from '../contexts/envContext'
 import { useSkyColorMap } from '../contexts/envContext'
+import BasicMaterial from '../shaders/BasicMaterial'
 
 
 
 export default function Lookdev() {
 
-  const time = useTime();
+    const time = useTime();
     const skyColorMap = useSkyColorMap();
 
-  const Ocean = (
-    <mesh material={OceanMaterial(skyColorMap, time)}>
-      <boxGeometry args={[10,.01,10]} />
 
-  </mesh>
-  )
 
 
   return (<>
@@ -32,7 +28,14 @@ export default function Lookdev() {
          <Sky />
 
 
-        {Ocean}
+      <mesh material={OceanMaterial(skyColorMap, time)} position={[0,-2,0]}>
+          <boxGeometry args={[10,.01,10]} />
+      </mesh>   
+
+
+      <mesh position={[0,0,0]} material={BasicMaterial(time)}>
+        <sphereGeometry args={[1,20,20]} />  
+      </mesh>     
 
     </Canvas>
   

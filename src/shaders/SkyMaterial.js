@@ -62,8 +62,8 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
 
         float CloudScale(){
             vec2 offset;
-            offset.x = (uTime * -.1 );
-            vec2 uv =  fract(vUv + offset);
+            offset.x = (uTime * -.5 );
+            vec2 uv =  fract((vUv) + offset);
             float noise =  texture2D( uPerlinNoiseMap, uv).x;
 
             float ramp = SkyRamp(uSkyHeight + .5);
@@ -81,7 +81,7 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
         vec2 Clouds( float x, float y ){
 
             vec2 offset; 
-            offset.x = x+ (uTime * -.1 );
+            offset.x = x+ (uTime * .1 );
             offset.y = y; 
             vec2 rotatingUV =  fract(vUv * vec2(uCloudScale) + offset )  ;
             vec4 map = texture2D( uCloudMap,   rotatingUV );
@@ -137,7 +137,7 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
         side:BackSide,
         uniforms:{
             uCloudMap : {value: CloudsMap},
-            uCloudScale : {value: 2 }, 
+            uCloudScale : {value: 5 }, 
             uSkyHeight :{value: .25},
             uSkyColorMap : {value: SkyColorMap },
             uPerlinNoiseMap : {value: PerlinNoiseMap },
