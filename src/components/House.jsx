@@ -135,6 +135,7 @@ export default function House(props){
   useEffect(()=>{
     gl.domElement.style.cursor = isHovered ? 'pointer': 'default'; 
     if(isHovered && audioRef.current ){
+      audioRef.current.volume = .2;
       audioRef.current.play().catch(err=>{
       })
 
