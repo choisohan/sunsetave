@@ -14,6 +14,7 @@ const useTextures = () => {
                     "wallA/A001",
                     "wallB/A001",
                     "windowsA/A001",
+                    "windowsB/A001",
                     "shade/A001",
                     "door/A001"
 

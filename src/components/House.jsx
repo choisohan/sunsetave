@@ -156,7 +156,7 @@ export default function House(props){
         <primitive object={mesh} scale={[.58,.58,.58] }/>
             <EventStateBubble content={ property.events ? property.events[currentEventIndex].summary :'' } height={meshHeight} />
             <Html>
-              <audio ref={audioRef} src="/audios/792928__qubodup__mouth-pop-short.wav" />
+              <audio ref={audioRef} src="/audios/jump.wav" />
             </Html>
         </mesh>
   }
