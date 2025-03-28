@@ -10,8 +10,8 @@ import { fetchCalendar } from '../calendar/FetchCalendar';
 import { getCurrentEventIndex, SortCalendarData } from '../calendar/SortEvents';
 import { Vector3 , Box3 } from 'three';
 import { useThree } from '@react-three/fiber';
-import { useSkyColorMap, useTime } from '../contexts/envContext';
-
+import { useSkyColorMap, useTimestamp } from '../contexts/envContext';
+import { timestampToHourFloat } from './Clock';
 
 
 
@@ -27,16 +27,17 @@ export default function House(props){
   const [meshHeight, setMeshHeight] = useState(0);
   const skyColorMap = useSkyColorMap();
 
-  const time = useTime();
+  const timestamp = useTimestamp();
 
 
 
   useEffect(()=>{
     if( props.property.id !==property.id ){
       FindCalendar(props.property.id).then( calendar =>{
-        const normTime = NormalizedCurrentTime(calendar.timezone) ;
+
+        const timeoffset = GetTimestampOffset(calendar.timezone);
         setProperty(_property =>(
-          {..._property, ...props.property , ...calendar, time: normTime  }
+          {..._property, ...props.property , ...calendar , timeoffset : timeoffset }
         ))
         setCurrentEventIndex(getCurrentEventIndex(calendar.events))
       })
@@ -73,22 +74,21 @@ export default function House(props){
     }
     _mat.uniforms.uMap.value =TextureContext[texturefullName]
     _mat.uniforms.uSkyColorMap.value =skyColorMap; 
-    _mat.uniforms.uTime.value= property.time
+    _mat.uniforms.uTime.value= timestampToHourFloat(timestamp + property.timeoffset);
   }
 
   useEffect(()=>{
     if(!mesh) return;
     if( Array.isArray(mesh.material) ){
       mesh.material.forEach( _mat=>{
-        _mat.uniforms.uTime.value= time
+        _mat.uniforms.uTime.value= timestampToHourFloat(timestamp + property.timeoffset);
       })
     }else{
-      mesh.material.uniforms.uTime.value= time
+      mesh.material.uniforms.uTime.value= timestampToHourFloat(timestamp + property.timeoffset);
     }
 
 
-  },[time])
-
+  },[timestamp])
 
   function updateMesh(){
 
@@ -98,7 +98,7 @@ export default function House(props){
       const bbox = new Box3().setFromObject(meshFound);
       const size = new Vector3();
       bbox.getSize(size);
-      setMeshHeight(size.y);
+      setMeshHeight(size.y * 0.65  );
     }
   
     setMesh( ()=>{
@@ -173,11 +173,9 @@ const EventStateBubble = (props)=>{
 }
 
 
-const NormalizedCurrentTime = ( timezone )=>{
-  const currentMoment = moment().tz(timezone)
-  const minutesOfDay = currentMoment.hour() * 60 + currentMoment.minute();
-  return  minutesOfDay / 1440;
-}
+const GetTimestampOffset = (tz) => {
+  return moment.tz(tz).utcOffset()  * 60 * 1000 ; 
+};
 
 
 const FindCalendar = async(_id)=>{
@@ -190,3 +188,5 @@ const FindCalendar = async(_id)=>{
   }
   return await SortCalendarData(cal);
 }
+
+

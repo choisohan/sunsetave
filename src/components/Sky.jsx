@@ -1,23 +1,22 @@
 import React, { useEffect } from 'react'
 import { SkyMaterial } from '../shaders/SkyMaterial'
 import { useState } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { OceanMaterial } from '../shaders/WaterMaterial';
-import { useSkyColorMap, useTime } from '../contexts/envContext';
-
+import { useSkyColorMap, useTimestamp } from '../contexts/envContext';
+import { timestampToHourFloat } from './Clock';
 
 
 export default function Sky() {
     const skyColorMap = useSkyColorMap();
-    const time = useTime();
+    const timestamp = useTimestamp();
 
-    const [skymat, setSkyMat] = useState(SkyMaterial(skyColorMap, time ));
+    const [skymat, setSkyMat] = useState( SkyMaterial(skyColorMap));
 
 
 
     useEffect(()=>{
-      skymat.uniforms.uTime.value = time; 
-    },[time])
+      skymat.uniforms.uTime.value = timestampToHourFloat(timestamp);
+      skymat.uniforms.uTimestamp.value = timestamp ;
+    },[timestamp])
 
   return (
     <mesh  material={skymat}>

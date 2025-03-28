@@ -3,7 +3,7 @@ import { RawShaderMaterial } from 'three'
 import { useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 
-export default function BasicMaterial(time) {
+export default function BasicMaterial() {
 
     const skyColorMap = useLoader(TextureLoader, '/textures/env/skyColormap.png');;
     
@@ -68,7 +68,7 @@ export default function BasicMaterial(time) {
     uniforms:{
         uMap:{value: null},
         uSkyColorMap:{value: skyColorMap},
-        uTime:{value: time}
+        uTime:{value: 0}
 
     }
 

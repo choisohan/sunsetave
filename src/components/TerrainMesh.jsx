@@ -5,8 +5,10 @@ import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
 import { GridMaterial } from '../shaders/GridMaterial';
 import { OceanMaterial } from '../shaders/WaterMaterial';
-import { useSkyColorMap , useTime  } from '../contexts/envContext';
+import { useSkyColorMap , useTimestamp  } from '../contexts/envContext';
 import BasicMaterial from '../shaders/BasicMaterial';
+import { timestampToHourFloat } from './Clock';
+
 
 import { NearestFilter } from 'three';
 export default function TerrainMesh(props){
@@ -17,16 +19,17 @@ export default function TerrainMesh(props){
 
     const [gridMesh, setGridMesh] = useState();
     const skyColorMap = useSkyColorMap();
-    const time = useTime();
+    const timestamp = useTimestamp();
 
     const [materials, setMaterials] = useState([]); 
 
 
     useEffect(()=>{
         materials.forEach(mat=>{
-            mat.uniforms.uTime.value = time; 
+            console.log( timestampToHourFloat(timestamp) )
+            mat.uniforms.uTime.value = timestampToHourFloat(timestamp); 
         })
-    },[time])
+    },[timestamp])
 
     useEffect(()=>{
         _fbxFile.traverse(child =>{
@@ -41,17 +44,18 @@ export default function TerrainMesh(props){
             else if(child.isMesh && child.parent.name != 'grid'){
 
                 if(child.name.includes('water')){
-                    child.material = OceanMaterial(skyColorMap, time)
+                    child.material = OceanMaterial(skyColorMap, timestamp)
                     setMaterials(arr =>[...arr, child.material ]);
-                }else{
+                }
+                else{
                     if(child.material.map){
                         const map = child.material.map;                        
-                        child.material = BasicMaterial(time);
+                        child.material = BasicMaterial();
                         child.material.uniforms.uMap.value = map;
+                        child.material.uniforms.uTime.value = timestampToHourFloat(timestamp); 
                         map.minFilter= NearestFilter;
                         setMaterials(arr =>[...arr, child.material ]);
-                    }
-                                        
+                    }                  
                 }
             }
         })

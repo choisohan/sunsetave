@@ -4,10 +4,10 @@ import Sky
 from '../components/Sky'
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { SkipForwardButton , SkipBackwardButton } from '../components/Buttons'
-import Clock from '../components/Clock'
+import { SkipForwardButton , SkipBackwardButton, FastForwardButton } from '../components/Buttons'
+import {Clock} from '../components/Clock'
 import { OceanMaterial } from '../shaders/WaterMaterial'
-import { useTime } from '../contexts/envContext'
+import { useTimestamp } from '../contexts/envContext'
 import { useSkyColorMap } from '../contexts/envContext'
 import BasicMaterial from '../shaders/BasicMaterial'
 
@@ -18,7 +18,7 @@ import { TubeGeometry } from 'three'
 
 export default function Lookdev() {
 
-    const time = useTime();
+    const timestamp = useTimestamp();
     const skyColorMap = useSkyColorMap();
 
 
@@ -31,7 +31,7 @@ export default function Lookdev() {
          <Sky />
 
 
-      <mesh material={OceanMaterial(skyColorMap, time)} position={[0,-2,0]}>
+      <mesh material={OceanMaterial(skyColorMap, timestamp)} position={[0,-2,0]}>
           <boxGeometry args={[10,.01,10]} />
       </mesh>   
 
@@ -51,6 +51,7 @@ export default function Lookdev() {
     {Intl.DateTimeFormat().resolvedOptions().timeZone}
     </div>
       <SkipBackwardButton />
+      <FastForwardButton />
       <SkipForwardButton />
     </div>
   </>

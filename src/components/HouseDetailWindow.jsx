@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Clock from './Clock'
+import {Clock} from './Clock'
 import PopupWindow from './PopupWindow'
 
 

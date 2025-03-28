@@ -1,34 +1,31 @@
 import { useEffect, useState } from "react";
-import { useTime, useUpdateTime } from "../contexts/envContext"
+import { useTimestamp, useUpdateTimestamp } from "../contexts/envContext"
 import AddNewHouseForm from "./AddNewHouseForm";
 
 
 
 
 export const FastForwardButton = ()=>{
-  const time = useTime();
-  const updateTime = useUpdateTime();
+  const updateTimestamp = useUpdateTimestamp();
   const [isPlaying, setIsPlaying] = useState(false);
-
-
 
   useEffect(() => {
     let animationFrameId;
 
     const tick = () => {
       if (isPlaying) {
-        console.log( time )
-        updateTime( x=> x + 15/1440 );
-        animationFrameId = requestAnimationFrame(tick); // Continue logging each frame
+        updateTimestamp( x=> x + 3600000/2 ); // add half hour per frame
+        animationFrameId = requestAnimationFrame(tick); 
       }
     };
 
     if (isPlaying) {
-      animationFrameId = requestAnimationFrame(tick); // Start logging when animation is playing
+      animationFrameId = requestAnimationFrame(tick); 
     }
-
-    // Cleanup the animation frame on component unmount or when animation stops
+    
     return () => cancelAnimationFrame(animationFrameId);
+
+
   }, [isPlaying]);
 
 
@@ -39,21 +36,21 @@ export const FastForwardButton = ()=>{
 }
 
 export const SkipBackwardButton = ()=>{
-  const time = useTime();
-  const updateTime = useUpdateTime();
+  const timestamp = useTimestamp();
+  const updateTimestamp = useUpdateTimestamp();
   
   const onClick = ()=>{
-    updateTime( time- 1/24 );
+    updateTimestamp( timestamp - 3600000 ); // subtract one hour
   }
   return<button onClick={ onClick} className="bg-white" >⏪</button>
 }
 
 export const SkipForwardButton = ()=>{
-  const time = useTime();
-  const updateTime = useUpdateTime();
+  const timestamp = useTimestamp();
+  const updateTimestamp = useUpdateTimestamp();
   
   const onClick = ()=>{
-    updateTime( time+ 1/24 );
+    updateTimestamp( timestamp + 3600000 ); //add one hour
   }
   return<button onClick={ onClick} className="bg-white" >⏯️</button>
 }
@@ -61,8 +58,6 @@ export const SkipForwardButton = ()=>{
 export const ReloadButton = (props)=>{
   return <button className="bg-white" onClick={props.onClick} >🔄</button>
 }
-
-
 
 
 export const AddNewHouseButton =()=>{

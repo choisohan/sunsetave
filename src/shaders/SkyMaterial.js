@@ -2,7 +2,7 @@ import { BackSide, RawShaderMaterial } from "three";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { TextureLoader ,NearestFilter } from "three";
 
-export const SkyMaterial =  (SkyColorMap, time )=>{
+export const SkyMaterial =  ( SkyColorMap )=>{
     const CloudsMap = useLoader(TextureLoader, '/textures/env/clouds.png');
     CloudsMap.minFilter= NearestFilter;
     
@@ -51,48 +51,37 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
         uniform sampler2D uPerlinNoiseMap; 
 
         uniform float uTime; 
+        uniform float uTimestamp; 
 
         uniform float uCloudScale; 
         uniform float uSkyHeight; 
 
 
-        float SkyRamp(float _uSkyHeight){
-            return 1.-  smoothstep(.0,  _uSkyHeight  , distance(.5, vUv.y)*2. );
+        float SkyRamp(float _uSkyHeight, float _blend ){
+            return 1.-  smoothstep(_uSkyHeight - _blend,  _uSkyHeight  , distance(.5, vUv.y) * 2. );
+
         }
 
         float CloudScale(){
             vec2 offset;
-            offset.x = (uTime * -.5 );
-            vec2 uv =  fract((vUv) + offset);
+            offset.x -=  uTimestamp/100000000.;
+            vec2 uv =  fract( (vUv ) + offset );
             float noise =  texture2D( uPerlinNoiseMap, uv).x;
-
-            float ramp = SkyRamp(uSkyHeight + .5);
-            
+            noise = sin(noise + uTimestamp/100000000. ) *.5 +.5; 
+            float ramp = SkyRamp( uSkyHeight + .15 , .4);
             float result  = ramp - noise  ; 
             result = smoothstep(-.5,.5 ,  result );
-
-           // result *= step( distance(uv.x, .5)*2., .99); 
-            //result *= step( distance(uv.y, .5)*2., .99); 
-
-
             return  result;
         }
 
         vec2 Clouds( float x, float y ){
-
             vec2 offset; 
-            offset.x = x+ (uTime * .1 );
+            offset.x +=  uTimestamp/100000000.; 
             offset.y = y; 
             vec2 rotatingUV =  fract(vUv * vec2(uCloudScale) + offset )  ;
             vec4 map = texture2D( uCloudMap,   rotatingUV );
-            
-            //map.a *= step( distance(rotatingUV.x, .5)*2., .99); 
-            //map.a *= step( distance(rotatingUV.y, .5)*2., .99); 
-
             float shaded = dot( vec3( 0.0,1.0,.0 ) , map.xyz );
-
             return vec2(shaded , map.a);
-
         }
 
 
@@ -106,10 +95,9 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
 
 
             vec3 color;
-            float skyRamp = SkyRamp(uSkyHeight) ; 
+            float skyRamp = SkyRamp( uSkyHeight , .3 ) ; 
             color = mix(skyColorBottom, skyColorMiddle , skyRamp ) ; 
             color = mix( color , skyColorTop , smoothstep(.1, 1. , vUv.y) ) ;   
-
 
 
             vec2 clouds1 = Clouds( .0 ,.0);
@@ -121,14 +109,11 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
             cloudsMixed.y = step( .5, cloudsMixed.y ); // cloudAlpha
 
 
-
             vec3 cloudColored = mix(cloudShadow, cloudHighlight, cloudsMixed.x );
             color =  mix(color, cloudColored, cloudsMixed.y);
 
+
             gl_FragColor= vec4( color , 1. );
-
-
-            
 
 
             
@@ -138,10 +123,11 @@ export const SkyMaterial =  (SkyColorMap, time )=>{
         uniforms:{
             uCloudMap : {value: CloudsMap},
             uCloudScale : {value: 5 }, 
-            uSkyHeight :{value: .25},
+            uSkyHeight :{value: 0.18 },
             uSkyColorMap : {value: SkyColorMap },
             uPerlinNoiseMap : {value: PerlinNoiseMap },
-            uTime : { value : time  }, //define sky color and move the cloud
+            uTime : { value : 0  }, //define sky color and move the cloud
+            uTimestamp: {value: 0 },
             uCloudiness: {value : 0. },  // desaturate the color of sky
             uSeason : {value : .5 } //eg. 0 = spring, .25 = summer, .5 = fall, .75 = weather
         }

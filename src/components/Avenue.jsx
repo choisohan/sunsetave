@@ -7,7 +7,7 @@ import CameraControls from './CameraControls'
 import TerrainMesh from './TerrainMesh'
 import HouseDetailWindow from './HouseDetailWindow'
 import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipForwardButton} from './Buttons'
-import Clock from './Clock'
+import {Clock} from './Clock'
 
 
 
@@ -93,7 +93,7 @@ export default function Avenue() {
     </Canvas>
 
     <div className='fixed z-[1] bottom-0 right-0 ' >
-      <Clock />
+      <div className='bg-white'><Clock /></div>
       <FastForwardButton /><SkipForwardButton />
       <ReloadButton onClick={()=>{setItems(x=>[...x])}} /> {/* todos : Reload needs more works */}
       <AddNewHouseButton />
