@@ -1,7 +1,6 @@
 export const SampleCalendars ={
     "SampleCalendar" : {
         name: "SampleCalendar",
-        roof:'R2',windows:'W2',wall: 'W2',mesh:'A5',
         description: "This is SampleCalendar Description!",
         timezone: "America/Vancouver",
         events: [
@@ -78,7 +77,6 @@ export const SampleCalendars ={
     },
     "Darwin":{
         name:"Darwin",
-        roof:'R2',windows:'W4',wall: 'W4',mesh:'A6',
         timezone:"Europe/London",
         description:"Darwin's House",
         events: [
@@ -217,7 +215,6 @@ export const SampleCalendars ={
         },
     'BruceLee':{
         name:'Bruce Lee',
-        roof:'R4',windows:'W4',wall: 'W4',mesh:'A8',
         timezone:"Asia/Hong_Kong",
         description:"Bruce's House",
         events:[

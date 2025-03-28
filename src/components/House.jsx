@@ -21,9 +21,7 @@ export default function House(props){
   const TextureContext = useTexture(); 
   const [mesh, setMesh] = useState();
   const [currentEventIndex, setCurrentEventIndex] = useState(null)
-  const [property, setProperty] = useState({
-    roof:'R1', windows:'W1', wall: 'W1',  time: 0,
-  });
+  const [property, setProperty] = useState({});
   const [isHovered, setIsHovered] = useState(false); 
   const meshRef = useRef();
   const [meshHeight, setMeshHeight] = useState(0);
@@ -64,11 +62,17 @@ export default function House(props){
 
 
   const updateMap = (_mat) =>{
-    if(_mat.name.toLowerCase() in property){
-      const texturefullName = _mat.name.toLowerCase() + '/'+ property[_mat.name.toLowerCase()]
-      _mat.uniforms.uMap.value =TextureContext[texturefullName]
-      _mat.uniforms.uTime.value= property.time
+    var section = _mat.name.replace('_mat','');
+    var texturefullName; 
+    if(section in property){
+      texturefullName = section + '/'+ property[section]
     }
+    else{
+      texturefullName = section + '/A001'
+    }
+    console.log( 'texturefullName : ',texturefullName )
+    _mat.uniforms.uMap.value =TextureContext[texturefullName]
+    _mat.uniforms.uTime.value= property.time
   }
 
   useEffect(()=>{
@@ -141,14 +145,14 @@ export default function House(props){
 
   // Render
   if( mesh ){
-    return <mesh ref={meshRef}
+    return <mesh ref={meshRef} 
                 position ={ property.position ||  [0,0,0] }
                 rotation = {property.rotation ||  [0,0,0] } 
                 onPointerEnter={()=>{setIsHovered(true)}}
                 onPointerOut={()=>{setIsHovered(false)}}
                 onClick={()=>{props.onClick(property)}}>
 
-        <primitive object={mesh} />
+        <primitive object={mesh} scale={[.58,.58,.58] }/>
             <EventStateBubble content={ property.events ? property.events[currentEventIndex].summary :'' } height={meshHeight} />
             <Html>
               <audio ref={audioRef} src="/audios/792928__qubodup__mouth-pop-short.wav" />
