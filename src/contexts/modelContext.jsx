@@ -32,7 +32,7 @@ const useTextures = () => {
 
 const swapMaterialToHouse = (_currentMat)=>{
     const houseMaterial = HouseMaterial();
-    if(_currentMat.name.includes('Windows')){
+    if(_currentMat.name.toLowerCase().includes('windows')){
         houseMaterial.uniforms.uIsWindow.value = true;
     }
     houseMaterial.name = _currentMat.name;

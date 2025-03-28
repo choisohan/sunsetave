@@ -11,6 +11,9 @@ import { useTime } from '../contexts/envContext'
 import { useSkyColorMap } from '../contexts/envContext'
 import BasicMaterial from '../shaders/BasicMaterial'
 
+import TestMaterial from '../shaders/TestMaterial'
+import { TubeGeometry } from 'three'
+
 
 
 export default function Lookdev() {
@@ -33,10 +36,13 @@ export default function Lookdev() {
       </mesh>   
 
 
-      <mesh position={[0,0,0]} material={BasicMaterial(time)}>
+      <mesh position={[0,0,0]} material={TestMaterial()}>
         <sphereGeometry args={[1,20,20]} />  
       </mesh>     
 
+      <mesh position={[2,0,0]} material={TestMaterial()}>
+        <boxGeometry args={[1,1,1]} />  
+      </mesh>     
     </Canvas>
   
   <div className='fixed z-[1] bottom-0 right-0 p-5 ' >

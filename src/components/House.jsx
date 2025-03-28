@@ -10,7 +10,7 @@ import { fetchCalendar } from '../calendar/FetchCalendar';
 import { getCurrentEventIndex, SortCalendarData } from '../calendar/SortEvents';
 import { Vector3 , Box3 } from 'three';
 import { useThree } from '@react-three/fiber';
-import { useTime, useUpdateTime } from '../contexts/envContext';
+import { useSkyColorMap, useTime } from '../contexts/envContext';
 
 
 
@@ -25,6 +25,7 @@ export default function House(props){
   const [isHovered, setIsHovered] = useState(false); 
   const meshRef = useRef();
   const [meshHeight, setMeshHeight] = useState(0);
+  const skyColorMap = useSkyColorMap();
 
   const time = useTime();
 
@@ -70,8 +71,8 @@ export default function House(props){
     else{
       texturefullName = section + '/A001'
     }
-    console.log( 'texturefullName : ',texturefullName )
     _mat.uniforms.uMap.value =TextureContext[texturefullName]
+    _mat.uniforms.uSkyColorMap.value =skyColorMap; 
     _mat.uniforms.uTime.value= property.time
   }
 

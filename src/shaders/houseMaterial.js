@@ -45,7 +45,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
 
   
       uniform sampler2D uMap; 
-      uniform sampler2D uPaperMap; 
+      uniform sampler2D uSkyColorMap; 
       uniform vec2 uUDIM; 
       uniform bool uMouseOver; 
       uniform bool uIsWindow; 
@@ -71,7 +71,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
     }
 
   
-      vec4 phong() {
+      vec4 phong(vec4 diffuseMap) {
           float time = fract(uTime);
           float angle =  (time-.5)  *PI *2. ;
 
@@ -98,62 +98,66 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           vec3 lighting =mix(  shadedColor , lightColor , dotResult);
 
           
-          vec4 diffuseMap = texture2D( uMap , (vUv) );//.xyz *.75 +.25 ;
+          
           
           if(uMouseOver){
             diffuseMap.xyz =diffuseMap.xyz *.9 + vec3(.0, .1, .2);
           }
-          float paperMap = texture2D( uPaperMap , (vUv) ).x *.66+.33 ;
-
-
-          if(uIsWindow){
-
-            float frameMask = step(.9,  diffuseMap.x  );
-            paperMap = mix(  1. , paperMap ,frameMask) ; 
-            lighting = mix( vec3( 1. ) ,lighting , frameMask) ; 
-
-
-            vec3 indoorLight  = mix( vec3(1.) * diffuseMap.xyz ,
-                              vec3(1., .22 , .0) * (1.-diffuseMap.xyz) ,
-                              smoothstep(.1, .0, distance(uTime, .8))  );
-
-
-            indoorLight *= smoothstep(.09, 0.1 , distance( abs(uTime), 1. ));
-
-            diffuseMap.xyz  = mix( indoorLight,  diffuseMap.xyz , frameMask );
-            
-            float reflectionMask = step(.25, Fresnel()) + DiagonalLine(.5) * 20. ;
-            reflectionMask *= 1.- frameMask ;
-            reflectionMask = smoothstep(.0, 1.0, reflectionMask);
-
-            float reflectAmount =   smoothstep(.2, 0.1, distance(uTime, .6) );
-
-            vec3 blueSkyColor =  vec3( 0.65, .9 , .9);
-            vec3 sunsetSkyColor = vec3(1. , .0 , 0.0);
-
-            float mixSkyColor =  smoothstep(.2 , 0.1 , distance(uTime , .55 ) );
-            vec3 reflectedColor =   mix( sunsetSkyColor ,blueSkyColor,  mixSkyColor )  ; 
-
-            reflectedColor = mix(  reflectedColor, vec3(.5) + diffuseMap.xyz, smoothstep(0.9, .95 , 1.- distance(.5,  fract( uTime + .5 ) ) ));
-
-            diffuseMap.xyz = mix( diffuseMap.xyz , reflectedColor , reflectionMask ); 
-            //diffuseMap.xyz  = reflectedColor;
-          }
 
           if (diffuseMap.a < 0.5) discard; // Cutout effect
           return vec4( diffuseMap.rgb * lighting , 1. ); ;
+      }
 
   
+
+      float GetStrengthByTime( int iPeakHour, int iBlendingHours ){ 
+        float fPeakTime = float(iPeakHour)/24.;
+        float fPeakBlend = float(iBlendingHours)/24.;
+
+        float str = 1.-( distance( uTime,fPeakTime ) );
+        str = smoothstep( 1.- fPeakBlend, 1. , str );
+        return str; 
       }
-  
-        void main(){  
-            gl_FragColor= phong() ;
-        }
+
+
+      void main(){  
+          vec4 diffuseMap = texture2D( uMap , (vUv) );
+          gl_FragColor= phong(diffuseMap) ;
+
+          if(uIsWindow){
+              float glassMask =  step(diffuseMap.x + diffuseMap.y + diffuseMap.z ,.0 );
+
+              // Add IndoorLight
+              vec3 indoorLight = vec3(1., .5,.2);
+              float indoorLightStrength = GetStrengthByTime(18, 3);
+              gl_FragColor.xyz = mix(gl_FragColor.xyz, indoorLight * indoorLightStrength ,glassMask);
+
+              //Add Reflection
+              float reflectionMask = step(.25, Fresnel()) + DiagonalLine(.5) * 20. ;
+              vec3 skyColorBottom = texture2D( uSkyColorMap, vec2( 0.0/5. +.1,fract(uTime)) ).xyz;
+              vec3 skyColorMiddle = texture2D( uSkyColorMap, vec2( 1.0/5.+.1 , fract(uTime)) ).xyz;
+              vec3 skyColorTop = texture2D( uSkyColorMap, vec2( 2.0/5. +.1, fract(uTime) ) ).xyz;
+              vec3 cloudShadow = texture2D( uSkyColorMap, vec2( 3.0/5. +.1, fract(uTime) ) ).xyz;
+              vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
+
+
+              
+              vec3 reflectCol = mix( skyColorMiddle, skyColorBottom , reflectionMask); 
+              float reflecStr = GetStrengthByTime(12, 6);
+              reflecStr = smoothstep(.0, .1 , reflecStr); 
+              gl_FragColor.xyz = mix(  gl_FragColor.xyz  , reflectCol  , glassMask* reflecStr);
+
+          
+          }
+
+
+
+
+      }
       `,
       uniforms:{
-        
           uMap: { value: null },
-          uPaperMap : {value : null } ,
+          uSkyColorMap:{ value: null },
           uUDIM : {value: new Vector2(0.) },
           uMouseOver: { value : false },
           uIsWindow:{value: false}, 
