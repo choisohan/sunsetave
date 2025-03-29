@@ -8,9 +8,8 @@ import { OceanMaterial } from '../shaders/WaterMaterial';
 import { useSkyColorMap , useTimestamp  } from '../contexts/envContext';
 import BasicMaterial from '../shaders/BasicMaterial';
 import { timestampToHourFloat } from './Clock';
-
-
 import { NearestFilter } from 'three';
+
 export default function TerrainMesh(props){
     const _fbxFile = useLoader(FBXLoader, '/models/terrain_A.fbx'); 
 
@@ -26,13 +25,14 @@ export default function TerrainMesh(props){
 
     useEffect(()=>{
         materials.forEach(mat=>{
-            console.log( timestampToHourFloat(timestamp) )
             mat.uniforms.uTime.value = timestampToHourFloat(timestamp); 
         })
     },[timestamp])
 
     useEffect(()=>{
+
         _fbxFile.traverse(child =>{
+
             if(child.name === 'grid'){
                 setGridMesh(child);
                 child.visible = props.editMode;
@@ -45,6 +45,7 @@ export default function TerrainMesh(props){
 
                 if(child.name.includes('water')){
                     child.material = OceanMaterial(skyColorMap, timestamp)
+                    child.material.uniforms.uTime.value = timestampToHourFloat(timestamp); 
                     setMaterials(arr =>[...arr, child.material ]);
                 }
                 else{

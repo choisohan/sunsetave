@@ -1,7 +1,5 @@
 import React from 'react'
-import Sky
-
-from '../components/Sky'
+import Sky from '../components/Sky'
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { SkipForwardButton , SkipBackwardButton, FastForwardButton } from '../components/Buttons'
@@ -13,6 +11,7 @@ import BasicMaterial from '../shaders/BasicMaterial'
 
 import TestMaterial from '../shaders/TestMaterial'
 import { TubeGeometry } from 'three'
+import TerrainMesh from '../components/TerrainMesh'
 
 
 
@@ -31,6 +30,7 @@ export default function Lookdev() {
          <Sky />
 
 
+<TerrainMesh editMode={false} onGridUpdate={()=>{}}onMouseMoveOnGrid={()=>{}} onComplete={()=>{}} />
       <mesh material={OceanMaterial(skyColorMap, timestamp)} position={[0,-2,0]}>
           <boxGeometry args={[10,.01,10]} />
       </mesh>   

@@ -1,11 +1,15 @@
 import {  NearestFilter, RawShaderMaterial } from "three";
 import {  useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
+import { useState } from "react";
 
 
 export const OceanMaterial = ( SkyColorMap, time ) => {
-    const PerlinNoiseMap =  useLoader(TextureLoader, '/textures/common/PerlinNoise.png');;
+    const PerlinNoiseMap =  useLoader(TextureLoader, '/textures/common/PerlinNoise.png');
     PerlinNoiseMap.minFilter= NearestFilter;
+    //const [map, setMap] = useState()
+
+
 
     return new RawShaderMaterial({
     vertexShader:`
