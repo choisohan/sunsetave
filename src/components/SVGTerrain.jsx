@@ -12,13 +12,16 @@ export default function SVGTerrain(props) {
     const heightMap = useLoader(TextureLoader, '/textures/terrains/A/Height.png' )
     const gridMap = useLoader(SVGLoader, '/textures/terrains/A/Grid.svg' )
 
-    const [heightScale,setHeightScale] = useState(.25);
+    const [heightScale,setHeightScale] = useState( props.heightScale || .25 );
     const [ scale, setScale] = useState(props.scale || 1 )
 
     const meshRef = useRef();
     const [cellArray, setCellArray] = useState([])
     const [gridScale, setGridScale] = useState(1);
+    const [resolution, setResolution] = useState(1024);
 
+    const [selectedPosition, setSelectedPosition ] = useState([0,0,0]);
+    const [selectedRotation, setSelectedRotation ] = useState([0,0,0]);
 
 
     const canvas = document.createElement('canvas')
@@ -26,21 +29,20 @@ export default function SVGTerrain(props) {
 
 
    useEffect(()=>{
-    canvas.width =1024;
-    canvas.height = 1024;
+    canvas.width =resolution;
+    canvas.height = resolution;
     document.body.appendChild(canvas)
    },[])
 
     useEffect(()=>{
         if(!meshRef.current || !heightMap ) return;
-
-        ctx.drawImage( heightMap.image,  0, 0, 1024, 1024 );
-        console.log('DRAW IMAGE')
+        ctx.drawImage( heightMap.image,  0, 0, resolution, resolution );
         const material = HeightMapMaterial();
         material.uniforms.uHeightMap.value = heightMap; 
-        meshRef.current.material = material;
         material.uniforms.uHeightScale.value=heightScale;
         material.wireframe = true; 
+        meshRef.current.material = material;
+
 
     },[heightMap])
 
@@ -72,16 +74,12 @@ export default function SVGTerrain(props) {
                 const valueFromHeightMap = GetValueFromImage(transform.position.x,transform.position.y)
 
 
-                // set world 
-                var worldPosition=transform.position;
+                // World 
+                transform.position.x = transform.position.x * scale - scale/2 ; 
+                transform.position.z = -transform.position.y * scale   + scale/2  ;// - (transform.position.y * scale - scale/2 ); 
+                transform.position.y = valueFromHeightMap * scale/4;
 
-                worldPosition = new Vector3(
-                    worldPosition.x * scale - scale/2
-                    , valueFromHeightMap * heightScale ,
-                    worldPosition.y  * scale - scale/2  );
 
-                  //  worldPosition.z = 2; 
-                transform.position = worldPosition; 
                 path.toShapes().forEach(s =>{
                     _cellArr.push({shape: s, transform: transform });
                 })
@@ -114,48 +112,72 @@ export default function SVGTerrain(props) {
         const centerPosition = new Vector3(
             (v1.x + v2.x + v3.x + v4.x) / 4,
             (v1.y + v2.y + v3.y + v4.y) / 4,
-            0 // Assuming 2D shape (no Z-axis consideration)
+            0 
         );
     
-        centerPosition.x = (centerPosition.x)  / _canvasScale  ;
-        centerPosition.y =  (centerPosition.y)  / _canvasScale  ;
+        centerPosition.x  /= _canvasScale  ;
+        centerPosition.y /=  _canvasScale  ;
 
     
         return {position: centerPosition, rotation : rotation }
     
     }
 
+
+
     const GetValueFromImage = ( uvX , uvY )=>{
-        let x = Math.floor( uvX * 1024  );
-        let y = Math.floor( uvY * 1024 );
+        let x = Math.floor( uvX * resolution  );
+        let y = Math.floor( uvY * resolution );
         let pixelData = ctx.getImageData(x,y, 1, 1).data;
        return pixelData[0]/255; // return only red Color
     }
     
-    const onCellClick = (e, transform) =>{
-        console.log ( e.point , transform.position)
+    const onClickCell = (e, transform) =>{
+        console.log ( transform.position)
+
+        setSelectedPosition([
+            transform.position.x,
+            transform.position.y,
+            transform.position.z
+        ])
+        setSelectedRotation([
+            transform.rotation.x,
+            transform.rotation.y,
+            transform.rotation.z
+        ])
      }
+
     
 
     return (
-    <group scale={scale}>
-
-    <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} >
+<>
+    <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} scale={scale} >
         <planeGeometry args={[1, 1, 20, 20]} />
     </mesh>
 
-    <group rotation={[-Math.PI / 2, 0, 0]} position={[0,.01,0]} >
+    <group position={[0,.01,0]} >
         {cellArray.map((cell, i ) =>
             <mesh  key={i} material={
-                new MeshBasicMaterial( {color:new Color().setRGB( cell.transform.position.y , cell.transform.position.y,cell.transform.position.y )} )}
-                onClick={(e)=>{onCellClick(e, cell.transform)}}
-                position={[-.5,-.5,   cell.transform.position.y    ]} scale={1/gridScale}   >
+                new MeshBasicMaterial( {color:new Color('black')} )}
+                onClick={(e)=>{onClickCell(e, cell.transform)}}
+                position={[ -scale/2 , cell.transform.position.y , +scale/2  ]}
+                rotation={[-Math.PI / 2, 0, 0]} 
+                scale = { scale/gridScale }   >
                 <shapeGeometry args={[cell.shape]} />
             </mesh>
         )}
     </group>
 
+    <mesh scale={.2} material={new MeshBasicMaterial({color:'red'})} position={selectedPosition} rotation={selectedRotation}>
+        <boxGeometry/>
+    </mesh>
 
-    </group>)}
+
+
+
+</>
+
+
+)}
 
 

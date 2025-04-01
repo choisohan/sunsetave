@@ -149,7 +149,7 @@ export default function House(props){
   if( mesh ){
     return <mesh ref={meshRef} 
                 position ={ property.position ? [property.position.x, property.position.y, property.position.z] :   [0,0,0] }
-                /*rotation = {property.rotation ? [property.rotation.x, property.rotation.y, property.rotation.z] :   [0,0,0] }  */ 
+                rotation = {property.rotation ? [property.rotation.x, property.rotation.y, property.rotation.z] :   [0,0,0] }  
                 onPointerEnter={()=>{setIsHovered(true)}}
                 onPointerOut={()=>{setIsHovered(false)}}
                 onClick={()=>{props.onClick(property)}}>

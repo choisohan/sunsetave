@@ -15,12 +15,12 @@ export default function Test() {
   const [grid, setGrid] = useState();
 
   return (<>
-    <Canvas camera={{position: [0,7,10], fov:30}}  style={{width:'100vw', height:'100vh' }}   >
+    <Canvas camera={{position: [0,20,0], fov:30}}  style={{width:'100vw', height:'100vh' }}   >
         
          <OrbitControls />
 
 
-      <SVGTerrain onCellUpdate={transforms=>{
+      <SVGTerrain scale={5} onCellUpdate={transforms=>{
         console.log(transforms) 
 
       }}/>
