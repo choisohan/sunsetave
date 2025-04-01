@@ -8,6 +8,8 @@ import TerrainMesh from './TerrainMesh'
 import HouseDetailWindow from './HouseDetailWindow'
 import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipForwardButton} from './Buttons'
 import {Clock} from './Clock'
+import SVGTerrain from './SVGTerrain'
+import { OrbitControls } from '@react-three/drei'
 
 
 
@@ -17,16 +19,19 @@ export default function Avenue() {
 
 
   const [items, setItems] = useState([
-   {id : 'sample&&SampleCalendar' , cellNumb :7   },
-   {id : 'sample&&BruceLee' , cellNumb : 6 },
+   {id : 'sample&&SampleCalendar' , cellNumb : 22  },
+/*
+   {id : 'sample&&BruceLee' , cellNumb : 11 },   
    {id : 'sample&&Einstein' ,  cellNumb : 5},
-   {id : 'sample&&Darwin' ,  cellNumb : 8},
+   {id : 'sample&&Darwin' ,  cellNumb : 4},
+   */
   ])
 
   const [selectedItem, setSelectedItem] = useState();
   const [editMode, setEditMode] = useState(false)
   const [grid, setGrid] = useState();
   const [popup, setPopup] = useState();
+
 
   const getTransformByCellNumb = (cellNumb)=>{
     if(!cellNumb) cellNumb = 1; 
@@ -42,10 +47,12 @@ export default function Avenue() {
 
     setItems( _items =>{
       return _items.map( _item =>{
-        var cellNumb = _item.cellNumb;
+        const cellNumb = _item.cellNumb;
+        const transform = grid[cellNumb];
+        console.log( transform.position )
+
         
-        const [position, rotation] = getTransformByCellNumb(cellNumb);
-        return {..._item, position: position, rotation : rotation }
+       return {..._item, ...transform};
       })
     })
   },[grid])
@@ -53,12 +60,11 @@ export default function Avenue() {
   const onMouseMoveOnGrid= (cellNumb)=>{
     if(!selectedItem) return;
 
-    // Move a house
-    const [position, rotation] = getTransformByCellNumb(cellNumb);
+    const transforms = grid[cellNumb]
     
     setItems(_items =>{
       const itemArr = [..._items];
-      itemArr[selectedItem.i] = {...itemArr[selectedItem.i], position: position ,rotation: rotation}
+      itemArr[selectedItem.i] = {...itemArr[selectedItem.i], position: transforms.position ,rotation: transforms.rotation }
       return itemArr; 
     })
   }
@@ -77,18 +83,22 @@ export default function Avenue() {
 
   return (
     <>
-    <Canvas camera={{position: [5,.5,9], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
+    <Canvas camera={{position: [0,50,0], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
 
-    <CameraControls />
+  <OrbitControls />
     <Sky />
 
-    <Pixelate />
+    
+
+    <SVGTerrain scale={30} onCellUpdate={setGrid}/>
+
+
     {items.map( (item,i) =>
         <House key={i} property ={item} onClick={_props=>{  onHouseClicked(i, _props )  }} />
     )}
 
 
-    <TerrainMesh editMode ={editMode} onGridUpdate={setGrid} onMouseMoveOnGrid={onMouseMoveOnGrid} onComplete={()=>{setSelectedItem()}}/>
+  
      
     </Canvas>
 

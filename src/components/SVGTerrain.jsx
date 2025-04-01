@@ -12,6 +12,9 @@ export default function SVGTerrain(props) {
     const heightMap = useLoader(TextureLoader, '/textures/terrains/A/Height.png' )
     const gridMap = useLoader(SVGLoader, '/textures/terrains/A/Grid.svg' )
 
+    const [heightScale,setHeightScale] = useState(.25);
+    const [ scale, setScale] = useState(props.scale || 1 )
+
     const meshRef = useRef();
     const [cellArray, setCellArray] = useState([])
     const [gridScale, setGridScale] = useState(1);
@@ -26,7 +29,6 @@ export default function SVGTerrain(props) {
     canvas.width =1024;
     canvas.height = 1024;
     document.body.appendChild(canvas)
-
    },[])
 
     useEffect(()=>{
@@ -37,7 +39,7 @@ export default function SVGTerrain(props) {
         const material = HeightMapMaterial();
         material.uniforms.uHeightMap.value = heightMap; 
         meshRef.current.material = material;
-        material.uniforms.uHeightScale.value=.1;
+        material.uniforms.uHeightScale.value=heightScale;
         material.wireframe = true; 
 
     },[heightMap])
@@ -66,10 +68,20 @@ export default function SVGTerrain(props) {
 
             else{
 
-                const transform = getTransformFromPath(path.currentPath, _scale);
+                const transform = getTransformFromPath( path.currentPath, _scale );
                 const valueFromHeightMap = GetValueFromImage(transform.position.x,transform.position.y)
-                transform.position.z = valueFromHeightMap ;
 
+
+                // set world 
+                var worldPosition=transform.position;
+
+                worldPosition = new Vector3(
+                    worldPosition.x * scale - scale/2
+                    , valueFromHeightMap * heightScale ,
+                    worldPosition.y  * scale - scale/2  );
+
+                  //  worldPosition.z = 2; 
+                transform.position = worldPosition; 
                 path.toShapes().forEach(s =>{
                     _cellArr.push({shape: s, transform: transform });
                 })
@@ -80,18 +92,13 @@ export default function SVGTerrain(props) {
         setCellArray(_cellArr)
         setGridScale(_scale);
 
-        props.onCellUpdate(_cellArr.filter( _cell => _cell.transform ));
+        props.onCellUpdate( _cellArr.map( _cell => _cell.transform ) );
 
     },[gridMap , heightMap ])
 
 
 
-    const onCellClick = selected =>{
-       console.log( selected )
-    }
-
-
-    const getTransformFromPath = ( path, _scale ) => {
+    const getTransformFromPath = ( path, _canvasScale ) => {
 
 
         const v1 = path.curves[0].v1;
@@ -110,8 +117,8 @@ export default function SVGTerrain(props) {
             0 // Assuming 2D shape (no Z-axis consideration)
         );
     
-        centerPosition.x = (centerPosition.x)/_scale;
-        centerPosition.y = (centerPosition.y)/_scale;
+        centerPosition.x = (centerPosition.x)  / _canvasScale  ;
+        centerPosition.y =  (centerPosition.y)  / _canvasScale  ;
 
     
         return {position: centerPosition, rotation : rotation }
@@ -125,10 +132,13 @@ export default function SVGTerrain(props) {
        return pixelData[0]/255; // return only red Color
     }
     
+    const onCellClick = (e, transform) =>{
+        console.log ( e.point , transform.position)
+     }
     
 
     return (
-    <group>
+    <group scale={scale}>
 
     <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} >
         <planeGeometry args={[1, 1, 20, 20]} />
@@ -136,7 +146,10 @@ export default function SVGTerrain(props) {
 
     <group rotation={[-Math.PI / 2, 0, 0]} position={[0,.01,0]} >
         {cellArray.map((cell, i ) =>
-            <mesh  key={i} material={ new MeshBasicMaterial( {color:new Color().setRGB(cell.transform.position.z,cell.transform.position.z,cell.transform.position.z )} )} onClick={()=>{onCellClick(cell.transform)}} position={[-.5,-.5,cell.transform.position.z*.1]} scale={1/gridScale}   >
+            <mesh  key={i} material={
+                new MeshBasicMaterial( {color:new Color().setRGB( cell.transform.position.y , cell.transform.position.y,cell.transform.position.y )} )}
+                onClick={(e)=>{onCellClick(e, cell.transform)}}
+                position={[-.5,-.5,   cell.transform.position.y    ]} scale={1/gridScale}   >
                 <shapeGeometry args={[cell.shape]} />
             </mesh>
         )}

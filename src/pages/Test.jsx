@@ -20,7 +20,10 @@ export default function Test() {
          <OrbitControls />
 
 
-      <SVGTerrain onCellUpdate={_=>{}}/>
+      <SVGTerrain onCellUpdate={transforms=>{
+        console.log(transforms) 
+
+      }}/>
 
 
 
