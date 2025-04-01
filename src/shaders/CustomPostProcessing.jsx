@@ -57,7 +57,7 @@ class PixelationEffect extends Effect {
 
 const Pixelate = ()=> {
 
-  const p =3; //pixel size 
+  const p =2; //pixel size 
   const {scene, camera} =useThree();
   const [pixelSize, setPixelSize] = useState(p); 
 

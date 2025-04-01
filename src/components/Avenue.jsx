@@ -10,7 +10,7 @@ import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, Sk
 import {Clock} from './Clock'
 import SVGTerrain from './SVGTerrain'
 import { OrbitControls } from '@react-three/drei'
-
+import Ocean from './Ocean'
 
 
 
@@ -33,6 +33,7 @@ export default function Avenue() {
   const [popup, setPopup] = useState();
 
 
+
   const getTransformByCellNumb = (cellNumb)=>{
     if(!cellNumb) cellNumb = 1; 
     cellNumb = String(cellNumb).padStart(3,"0");
@@ -48,10 +49,7 @@ export default function Avenue() {
     setItems( _items =>{
       return _items.map( _item =>{
         const cellNumb = _item.cellNumb;
-        const transform = grid[cellNumb];
-        console.log( transform.position )
-
-        
+        const transform = grid[cellNumb];       
        return {..._item, ...transform};
       })
     })
@@ -84,14 +82,15 @@ export default function Avenue() {
   return (
     <>
     <Canvas camera={{position: [0,50,0], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
-
+<Pixelate />
   <OrbitControls />
     <Sky />
 
     
 
-    <SVGTerrain scale={30} onCellUpdate={setGrid}/>
+    <SVGTerrain scale={30} editMode={editMode} onCellUpdate={setGrid}/>
 
+<Ocean />
 
     {items.map( (item,i) =>
         <House key={i} property ={item} onClick={_props=>{  onHouseClicked(i, _props )  }} />

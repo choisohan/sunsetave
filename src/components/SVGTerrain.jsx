@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Box3, Color, Group, MathUtils, Mesh, MeshBasicMaterial, ShapeGeometry, TextureLoader, Vector2, Vector3 } from 'three'
+import { AdditiveBlending, Box3, Color, Group, MathUtils, Mesh, MeshBasicMaterial, ShapeGeometry, TextureLoader, Vector2, Vector3 } from 'three'
 import { SVGLoader } from 'three/examples/jsm/Addons.js'
 import { useLoader } from "@react-three/fiber";
 
@@ -16,12 +16,16 @@ export default function SVGTerrain(props) {
     const [ scale, setScale] = useState(props.scale || 1 )
 
     const meshRef = useRef();
+    const gridRef = useRef();
+
     const [cellArray, setCellArray] = useState([])
     const [gridScale, setGridScale] = useState(1);
     const [resolution, setResolution] = useState(1024);
 
     const [selectedPosition, setSelectedPosition ] = useState([0,0,0]);
     const [selectedRotation, setSelectedRotation ] = useState([0,0,0]);
+
+    const [editMode, setEditMode] = useState( props.editMode || false )
 
 
     const canvas = document.createElement('canvas')
@@ -31,8 +35,15 @@ export default function SVGTerrain(props) {
    useEffect(()=>{
     canvas.width =resolution;
     canvas.height = resolution;
-    document.body.appendChild(canvas)
    },[])
+
+
+    useEffect(()=>{
+        setEditMode(props.editMode);
+        gridRef.current.visible= props.editMode;
+        
+    },[props.editMode])
+
 
     useEffect(()=>{
         if(!meshRef.current || !heightMap ) return;
@@ -40,7 +51,7 @@ export default function SVGTerrain(props) {
         const material = HeightMapMaterial();
         material.uniforms.uHeightMap.value = heightMap; 
         material.uniforms.uHeightScale.value=heightScale;
-        material.wireframe = true; 
+       // material.wireframe = true; 
         meshRef.current.material = material;
 
 
@@ -77,7 +88,7 @@ export default function SVGTerrain(props) {
                 // World 
                 transform.position.x = transform.position.x * scale - scale/2 ; 
                 transform.position.z = -transform.position.y * scale   + scale/2  ;// - (transform.position.y * scale - scale/2 ); 
-                transform.position.y = valueFromHeightMap * scale/4;
+                transform.position.y = valueFromHeightMap * scale * heightScale;
 
 
                 path.toShapes().forEach(s =>{
@@ -133,7 +144,6 @@ export default function SVGTerrain(props) {
     }
     
     const onClickCell = (e, transform) =>{
-        console.log ( transform.position)
 
         setSelectedPosition([
             transform.position.x,
@@ -146,6 +156,10 @@ export default function SVGTerrain(props) {
             transform.rotation.z
         ])
      }
+     const onMouseOver = (isOver, evt)=>{
+        const material =  evt.object.material ;
+        material.uniforms.uMouseOver.value = isOver; 
+     }
 
     
 
@@ -155,22 +169,37 @@ export default function SVGTerrain(props) {
         <planeGeometry args={[1, 1, 20, 20]} />
     </mesh>
 
-    <group position={[0,.01,0]} >
+    <group position={[0,.01,0]} ref={gridRef}>
         {cellArray.map((cell, i ) =>
-            <mesh  key={i} material={
-                new MeshBasicMaterial( {color:new Color('black')} )}
-                onClick={(e)=>{onClickCell(e, cell.transform)}}
-                position={[ -scale/2 , cell.transform.position.y , +scale/2  ]}
-                rotation={[-Math.PI / 2, 0, 0]} 
-                scale = { scale/gridScale }   >
+<group key={i}>
+<mesh  material={GridMaterial()}
+                            position={[ -scale/2 , cell.transform.position.y , +scale/2  ]}
+                            rotation={[-Math.PI / 2, 0, 0]} 
+                            scale = { scale/gridScale }
+                            onClick={(e)=>{onClickCell(e, cell.transform)}}
+                            onPointerEnter={(evt)=>{onMouseOver(true, evt)}}
+                            onPointerLeave={(evt)=>{onMouseOver(false, evt)}}
+            >
                 <shapeGeometry args={[cell.shape]} />
             </mesh>
+
+<lineSegments position={[ -scale/2 , cell.transform.position.y , +scale/2  ]}
+              rotation={[-Math.PI / 2, 0, 0]} 
+              scale = { scale/gridScale }>
+    <edgesGeometry args = {[new ShapeGeometry(cell.shape)]} />
+    <lineBasicMaterial attach="material" color="white" linewidth={5} depthTest={false} depthFunc={false} blending={AdditiveBlending}/>
+</lineSegments>
+</group>
         )}
     </group>
+
+{/*
 
     <mesh scale={.2} material={new MeshBasicMaterial({color:'red'})} position={selectedPosition} rotation={selectedRotation}>
         <boxGeometry/>
     </mesh>
+
+*/}
 
 
 
