@@ -21,7 +21,6 @@ export default function Test() {
 
 
       <SVGTerrain scale={5} onCellUpdate={transforms=>{
-        console.log(transforms) 
 
       }}/>
 

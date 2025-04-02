@@ -4,10 +4,12 @@ import { useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import { Wireframe } from '@react-three/drei';
 
-export default function TestMaterial() {
+export default function StreetLineMaterial() {
 
     const skyColorMap = useLoader(TextureLoader, '/textures/env/skyColormap.png');;
-    
+    const RoadMap = useLoader(TextureLoader, '/textures/terrains/tiles/Road.png');;
+    const heightMap = useLoader(TextureLoader, '/textures/terrains/A/Height.png' )
+
     return new RawShaderMaterial({
     vertexShader:`
         uniform mat4 projectionMatrix;
@@ -23,18 +25,26 @@ export default function TestMaterial() {
 
         varying vec3 vPosition;
         varying vec3 vViewDir;
+        uniform sampler2D uHeightMap; 
+        uniform float uHeightScale; 
 
 
         void main()
         {
-            vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+            vec2 pos = -(position.xy);
+            pos = fract(pos * vec2(1./245. ));
+            float height  = texture2D(uHeightMap, pos ).x;
+
+            vec3 displacedPosition = position + normal * height * uHeightScale;
+
+            vec4 modelPosition = modelMatrix * vec4(displacedPosition, 1.0);
             vec4 viewPosition = viewMatrix * modelPosition;
             vec4 projectedPosition = projectionMatrix * viewPosition;
             gl_Position = projectedPosition;
             vUv = uv;
             vNormal = normalize( normal ); 
 
-            vPosition = normalize(position.xyz); 
+            vPosition = (position.xyz); 
             vViewDir =(-viewPosition.xyz);
         }
     `,
@@ -48,12 +58,21 @@ export default function TestMaterial() {
 
         uniform sampler2D uSkyColorMap; 
         uniform sampler2D uMap; 
+        uniform sampler2D uHeightMap; 
+        uniform float uTime; 
 
 
         void main(){
 
+            vec2 pos = -(vPosition.xy);
+             pos = fract(pos * vec2(1./245. ));
+            float height  = texture2D(uHeightMap,pos).x;
 
-            vec3 color = vec3(vUv, .0 ); 
+           vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
+        
+            vec3 color = texture2D(uMap,vUv.yx* vec2(1., 3.)).xyz;
+            color *= cloudHighlight; 
+
 
             gl_FragColor= vec4(color, 1. ) ;
 
@@ -61,7 +80,14 @@ export default function TestMaterial() {
     
     `,
     uniforms:{
-        uMap:{value: null},
-    }
+        uSkyColorMap: {value : skyColorMap},
+        uMap : {value: RoadMap},
+        uHeightMap :{value : heightMap},
+        uHeightScale: {value: 60.},
+        uTime: {value: .5 }
+        
+    },
+    //wireframe: true
+   depthTest: false
 
 })}

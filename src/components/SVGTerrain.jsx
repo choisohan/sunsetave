@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { AdditiveBlending, Box3, Color, Group, MathUtils, Mesh, MeshBasicMaterial, ShapeGeometry, TextureLoader, Vector2, Vector3 } from 'three'
-import { SVGLoader } from 'three/examples/jsm/Addons.js'
+import { AdditiveBlending, Box3, Color, DoubleSide, Group, MathUtils, Mesh, MeshBasicMaterial, ShapeGeometry, TextureLoader, Vector2, Vector3 } from 'three'
+import { LineGeometry, LineMaterial, SVGLoader } from 'three/examples/jsm/Addons.js'
 import { useLoader } from "@react-three/fiber";
 
 import { HeightMapMaterial } from '../shaders/HeightMapMaterial';
 import { GridMaterial } from '../shaders/GridMaterial';
+import StrokeMesh from './StrokeMesh';
+import TestMaterial from '../shaders/TestMaterial';
+import StreetLineMaterial from '../shaders/StreetLineMaterial';
+import { useSkyColorMap, useTimestamp } from '../contexts/envContext';
+import { timestampToHourFloat } from './Clock';
 
 export default function SVGTerrain(props) {
 
@@ -19,19 +24,22 @@ export default function SVGTerrain(props) {
     const gridRef = useRef();
 
     const [cellArray, setCellArray] = useState([])
+    const [streetArray, setStreetArray] = useState([])
+
+
+
     const [gridScale, setGridScale] = useState(1);
     const [resolution, setResolution] = useState(1024);
 
-    const [selectedPosition, setSelectedPosition ] = useState([0,0,0]);
-    const [selectedRotation, setSelectedRotation ] = useState([0,0,0]);
+    const skyColorMap = useSkyColorMap(); 
 
-    const [editMode, setEditMode] = useState( props.editMode || false )
+    const [editMode, setEditMode] = useState( props.editMode || true )
 
 
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
 
-
+    const timestamp =useTimestamp();
    useEffect(()=>{
     canvas.width =resolution;
     canvas.height = resolution;
@@ -48,60 +56,82 @@ export default function SVGTerrain(props) {
     useEffect(()=>{
         if(!meshRef.current || !heightMap ) return;
         ctx.drawImage( heightMap.image,  0, 0, resolution, resolution );
-        const material = HeightMapMaterial();
+        const material = HeightMapMaterial(skyColorMap);
         material.uniforms.uHeightMap.value = heightMap; 
         material.uniforms.uHeightScale.value=heightScale;
-       // material.wireframe = true; 
         meshRef.current.material = material;
 
-
     },[heightMap])
+
+    useEffect(()=>{
+        meshRef.current.material.uniforms.uTime.value=timestampToHourFloat(timestamp);
+    },[timestamp])
 
     useEffect(()=>{
         if(!gridMap || !heightMap ) return; 
         const _cellArr = [];
         var _scale = 1; 
 
-        gridMap.paths.forEach((path, i )  =>{
-
-            if(i === 0 ){  //Get Canvas Size
-                const grp = new Group();
-
-                path.toShapes().forEach(s =>{
-                    const geo = new ShapeGeometry(s);
-                    const mat = new MeshBasicMaterial();
-                    const mesh = new Mesh(geo, mat)
-                    grp.add(mesh)
-                })
-
-                const box = new Box3().setFromObject(grp);
-                const center = box.getCenter(new Vector3());
-                _scale = center.x*2;
-            }
-
-            else{
-
-                const transform = getTransformFromPath( path.currentPath, _scale );
-                const valueFromHeightMap = GetValueFromImage(transform.position.x,transform.position.y)
 
 
-                // World 
-                transform.position.x = transform.position.x * scale - scale/2 ; 
-                transform.position.z = -transform.position.y * scale   + scale/2  ;// - (transform.position.y * scale - scale/2 ); 
-                transform.position.y = valueFromHeightMap * scale * heightScale;
-
-
-                path.toShapes().forEach(s =>{
-                    _cellArr.push({shape: s, transform: transform });
-                })
-            }
-
+        // GET SCALE
+        const firstItem = gridMap.paths[0];
+        const grp = new Group();
+        firstItem.toShapes().forEach(s =>{
+            const geo = new ShapeGeometry(s);
+            const mat = new MeshBasicMaterial();
+            const mesh = new Mesh(geo, mat)
+            grp.add(mesh)
         })
-        
-        setCellArray(_cellArr)
+
+        const box = new Box3().setFromObject(grp);
+        const center = box.getCenter(new Vector3());
+        _scale = center.x*2;
+        console.log('scale : ', _scale)
         setGridScale(_scale);
 
+        // RECTS
+        const rects = gridMap.paths.filter( item=> item!== firstItem && item.userData.node.localName =="rect" );
+        rects.forEach((path)  =>{
+            const transform = getTransformFromPath( path.currentPath, _scale );
+            const valueFromHeightMap = GetValueFromImage(transform.position.x,transform.position.y)
+
+            // World 
+            transform.position.x = transform.position.x * scale - scale/2 ; 
+            transform.position.z = -transform.position.y * scale   + scale/2  ;// - (transform.position.y * scale - scale/2 ); 
+            transform.position.y = valueFromHeightMap * scale * heightScale;
+
+
+            path.toShapes().forEach(s =>{
+                _cellArr.push({shape: s, transform: transform });
+            })
+        })   
+
+        setCellArray(_cellArr)
         props.onCellUpdate( _cellArr.map( _cell => _cell.transform ) );
+
+
+        // STREET
+        const paths = gridMap.paths.filter( item=> item.userData.node.localName =="path");
+        /*
+        const _streetArr =[];
+
+        paths.forEach((path)=>{
+            const transform = getTransformFromPath( path.currentPath, _scale );
+            const valueFromHeightMap = GetValueFromImage(transform.position.x,transform.position.y)
+
+            // World 
+            transform.position.x = transform.position.x * scale - scale/2 ; 
+            transform.position.z = -transform.position.y * scale   + scale/2  ;// - (transform.position.y * scale - scale/2 ); 
+            transform.position.y = valueFromHeightMap * scale * heightScale;
+
+
+            path.toShapes().forEach(s =>{
+                _streetArr.push({shape: s, transform: transform });
+            })
+        })
+            */ 
+        setStreetArray(paths);
 
     },[gridMap , heightMap ])
 
@@ -118,7 +148,7 @@ export default function SVGTerrain(props) {
     
         const dir = v2.clone().sub(v1); // v2-v1
         const angle = Math.atan2(dir.y, dir.x)
-        const rotation = new Vector3(0,MathUtils.radToDeg(angle), 0)
+        const rotation = new Vector3(0,-MathUtils.radToDeg(angle), 0)
     
         const centerPosition = new Vector3(
             (v1.x + v2.x + v3.x + v4.x) / 4,
@@ -144,18 +174,9 @@ export default function SVGTerrain(props) {
     }
     
     const onClickCell = (e, transform) =>{
-
-        setSelectedPosition([
-            transform.position.x,
-            transform.position.y,
-            transform.position.z
-        ])
-        setSelectedRotation([
-            transform.rotation.x,
-            transform.rotation.y,
-            transform.rotation.z
-        ])
      }
+
+
      const onMouseOver = (isOver, evt)=>{
         const material =  evt.object.material ;
         material.uniforms.uMouseOver.value = isOver; 
@@ -163,44 +184,50 @@ export default function SVGTerrain(props) {
 
     
 
+
+    
+
     return (
 <>
-    <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} scale={scale} >
+
+
+    <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, -Math.PI ]} scale={scale} visible={true} position={[0,-.1,0]}>
         <planeGeometry args={[1, 1, 20, 20]} />
     </mesh>
 
+
+
     <group position={[0,.01,0]} ref={gridRef}>
         {cellArray.map((cell, i ) =>
-<group key={i}>
-<mesh  material={GridMaterial()}
+            <group key={i}>
+            <mesh  material={GridMaterial()}
                             position={[ -scale/2 , cell.transform.position.y , +scale/2  ]}
                             rotation={[-Math.PI / 2, 0, 0]} 
                             scale = { scale/gridScale }
                             onClick={(e)=>{onClickCell(e, cell.transform)}}
                             onPointerEnter={(evt)=>{onMouseOver(true, evt)}}
                             onPointerLeave={(evt)=>{onMouseOver(false, evt)}}
-            >
-                <shapeGeometry args={[cell.shape]} />
-            </mesh>
+                        >
+                            <shapeGeometry args={[cell.shape]} />
+                        </mesh>
 
-<lineSegments position={[ -scale/2 , cell.transform.position.y , +scale/2  ]}
-              rotation={[-Math.PI / 2, 0, 0]} 
-              scale = { scale/gridScale }>
-    <edgesGeometry args = {[new ShapeGeometry(cell.shape)]} />
-    <lineBasicMaterial attach="material" color="white" linewidth={5} depthTest={false} depthFunc={false} blending={AdditiveBlending}/>
-</lineSegments>
-</group>
+            <lineSegments position={[ -scale/2 , cell.transform.position.y , +scale/2  ]}
+                        rotation={[-Math.PI / 2, 0, 0]} 
+                        scale = { scale/gridScale }>
+                <edgesGeometry args = {[new ShapeGeometry(cell.shape)]} />
+                <lineBasicMaterial attach="material" color="white" linewidth={10000} depthTest={false} depthFunc={false} blending={AdditiveBlending} Side={DoubleSide}/>
+            </lineSegments>
+            </group>
         )}
     </group>
 
-{/*
 
-    <mesh scale={.2} material={new MeshBasicMaterial({color:'red'})} position={selectedPosition} rotation={selectedRotation}>
-        <boxGeometry/>
-    </mesh>
 
-*/}
-
+    <group  position={[ -scale/2 ,0, +scale/2  ]} rotation={[-Math.PI / 2, 0, 0]}  scale = { scale/gridScale }>
+        {streetArray.map((path, i ) =>
+            <StrokeMesh key={i} path={path} />
+        )}
+    </group>
 
 
 

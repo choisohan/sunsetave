@@ -14,7 +14,7 @@ export const FastForwardButton = ()=>{
 
     const tick = () => {
       if (isPlaying) {
-        updateTimestamp( x=> x + 3600000/2 ); // add half hour per frame
+        updateTimestamp( x=> x + 3600000/30 ); // add 2 min per frame
         animationFrameId = requestAnimationFrame(tick); 
       }
     };

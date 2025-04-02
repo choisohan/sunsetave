@@ -64,7 +64,7 @@ const Pixelate = ()=> {
     // Listen for camera zoom or FOV changes
 
     const updatePixelSize = (e) => {
-      setPixelSize( ps => Math.max(p, ps - e.deltaY/300 ) );
+      setPixelSize( ps => Math.max(p, ps - e.deltaY/600 ) );
     };
 
     useEffect(() => {
