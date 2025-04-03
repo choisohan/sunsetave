@@ -155,7 +155,7 @@ export default function House(props){
               onPointerOut={()=>{setIsHovered(false)}}
               onClick={()=>{props.onClick(property)}}>
 
-      <primitive object={mesh} scale={[.58,.58,.58] } />
+      <primitive object={mesh} scale={[.75,.75,.75] } />
           <EventStateBubble content={ property.events ? property.events[currentEventIndex].summary :'' } height={meshHeight} />
           <Html>
             <audio ref={audioRef} src="/audios/jump.wav" />

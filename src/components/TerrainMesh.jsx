@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
 import { GridMaterial } from '../shaders/GridMaterial';
-import {  useTimestamp  } from '../contexts/envContext';
+import {  useSkyColorMap, useTimestamp  } from '../contexts/envContext';
 import BasicMaterial from '../shaders/BasicMaterial';
 import { timestampToHourFloat } from './Clock';
 import { Euler, MathUtils, NearestFilter, Quaternion, Vector3 } from 'three';
-
+import LeavesMaterial from '../shaders/LeavesMaterial';
+import { TextureLoader } from 'three';
 
 
 
@@ -18,26 +19,43 @@ export default function TerrainMesh(props){
     const timestamp = useTimestamp();
     const [grids, setGrids] = useState([]);
 
+    const perlinNoiseNormalMap = useLoader(TextureLoader, '/textures/common/PerlinNoiseNormal.png');
+    const skyMap = useSkyColorMap(); 
 
     useEffect(()=>{
-        const time =  timestampToHourFloat(timestamp); 
-        _fbxFile.traverse(child=>{
-            if(!child.isMesh) return; 
+        console.log('perlinNoiseNormalMap is loaded')
+    },[perlinNoiseNormalMap])
 
-            if(child.parent.name === "geo"){
-                child.material.forEach(material => {
-                    if(material.uniforms?.uTime){
-                        material.uniforms.uTime.value =time;
+    const ReplaceMaterial= _mat=>{
+ 
+        var map; 
+    
+        if(_mat.map){
+            map = _mat.map;
+            map.minFilter = NearestFilter; 
+        }
+    
+        if(!_mat.name.includes('_mat')) return _mat;
+    
+    
+        if(_mat.name.includes('tree')){
+            _mat = LeavesMaterial();
+            _mat.uniforms.uPerlinNoiseNormal.value = perlinNoiseNormalMap;
+            console.log('setting up noise')
+            _mat.uniforms.uSkyColorMap.value  =skyMap; 
+            
+        }
+        else{
+            _mat = BasicMaterial();
+            _mat.uniforms.uMap.value = map;
+        }
+        return _mat;
+    }
 
-                    }
-                });
-            }
-        })
-
-    },[timestamp])
 
 
     useEffect(()=>{
+
         if( grids.length > 0 ) return; 
         const _grids= [];
 
@@ -51,22 +69,16 @@ export default function TerrainMesh(props){
             }
 
             else{
-                child.material = child.material.map(_mat=>{
-                    if(_mat.map){
-                        const map = _mat.map;
-                        map.minFilter = NearestFilter; 
-                        _mat = BasicMaterial();
-                        _mat.uniforms.uMap.value = map;
-                    }
-                    return _mat;
-                })
+                if(Array.isArray(child.material)){
+                    child.material = child.material.map(ReplaceMaterial)
+                }
+                else{
+                    child.material = ReplaceMaterial(child.material);
+                }
             }
         })
 
         setGrids(_grids)
-
-
-
 
         props.setGrids(_grids.map(cellObject=>{
 
@@ -83,11 +95,32 @@ export default function TerrainMesh(props){
 
     },[_fbxFile])
 
+    useEffect(()=>{
+        const time =  timestampToHourFloat(timestamp); 
+        /*
+        _fbxFile.traverse(child=>{
+            if(!child.isMesh) return; 
+
+            if(child.parent.name === "geo"){
+                child.material.forEach(material => {
+                    if(material.uniforms?.uTime){
+                        material.uniforms.uTime.value =time;
+
+                    }
+                });
+            }
+        })
+            */
+
+    },[timestamp])
+
 
     return <>
-    <mesh> 
-        <primitive object={_fbxFile}/>
-    </mesh>
+
+
+<mesh> 
+            <primitive object={_fbxFile} />
+        </mesh>
 
     <group rotation={[-Math.PI / 2, 0, 0]} >
     <Grid meshes={grids} onClick={props.onClick} onMouseEnter={props.onMouseEnter} editMode={props.editMode}/>

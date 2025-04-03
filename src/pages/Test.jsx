@@ -37,8 +37,9 @@ export default function Test() {
         
         <OrbitControls />
 
+
         <mesh material ={LeavesMaterial()} ref={meshRef} >
-          <sphereGeometry args={[5,25,25]}  />
+          <torusKnotGeometry args={[10, 3, 100, 16]}  />
         </mesh>
 
 {/*
