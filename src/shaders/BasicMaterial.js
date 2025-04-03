@@ -66,9 +66,9 @@ export default function BasicMaterial() {
     
     `,
     uniforms:{
-        uMap:{value: null},
+        uMap :{value: null},
         uSkyColorMap:{value: skyColorMap},
-        uTime:{value: 0}
+        uTime:{value: 0.5}
 
     }
 

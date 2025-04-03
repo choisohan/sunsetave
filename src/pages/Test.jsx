@@ -7,29 +7,46 @@ import {Clock} from '../components/Clock'
 import TerrainMesh from '../components/TerrainMesh'
 import InstancingOnGrid from '../components/InstancingOnGrid'
 import SVGTerrain from '../components/SVGTerrain'
+import { Euler, Vector3 } from 'three'
 
 
 export default function Test() {
 
 
-  const [grid, setGrid] = useState();
+  const [grid, setGrid] = useState([]);
+
+  const [transform, setTransform] = useState({
+    position: new Vector3(0,5,9), rotation: new Vector3()
+  });
+
+
+
+  const onClick = (i)=>{
+    const selected = grid[i];
+    setTransform(selected);
+  }
 
   return (<>
-    <Canvas camera={{position: [0,20,0], fov:30}}  style={{width:'100vw', height:'100vh' }}   >
+    <Canvas camera={{position: [0,100,0], fov:30}}  style={{width:'100vw', height:'100vh', backgroundColor:"pink" }}   >
         
-         <OrbitControls />
+        <OrbitControls />
+
+        <group >{ /*rotation={[-Math.PI / 2, 0, 0]}  */}
+          <TerrainMesh editMode={true} setGrids={setGrid} onMouseEnter={()=>{}} onClick={onClick} />          
+        </group>
+
+      <mesh position={transform.position}>
+        <boxGeometry args={[5,5,5]} />
+        <meshBasicMaterial color="red"/>
+      </mesh>
 
 
-      <SVGTerrain scale={5} onCellUpdate={transforms=>{
-
-      }}/>
 
 
 
 
 {/*
 //Testing initial Instancing Concept
-        <TerrainMesh editMode={false} onGridUpdate={setGrid} onMouseMoveOnGrid={()=>{}} onComplete={()=>{}} />
         <InstancingOnGrid grid={grid} count={10} speed={2} />
 */}
 

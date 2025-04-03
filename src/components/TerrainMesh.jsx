@@ -1,113 +1,140 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Vector2 , Color , RawShaderMaterial, MeshBasicMaterial, FrontSide } from 'three'
-import { useThree } from '@react-three/fiber'
 import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
 import { GridMaterial } from '../shaders/GridMaterial';
-import { OceanMaterial } from '../shaders/WaterMaterial';
-import { useSkyColorMap , useTimestamp  } from '../contexts/envContext';
+import {  useTimestamp  } from '../contexts/envContext';
 import BasicMaterial from '../shaders/BasicMaterial';
 import { timestampToHourFloat } from './Clock';
-import { NearestFilter } from 'three';
+import { Euler, MathUtils, NearestFilter, Quaternion, Vector3 } from 'three';
+
+
+
+
+
 
 export default function TerrainMesh(props){
-    const _fbxFile = useLoader(FBXLoader, '/models/terrain_A.fbx'); 
 
-    const {camera, raycaster} = useThree();
-    const [selectedCell, setSelectedCell] = useState();
-
-    const [gridMesh, setGridMesh] = useState();
-    const skyColorMap = useSkyColorMap();
+    const _fbxFile = useLoader(FBXLoader, '/models/town_A.fbx'); 
     const timestamp = useTimestamp();
-
-    const [materials, setMaterials] = useState([]); 
+    const [grids, setGrids] = useState([]);
 
 
     useEffect(()=>{
-        materials.forEach(mat=>{
-            mat.uniforms.uTime.value = timestampToHourFloat(timestamp); 
+        const time =  timestampToHourFloat(timestamp); 
+        _fbxFile.traverse(child=>{
+            if(!child.isMesh) return; 
+
+            if(child.parent.name === "geo"){
+                child.material.forEach(material => {
+                    if(material.uniforms?.uTime){
+                        material.uniforms.uTime.value =time;
+
+                    }
+                });
+            }
         })
+
     },[timestamp])
 
+
     useEffect(()=>{
+        if( grids.length > 0 ) return; 
+        const _grids= [];
 
         _fbxFile.traverse(child =>{
-
-            if(child.name === 'grid'){
-                setGridMesh(child);
-                child.visible = props.editMode;
-                props.onGridUpdate(child);
+            if(!child.isMesh){
+                //child.rotation.x = 0;            
+                return;
             }
-            else if(child.parent.name === 'grid'){
-                child.material =   GridMaterial();
+            if(child.parent.name === "grid"){ 
+                _grids.push(child);
             }
-            else if(child.isMesh && child.parent.name != 'grid'){
 
-                if(child.name.includes('water')){
-                    child.material = OceanMaterial(skyColorMap, timestamp)
-                    child.material.uniforms.uTime.value = timestampToHourFloat(timestamp); 
-                    setMaterials(arr =>[...arr, child.material ]);
-                }
-                else{
-                    if(child.material.map){
-                        const map = child.material.map;                        
-                        child.material = BasicMaterial();
-                        child.material.uniforms.uMap.value = map;
-                        child.material.uniforms.uTime.value = timestampToHourFloat(timestamp); 
-                        map.minFilter= NearestFilter;
-                        setMaterials(arr =>[...arr, child.material ]);
-                    }                  
-                }
+            else{
+                child.material = child.material.map(_mat=>{
+                    if(_mat.map){
+                        const map = _mat.map;
+                        map.minFilter = NearestFilter; 
+                        _mat = BasicMaterial();
+                        _mat.uniforms.uMap.value = map;
+                    }
+                    return _mat;
+                })
             }
         })
+
+        setGrids(_grids)
+
+
+
+
+        props.setGrids(_grids.map(cellObject=>{
+
+            const newPosition = new Vector3();
+            cellObject.getWorldPosition(newPosition);
+
+            const newRotation = new Euler();
+            const quaternion = new Quaternion();
+            cellObject.getWorldQuaternion(quaternion);
+        
+            newRotation.setFromQuaternion(quaternion, "XYZ")
+            return {position:newPosition, rotation:newRotation}
+        }))
+
     },[_fbxFile])
 
+
+    return <>
+    <mesh> 
+        <primitive object={_fbxFile}/>
+    </mesh>
+
+    <group rotation={[-Math.PI / 2, 0, 0]} >
+    <Grid meshes={grids} onClick={props.onClick} onMouseEnter={props.onMouseEnter} editMode={props.editMode}/>
+    </group>
+
+ </>
+
+}
+
+
+
+
+
+
+const Grid=(props)=>{
+
+    const [meshes,setMeshes] = useState(props.meshes || []);
+    const grpRef = useRef();
     useEffect(()=>{
-        if(gridMesh){
-            gridMesh.visible= props.editMode;
+        setMeshes(props.meshes)
+    },[props.meshes])
+
+    const onMouseEnter = (evt,i, isHover)=>{
+        const object = evt.object;
+        if(!object.material.uniforms) return; 
+        object.material.uniforms.uMouseOver.value = isHover; 
+
+        if(isHover){
+            props.onMouseEnter(i)
+        }
+    }
+
+    useEffect(()=>{
+        if(grpRef.current){
+            grpRef.current.visible= props.editMode;
         }
     },[props.editMode])
 
-
-
-    const OnMouseOver = (evt)=>{
-        if(!props.editMode || !gridMesh) return;
-
-        var mouse = new Vector2();
-        var intersects;
-        mouse.x = ( evt.clientX / window.innerWidth ) * 2 - 1;
-        mouse.y = - ( evt.clientY / window.innerHeight ) * 2 + 1;
-        raycaster.setFromCamera(mouse, camera);
-        intersects = raycaster.intersectObject(gridMesh);
-
-        if(!intersects[0])return
-        const object = intersects[0].object;
-        props.onMouseMoveOnGrid( parseInt( object.name.split('_')[1] ));
-
-        if(!object) return; 
-        object.material.uniforms.uMouseOver.value = true; 
-
-        
-        if(selectedCell && selectedCell!=object){
-            selectedCell.material.uniforms.uMouseOver.value = false; 
-        }
-           
-        setSelectedCell(object);
-        
-         
-    }
-
-    const OnMouseDown = e =>{
-        if(!props.editMode) return;
-        props.onComplete();
-    }
-
-
-
-    if(_fbxFile){
-        return <mesh onPointerMove={OnMouseOver} onPointerDown={OnMouseDown}> 
-            <primitive object={_fbxFile}/>
+    return <group ref={grpRef}>
+    {meshes.map((item,i)=>
+        <mesh key = {i} onPointerEnter={e=>{onMouseEnter(e,i, true)}}
+                        onPointerLeave={e=>{onMouseEnter(e,i, false)}}
+                        onClick={e=>{props.onClick(i); console.log( e.object )}}> 
+            <primitive object={item} material={GridMaterial()}/>
         </mesh>
-    }
-
+    )}
+    </group>
+    
+       
 }

@@ -49,11 +49,11 @@ export const GridMaterial = ()=> new RawShaderMaterial({
         if(uMouseOver){
             color = uMouseOverColor;
         }
-            /*
+
         vec3 lineColor = vec3(1.,1.,1.);
         vec3 c = mix(lineColor, color , a);
-        */
-        gl_FragColor = vec4(color, 1.);
+
+        gl_FragColor = vec4(c, 1.);
         }
                             
         
@@ -63,7 +63,7 @@ export const GridMaterial = ()=> new RawShaderMaterial({
             uMouseOver : {value : false},
             uMouseOverColor : {value : new Color(.2,.5,.9)}
         },
-        //blending:AdditiveBlending,
+        blending:AdditiveBlending,
         transparent:true,
         depthTest:false
 

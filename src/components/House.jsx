@@ -143,24 +143,28 @@ export default function House(props){
 
   },[isHovered])
    
-
+//rotation={[-Math.PI / 2, 0, 0]}  
 
   // Render
-  if( mesh ){
-    return <mesh ref={meshRef} 
-                position ={ property.position ? [property.position.x, property.position.y, property.position.z] :   [0,0,0] }
-                rotation = {property.rotation ? [property.rotation.x, property.rotation.y, property.rotation.z] :   [0,0,0] }  
-                onPointerEnter={()=>{setIsHovered(true)}}
-                onPointerOut={()=>{setIsHovered(false)}}
-                onClick={()=>{props.onClick(property)}}>
+  if(! mesh ) return; 
 
-        <primitive object={mesh} scale={[.58,.58,.58] }/>
-            <EventStateBubble content={ property.events ? property.events[currentEventIndex].summary :'' } height={meshHeight} />
-            <Html>
-              <audio ref={audioRef} src="/audios/jump.wav" />
-            </Html>
-        </mesh>
-  }
+  return <mesh ref={meshRef} 
+  position ={ property.position ? [property.position.x, property.position.y, property.position.z] :   [0,0,0] }
+  rotation = {property.rotation ? [0, property.rotation.z,0] :   [0,0,0] }
+              onPointerEnter={()=>{setIsHovered(true)}}
+              onPointerOut={()=>{setIsHovered(false)}}
+              onClick={()=>{props.onClick(property)}}>
+
+      <primitive object={mesh} scale={[.58,.58,.58] } />
+          <EventStateBubble content={ property.events ? property.events[currentEventIndex].summary :'' } height={meshHeight} />
+          <Html>
+            <audio ref={audioRef} src="/audios/jump.wav" />
+          </Html>
+      </mesh>
+
+
+
+  
 
 
 }

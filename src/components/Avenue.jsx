@@ -19,12 +19,10 @@ export default function Avenue() {
 
 
   const [items, setItems] = useState([
-   {id : 'sample&&SampleCalendar' , cellNumb : 22  },
-
-   {id : 'sample&&BruceLee' , cellNumb : 11 },   
-   {id : 'sample&&Einstein' ,  cellNumb : 5},
-   {id : 'sample&&Darwin' ,  cellNumb : 4},
-
+   {id : 'sample&&SampleCalendar' , cellNumb : 0  },
+   {id : 'sample&&BruceLee' , cellNumb : 1 },   
+   {id : 'sample&&Einstein' ,  cellNumb : 2},
+   {id : 'sample&&Darwin' ,  cellNumb : 3},
   ])
 
   const [selectedItem, setSelectedItem] = useState();
@@ -49,7 +47,8 @@ export default function Avenue() {
     setItems( _items =>{
       return _items.map( _item =>{
         const cellNumb = _item.cellNumb;
-        const transform = grid[cellNumb];       
+        const transform = grid[cellNumb];
+        console.log( transform)
        return {..._item, ...transform};
       })
     })
@@ -86,15 +85,14 @@ export default function Avenue() {
   <OrbitControls />
     <Sky />
 
-    
+        <TerrainMesh editMode={true} setGrids={setGrid} onMouseEnter={()=>{}} onClick={()=>{}} />
+        {items.map( (item,i) =>
+        <House key={i} property ={item} onClick={_props=>{  onHouseClicked(i, _props )  }} />
+    )}
 
-    <SVGTerrain scale={30} editMode={editMode} onCellUpdate={setGrid}/>
 
 <Ocean />
 
-    {items.map( (item,i) =>
-        <House key={i} property ={item} onClick={_props=>{  onHouseClicked(i, _props )  }} />
-    )}
 
 
   
