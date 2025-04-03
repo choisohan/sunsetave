@@ -15,7 +15,7 @@ export default function Sky() {
 
     useEffect(()=>{
       skymat.uniforms.uTime.value = timestampToHourFloat(timestamp);
-      skymat.uniforms.uTimestamp.value = timestamp ;
+      skymat.uniforms.uTimestamp.value = timestamp;
     },[timestamp])
 
   return (

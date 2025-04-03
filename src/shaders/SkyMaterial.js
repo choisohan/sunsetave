@@ -67,10 +67,10 @@ export const SkyMaterial =  ( SkyColorMap )=>{
             offset.x -=  uTimestamp/100000000.;
             vec2 uv =  fract( (vUv ) + offset );
             float noise =  texture2D( uPerlinNoiseMap, uv).x;
-            noise = sin(noise + uTimestamp/100000000. ) *.5 +.5; 
-            float ramp = SkyRamp( uSkyHeight + .15 , .4);
-            float result  = ramp - noise  ; 
-            result = smoothstep(-.5,.5 ,  result );
+            noise = sin(noise + uTimestamp/100000000. ); 
+            float ramp = SkyRamp( uSkyHeight+.2  , .3);
+            float result  = ramp- noise ; 
+              result = smoothstep(-.5,.5 ,  result );
             return  result;
         }
 
@@ -117,7 +117,7 @@ export const SkyMaterial =  ( SkyColorMap )=>{
 
             gl_FragColor= vec4( color , 1. );
 
-           // gl_FragColor = vec4( vec2(clouds2), .0, 1. );
+            //gl_FragColor = vec4( vec3(CloudScale() ), 1. );
 
 
             
