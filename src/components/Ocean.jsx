@@ -18,7 +18,7 @@ export default function Ocean() {
 
   return (
     <mesh  rotation={[-Math.PI / 2, 0, 0]} material={mat} position={[0,-1,0]}>
-      <planeGeometry args={[100,100]}/>
+      <planeGeometry args={[500,500]}/>
     </mesh>
     )
 }

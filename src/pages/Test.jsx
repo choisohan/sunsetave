@@ -9,6 +9,10 @@ import InstancingOnGrid from '../components/InstancingOnGrid'
 import SVGTerrain from '../components/SVGTerrain'
 import { Euler, Vector3 } from 'three'
 import LeavesMaterial from '../shaders/LeavesMaterial'
+import { SkyMaterial } from '../shaders/SkyMaterial'
+import { useSkyColorMap } from '../contexts/envContext'
+import { Pixelate } from '../shaders/CustomPostProcessing'
+
 
 export default function Test() {
 
@@ -19,7 +23,10 @@ export default function Test() {
     position: new Vector3(0,5,9), rotation: new Vector3()
   });
 
+  const skyColorMap = useSkyColorMap();
   const meshRef = useRef();
+
+
 
   useEffect(()=>{
     console.log( meshRef.current)
@@ -33,14 +40,19 @@ export default function Test() {
   }
 
   return (<>
-    <Canvas camera={{position: [0,70,50], fov:30}}  style={{width:'100vw', height:'100vh', backgroundColor:"pink" }}   >
+    <Canvas camera={{position: [0,0,50], fov:30}}  style={{width:'100vw', height:'100vh', backgroundColor:"pink" }}   >
         
         <OrbitControls />
 
+    <Pixelate />
 
-        <mesh material ={LeavesMaterial()} ref={meshRef} >
-          <torusKnotGeometry args={[10, 3, 100, 16]}  />
+        <mesh  material={SkyMaterial(skyColorMap)}>
+          <sphereGeometry args={[100, 16, 16]} />
         </mesh>
+      
+
+
+
 
 {/*
         <group >

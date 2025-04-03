@@ -85,7 +85,7 @@ export default function Avenue() {
   <OrbitControls />
     <Sky />
 
-        <TerrainMesh editMode={true} setGrids={setGrid} onMouseEnter={()=>{}} onClick={()=>{}} />
+        <TerrainMesh editMode={editMode} setGrids={setGrid} onMouseEnter={()=>{}} onClick={()=>{}} />
         {items.map( (item,i) =>
         <House key={i} property ={item} onClick={_props=>{  onHouseClicked(i, _props )  }} />
     )}

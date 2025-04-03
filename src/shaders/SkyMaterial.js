@@ -97,14 +97,16 @@ export const SkyMaterial =  ( SkyColorMap )=>{
             vec3 color;
             float skyRamp = SkyRamp( uSkyHeight , .3 ) ; 
             color = mix(skyColorBottom, skyColorMiddle , skyRamp ) ; 
-            color = mix( color , skyColorTop , smoothstep(.1, 1. , vUv.y) ) ;   
+            color = mix( color , skyColorTop , smoothstep(.1 , 1. , vUv.y) ) ;   
 
 
             vec2 clouds1 = Clouds( .0 ,.0);
             vec2 clouds2 = Clouds( .73 , .33 );
 
             vec2 cloudsMixed = mix(clouds1, clouds2, (clouds2.y) );
-            cloudsMixed.x =  step( .5, cloudsMixed.x ); // shaded
+            cloudsMixed.x =  step( .25, cloudsMixed.x ) *.5 +  smoothstep( .0, .6, cloudsMixed.x )*1.5;
+           // cloudsMixed.x -=  step( .2, -cloudsMixed.x )*.25; // shaded
+
             cloudsMixed.y *=  CloudScale() ;
             cloudsMixed.y = step( .5, cloudsMixed.y ); // cloudAlpha
 
@@ -114,6 +116,8 @@ export const SkyMaterial =  ( SkyColorMap )=>{
 
 
             gl_FragColor= vec4( color , 1. );
+
+           // gl_FragColor = vec4( vec2(clouds2), .0, 1. );
 
 
             
@@ -126,7 +130,7 @@ export const SkyMaterial =  ( SkyColorMap )=>{
             uSkyHeight :{value: 0.18 },
             uSkyColorMap : {value: SkyColorMap },
             uPerlinNoiseMap : {value: PerlinNoiseMap },
-            uTime : { value : 0  }, //define sky color and move the cloud
+            uTime : { value : 0.7}, //define sky color and move the cloud
             uTimestamp: {value: 0 },
             uCloudiness: {value : 0. },  // desaturate the color of sky
             uSeason : {value : .5 } //eg. 0 = spring, .25 = summer, .5 = fall, .75 = weather
