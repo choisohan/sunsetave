@@ -4,13 +4,7 @@ import { TextureLoader } from "three";
 import { useState } from "react";
 
 
-export const OceanMaterial = ( SkyColorMap, time ) => {
-    const PerlinNoiseMap =  useLoader(TextureLoader, '/textures/common/PerlinNoise.png');
-    PerlinNoiseMap.minFilter= NearestFilter;
-    //const [map, setMap] = useState()
-
-
-
+export const OceanMaterial = () => {
     return new RawShaderMaterial({
     vertexShader:`
         uniform mat4 projectionMatrix;
@@ -59,7 +53,6 @@ export const OceanMaterial = ( SkyColorMap, time ) => {
             vec2 coord = vUv ;
             coord.y+= (vViewDir.z*.1); 
             coord= fract(coord);
-            //fract(vViewDir.xy * vec2(.25 , 1. ) *.5); 
             float result = texture2D( uPerlinNoiseMap, coord).x;
             return  result; 
         }
@@ -98,9 +91,9 @@ export const OceanMaterial = ( SkyColorMap, time ) => {
         `,
         transparent: false, 
         uniforms:{
-            uPerlinNoiseMap : {value: PerlinNoiseMap}, 
-            uSkyColorMap : {value: SkyColorMap },
-            uTime : { value : time  }, //define sky color and move the cloud
+            uPerlinNoiseMap : {value: null }, 
+            uSkyColorMap : {value: null  },
+            uTime : { value : null  }, //define sky color and move the cloud
             uCloudiness: {value : 0. },  // desaturate the color of sky
             uSeason : {value : .5 } //eg. 0 = spring, .25 = summer, .5 = fall, .75 = weather
         }

@@ -1,12 +1,6 @@
 import { Color, RawShaderMaterial, Vector2 } from 'three'
-import { useLoader } from '@react-three/fiber';
-import { TextureLoader } from 'three';
-import { useMemo } from 'react';
+
 export default function LeavesMaterial() {
-
-   // const skyColorMap = useLoader(TextureLoader, '/textures/env/skyColormap.png');;
-    //const perlinNoiseNormalMap = useLoader(TextureLoader, '/textures/common/PerlinNoiseNormal.png');
-
 
     return new RawShaderMaterial({
     vertexShader:`

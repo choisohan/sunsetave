@@ -24,6 +24,8 @@ const useTextures =  () => {
       ? paths.reduce((acc, path, i) => {
           acc[path.replace('/textures/','').replace('.png','')] = textures[i];
           textures[i].magFilter = NearestFilter;
+          textures[i].generateMipmaps = false;
+          textures[i].wrapS = textures[i].wrapT = ClampToEdgeWrapping; //prevent bleeding
           return acc;
         }, {})
       : null;

@@ -4,11 +4,8 @@ import { Canvas } from '@react-three/fiber'
 import { SkipForwardButton , SkipBackwardButton, FastForwardButton } from '../components/Buttons'
 import {Clock} from '../components/Clock'
 import {  Vector3 } from 'three'
-import { SkyMaterial } from '../shaders/SkyMaterial'
-import { useSkyColorMap } from '../contexts/envContext'
 import { Pixelate } from '../shaders/CustomPostProcessing'
-import { useTexture } from '../contexts/modelContext'
-
+import Sky from '../components/Sky'
 export default function Test() {
 
 
@@ -18,15 +15,7 @@ export default function Test() {
     position: new Vector3(0,5,9), rotation: new Vector3()
   });
 
-  const skyColorMap = useSkyColorMap();
   const meshRef = useRef();
-  const textures = useTexture();
-
-
-  useEffect(()=>{
-    console.log('textures')
-    console.log( textures )
-  },[textures])
 
 
 
@@ -42,10 +31,7 @@ export default function Test() {
 
     <Pixelate />
 
-        <mesh  material={SkyMaterial(skyColorMap)}>
-          <sphereGeometry args={[100, 16, 16]} />
-        </mesh>
-      
+    <Sky />
 
 
 

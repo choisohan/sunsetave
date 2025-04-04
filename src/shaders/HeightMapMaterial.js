@@ -1,7 +1,7 @@
 import {  RawShaderMaterial, Vector2  } from 'three';
 
 
-export const HeightMapMaterial = (skyColorMap)=>  new RawShaderMaterial({
+export const HeightMapMaterial = ()=>  new RawShaderMaterial({
     vertexShader: `
         uniform mat4 projectionMatrix;
     uniform mat4 viewMatrix;
@@ -63,7 +63,7 @@ export const HeightMapMaterial = (skyColorMap)=>  new RawShaderMaterial({
         gl_FragColor= vec4(color,1. );
     }
     `,uniforms:{
-        uSkyColorMap: {value : skyColorMap},
+        uSkyColorMap: {value : null},
         uTime: {value: .5 },
         uHeightMap:{value: null },
         uHeightScale: {value:.5}

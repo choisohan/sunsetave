@@ -2,12 +2,7 @@ import { BackSide, RawShaderMaterial } from "three";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { TextureLoader ,NearestFilter } from "three";
 
-export const SkyMaterial =  ( SkyColorMap )=>{
-    const CloudsMap = useLoader(TextureLoader, '/textures/env/clouds.png');
-    CloudsMap.minFilter= NearestFilter;
-    
-    const PerlinNoiseMap = useLoader(TextureLoader, '/textures/common/PerlinNoise.png');
-
+export const SkyMaterial =  (  )=>{
     return new RawShaderMaterial({
         vertexShader:`
         uniform mat4 projectionMatrix;
@@ -134,11 +129,11 @@ export const SkyMaterial =  ( SkyColorMap )=>{
         `,
         side:BackSide,
         uniforms:{
-            uCloudMap : {value: CloudsMap},
+            uCloudMap : {value: null},
             uCloudScale : {value: 5 }, 
             uSkyHeight :{value: 0.18 },
-            uSkyColorMap : {value: SkyColorMap },
-            uPerlinNoiseMap : {value: PerlinNoiseMap },
+            uSkyColorMap : {value: null },
+            uPerlinNoiseMap : {value: null  },
             uTime : { value : 0.7}, //define sky color and move the cloud
             uTimestamp: {value: 0 },
             uCloudiness: {value : 0. },  // desaturate the color of sky

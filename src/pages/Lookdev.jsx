@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Sky from '../components/Sky'
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
@@ -6,19 +6,16 @@ import { SkipForwardButton , SkipBackwardButton, FastForwardButton } from '../co
 import {Clock} from '../components/Clock'
 import { OceanMaterial } from '../shaders/WaterMaterial'
 import { useTimestamp } from '../contexts/envContext'
-import { useSkyColorMap } from '../contexts/envContext'
-import BasicMaterial from '../shaders/BasicMaterial'
 
 import TestMaterial from '../shaders/TestMaterial'
-import { TubeGeometry } from 'three'
 import TerrainMesh from '../components/TerrainMesh'
+import { useTexture } from '../contexts/modelContext'
 
 
 
 export default function Lookdev() {
 
     const timestamp = useTimestamp();
-    const skyColorMap = useSkyColorMap();
 
 
 
@@ -31,10 +28,6 @@ export default function Lookdev() {
 
 
 <TerrainMesh editMode={false} onGridUpdate={()=>{}}onMouseMoveOnGrid={()=>{}} onComplete={()=>{}} />
-      <mesh material={OceanMaterial(skyColorMap, timestamp)} position={[0,-2,0]}>
-          <boxGeometry args={[10,.01,10]} />
-      </mesh>   
-
 
       <mesh position={[0,0,0]} material={TestMaterial()}>
         <sphereGeometry args={[1,20,20]} />  

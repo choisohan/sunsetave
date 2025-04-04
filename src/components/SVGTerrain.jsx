@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { AdditiveBlending, Box3, Color, DoubleSide, Group, MathUtils, Mesh, MeshBasicMaterial, ShapeGeometry, TextureLoader, Vector2, Vector3 } from 'three'
-import { LineGeometry, LineMaterial, SVGLoader } from 'three/examples/jsm/Addons.js'
+import { AdditiveBlending, Box3, DoubleSide, Group, MathUtils, Mesh, MeshBasicMaterial, ShapeGeometry, TextureLoader, Vector2, Vector3 } from 'three'
+import {  SVGLoader } from 'three/examples/jsm/Addons.js'
 import { useLoader } from "@react-three/fiber";
 
 import { HeightMapMaterial } from '../shaders/HeightMapMaterial';
 import { GridMaterial } from '../shaders/GridMaterial';
 import StrokeMesh from './StrokeMesh';
-import TestMaterial from '../shaders/TestMaterial';
-import StreetLineMaterial from '../shaders/StreetLineMaterial';
-import { useSkyColorMap, useTimestamp } from '../contexts/envContext';
+import { useTimestamp } from '../contexts/envContext';
 import { timestampToHourFloat } from './Clock';
+import { useTexture } from '../contexts/modelContext';
 
 export default function SVGTerrain(props) {
 
@@ -31,7 +30,7 @@ export default function SVGTerrain(props) {
     const [gridScale, setGridScale] = useState(1);
     const [resolution, setResolution] = useState(1024);
 
-    const skyColorMap = useSkyColorMap(); 
+    const textureContext = useTexture();
 
     const [editMode, setEditMode] = useState( props.editMode || true )
 
@@ -56,12 +55,17 @@ export default function SVGTerrain(props) {
     useEffect(()=>{
         if(!meshRef.current || !heightMap ) return;
         ctx.drawImage( heightMap.image,  0, 0, resolution, resolution );
-        const material = HeightMapMaterial(skyColorMap);
+        const material = HeightMapMaterial();
+
+    },[heightMap])
+
+    useEffect(()=>{
+        /*
         material.uniforms.uHeightMap.value = heightMap; 
         material.uniforms.uHeightScale.value=heightScale;
         meshRef.current.material = material;
-
-    },[heightMap])
+        */
+    },[textureContext])
 
     useEffect(()=>{
         meshRef.current.material.uniforms.uTime.value=timestampToHourFloat(timestamp);

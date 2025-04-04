@@ -10,9 +10,8 @@ import { fetchCalendar } from '../calendar/FetchCalendar';
 import { getCurrentEventIndex, SortCalendarData } from '../calendar/SortEvents';
 import { Vector3 , Box3 } from 'three';
 import { useThree } from '@react-three/fiber';
-import { useSkyColorMap, useTimestamp } from '../contexts/envContext';
+import { useTimestamp } from '../contexts/envContext';
 import { timestampToHourFloat } from './Clock';
-
 
 
 export default function House(props){
@@ -25,7 +24,6 @@ export default function House(props){
   const [isHovered, setIsHovered] = useState(false); 
   const meshRef = useRef();
   const [meshHeight, setMeshHeight] = useState(0);
-  const skyColorMap = useSkyColorMap();
 
   const timestamp = useTimestamp();
 
@@ -73,7 +71,7 @@ export default function House(props){
       texturefullName = section + '/A001'
     }
     _mat.uniforms.uMap.value =TextureContext[texturefullName]
-    _mat.uniforms.uSkyColorMap.value =skyColorMap; 
+    _mat.uniforms.uSkyColorMap.value =TextureContext['env/skyColormap'];
     _mat.uniforms.uTime.value= timestampToHourFloat(timestamp + property.timeoffset);
   }
 

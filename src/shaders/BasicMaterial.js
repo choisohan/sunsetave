@@ -1,12 +1,8 @@
 import React from 'react'
 import { RawShaderMaterial, Vector2 } from 'three'
-import { useLoader } from '@react-three/fiber';
-import { TextureLoader } from 'three';
 
 export default function BasicMaterial() {
-
-    const skyColorMap = useLoader(TextureLoader, '/textures/env/skyColormap.png');;
-    
+   
     return new RawShaderMaterial({
     vertexShader:`
         uniform mat4 projectionMatrix;
@@ -69,7 +65,7 @@ export default function BasicMaterial() {
     uniforms:{
         uMap :{value: null},
         uMapRepeat:{value: new Vector2(1.)},
-        uSkyColorMap:{value: skyColorMap},
+        uSkyColorMap:{value: null },
         uTime:{value: 0.5}
 
     }

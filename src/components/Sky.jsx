@@ -1,25 +1,32 @@
 import React, { useEffect } from 'react'
 import { SkyMaterial } from '../shaders/SkyMaterial'
 import { useState } from 'react';
-import { useSkyColorMap, useTimestamp } from '../contexts/envContext';
+import { useTimestamp } from '../contexts/envContext';
 import { timestampToHourFloat } from './Clock';
+import { useTexture } from '../contexts/modelContext';
 
 
 export default function Sky() {
-    const skyColorMap = useSkyColorMap();
     const timestamp = useTimestamp();
+    const textureContext = useTexture();
+    const [mat, setMat] = useState( SkyMaterial());
 
-    const [skymat, setSkyMat] = useState( SkyMaterial(skyColorMap));
-
+    useEffect(()=>{
+      mat.uniforms.uTime.value = timestampToHourFloat(timestamp);
+      mat.uniforms.uTimestamp.value = timestamp;
+    },[timestamp])
 
 
     useEffect(()=>{
-      skymat.uniforms.uTime.value = timestampToHourFloat(timestamp);
-      skymat.uniforms.uTimestamp.value = timestamp;
-    },[timestamp])
+      mat.uniforms.uSkyColorMap.value = textureContext['env/skyColormap'] ;
+      mat.uniforms.uPerlinNoiseMap.value = textureContext['common/PerlinNoise'] ;
+      mat.uniforms.uCloudMap.value = textureContext['env/clouds'] ;
+
+    },[textureContext])
+
 
   return (
-    <mesh  material={skymat}>
+    <mesh  material={mat}>
       <sphereGeometry args={[100, 16, 16]} />
     </mesh>
     )

@@ -2,12 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
 import { GridMaterial } from '../shaders/GridMaterial';
-import {  useSkyColorMap, useTimestamp  } from '../contexts/envContext';
+import {  useTimestamp  } from '../contexts/envContext';
 import BasicMaterial from '../shaders/BasicMaterial';
 import { timestampToHourFloat } from './Clock';
 import { Euler, NearestFilter, Quaternion, Vector3 } from 'three';
 import LeavesMaterial from '../shaders/LeavesMaterial';
-import { TextureLoader } from 'three';
+import { useTexture } from '../contexts/modelContext';
 
 
 
@@ -19,11 +19,7 @@ export default function TerrainMesh(props){
     const timestamp = useTimestamp();
     const [grids, setGrids] = useState([]);
     const [materials, setMaterials] = useState([]);
-
-
-    const perlinNoiseNormalMap = useLoader(TextureLoader, '/textures/common/PerlinNoiseNormal.png');
-    const skyMap = useSkyColorMap(); 
-
+    const textureContext = useTexture();
 
     const ReplaceMaterial= _mat=>{
  
@@ -39,20 +35,27 @@ export default function TerrainMesh(props){
     
         if(_mat.name.includes('tree')){
             _mat = LeavesMaterial();
-            _mat.uniforms.uPerlinNoiseNormal.value = perlinNoiseNormalMap;
-            _mat.uniforms.uSkyColorMap.value  =skyMap; 
-            
         }
         else{
             _mat = BasicMaterial();
             _mat.uniforms.uMap.value = map;
-            console.log( map.repeat)
             _mat.uniforms.uMapRepeat.value = map.repeat; 
         }
         setMaterials(arr=> ([...arr, _mat]))
         return _mat;
     }
 
+    useEffect(()=>{
+        materials.forEach( mat=>{
+            if(mat.uniforms.uPerlinNoiseNormal){
+                mat.uniforms.uPerlinNoiseNormal.value = textureContext['common/perlinNoiseNormal'];
+            }
+            if(mat.uniforms.uSkyColorMap){
+                console.log( mat)
+                mat.uniforms.uSkyColorMap.value = textureContext['env/skyColormap'];
+            }
+        })
+    },[ textureContext, materials ])
 
 
     useEffect(()=>{
