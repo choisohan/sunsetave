@@ -51,9 +51,6 @@ export default function House(props){
 
 
 
-
-
-
   useEffect(()=>{
     if ( modelContext ) {
       updateMesh();
@@ -63,12 +60,18 @@ export default function House(props){
 
   const updateMap = (_mat) =>{
     var section = _mat.name.replace('_mat','');
+
+    var folderName = section;
+    //WallB is using WallA folder as a texture source
+    if( folderName[folderName.length-1] == "B"){
+      folderName= folderName.replace('B','A');
+    }
     var texturefullName; 
     if(section in property){
-      texturefullName = section + '/'+ property[section]
+      texturefullName = folderName + '/'+ property[section]
     }
     else{
-      texturefullName = section + '/1'
+      texturefullName = folderName + '/1'
     }
     _mat.uniforms.uMap.value =TextureContext[texturefullName];
     _mat.uniforms.uSkyColorMap.value =TextureContext['env/skyColormap'];

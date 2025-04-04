@@ -38,13 +38,20 @@ export default function HouseBuilder(props) {
     var nextIndex = currentInt + changeNumb;
 
 
-    const mapOptions = Object.keys(textureContext).filter(key=> key.includes(selectedSection) ).map(name=> parseInt(name.split('/')[1]));
+    var folderName = selectedSection;
+    if( folderName[folderName.length-1] == "B"){
+      folderName= folderName.replace('B','A');
+    }
+
+    const mapOptions = Object.keys(textureContext).filter(key=> key.includes(folderName) ).map(name=> parseInt(name.split('/')[1]));
     if(!mapOptions[nextIndex-1]){
       nextIndex = 1; 
     }
 
     setProperty(_property =>{
       const copy = {..._property};
+      console.log( selectedSection, nextIndex )
+
       copy[selectedSection] = nextIndex ;
       return copy; 
     })

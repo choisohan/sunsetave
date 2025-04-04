@@ -20,12 +20,10 @@
   "/textures/wallA/3.png",
   "/textures/wallA/4.png",
   "/textures/wallA/5.png",
-  "/textures/wallB/1.png",
+  "/textures/wallA/6.png",
   "/textures/windowsA/1.png",
   "/textures/windowsA/2.png",
-  "/textures/windowsB/1.png",
-  "/textures/windowsB/2.png",
-  "/textures/windowsB/3.png",
-  "/textures/windowsB/4.png",
-  "/textures/windowsB/5.png"
+  "/textures/windowsA/3.png",
+  "/textures/windowsA/4.png",
+  "/textures/windowsA/5.png"
 ]
