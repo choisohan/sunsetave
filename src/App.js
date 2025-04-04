@@ -8,7 +8,7 @@ import { EnvProvider } from './contexts/envContext';
 import Test from './pages/Test';
 import About from './pages/About';
 import Lookdev from './pages/Lookdev';
-
+import HouseBuilder from './components/HouseBuilder';
 function App() {
 
   return (
@@ -21,6 +21,7 @@ function App() {
           <Route path="/test" element={<Test /> } />
           <Route path="/about" element={<About /> } />
           <Route path="/dev" element={<Lookdev /> } />
+          <Route path="/builder" element={<HouseBuilder /> } />
 
           <Route path="/:param" element={<HouseViewer /> } />
 

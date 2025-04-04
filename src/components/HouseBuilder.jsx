@@ -9,7 +9,7 @@ import { Pixelate } from '../shaders/CustomPostProcessing';
 
 
 export default function HouseBuilder(props) {
-  const [property, setProperty]= useState({mesh:'A1', roof:'R1', wall:'W1', windows:'W1', time: .35 });
+  const [property, setProperty]= useState( { time: .5 , roof : 1, wallA:1, wallB:1, door:1, shade:1, windowsA:1, windowsB:1 });
   const modelContext = useHouseModel(); 
   const textureContext = useTexture(); 
   const [currentInt, setCurrentInt] = useState(0)
@@ -34,9 +34,33 @@ export default function HouseBuilder(props) {
   }
 
   const swapMap = ( selectedSection, changeNumb)=>{
+    const currentInt = property[selectedSection] ; 
+    var nextIndex = currentInt + changeNumb;
+
+
+    const mapOptions = Object.keys(textureContext).filter(key=> key.includes(selectedSection) ).map(name=> parseInt(name.split('/')[1]));
+    if(!mapOptions[nextIndex-1]){
+      nextIndex = 1; 
+    }
+
+    setProperty(_property =>{
+      const copy = {..._property};
+      copy[selectedSection] = nextIndex ;
+      return copy; 
+    })
+
+    /*
+    setProperty(_property =>{
+      const copy = {..._property};
+      copy[selectedSection] = mapOptions[nextIndex]
+      return copy; 
+    })
+      */
+
+    /*
     const mapOptions = Object.keys(textureContext).filter(key=> key.includes(selectedSection) ).map(name=> name.split('/')[1]);
     const maxNumb = mapOptions.length; 
-    const currentName = property[selectedSection]; 
+    
 
 
     const currentIndex =mapOptions.indexOf(currentName);
@@ -50,40 +74,45 @@ export default function HouseBuilder(props) {
       copy[selectedSection] = mapOptions[nextIndex]
       return copy; 
     })
+
+    */ 
   }
 
   const generateRandom = ()=>{
+    /*
     swapGeometry(randInt(1,4));
     swapMap('roof',randInt(0,5));
     swapMap('wall',randInt(0,5));
     swapMap('windows',randInt(0,5));
     swapMap('signs',randInt(0,0));
+    */
 
   }
 
   return (<>
-    <div style={{display:'flex', width:'100%', maxWidth:'600px', gap:'10px'}} >
+    <div style={{display:'flex', width:'100%', maxWidth:'800px', gap:'10px'}} >
 
-      <Canvas style={{aspectRatio:1.725}} camera={{position: [2,1,4], fov: 20 }}>
-        <OrbitControls />
-        <House property ={property} onClick={()=>{}}/>
+      <Canvas style={{aspectRatio:1.725}} camera={{position: [3,1,12], fov: 10 }}>
+          <OrbitControls  target={[0,.9,0]}/>
           <Sky /> 
           <Pixelate />
+          <House property ={property} onClick={()=>{}} updateTime={false}/>
       </Canvas>
 
       <div className='options'>
         <OptionSelector onChange={swapGeometry} >Geometry</OptionSelector>
-        <OptionSelector onChange={ d =>{swapMap('roof',d)} } >Roof</OptionSelector>
-        <OptionSelector onChange={ d =>{swapMap('wall',d)} } >Wall</OptionSelector>
-        <OptionSelector onChange={ d =>{swapMap('windows',d)} } >Windows</OptionSelector>
-        <OptionSelector onChange={ d =>{swapMap('signs',d)} } >Signs</OptionSelector>
+        <OptionSelector onChange={ d =>{ swapMap('roof',d) } } >Roof</OptionSelector>
+        <OptionSelector onChange={ d =>{ swapMap('wallA',d) } } >Wall A</OptionSelector>
+        <OptionSelector onChange={ d =>{ swapMap('wallB',d) } } >Wall B</OptionSelector>
+        <OptionSelector onChange={ d =>{ swapMap('windowsA',d) } } >Windows A</OptionSelector>
+        <OptionSelector onChange={ d =>{ swapMap('windowsB',d) } } >Windows B</OptionSelector>
+        <OptionSelector onChange={ d =>{ swapMap('door',d) } } >Door</OptionSelector>
+        <OptionSelector onChange={ d =>{ swapMap('shade',d) } } >Shade</OptionSelector>
         <button onClick={generateRandom}>R</button>
 
       </div>
-
-
     </div>
-    
+
     <div>
       Out
     </div>

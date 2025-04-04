@@ -24,8 +24,8 @@ export default function House(props){
   const [isHovered, setIsHovered] = useState(false); 
   const meshRef = useRef();
   const [meshHeight, setMeshHeight] = useState(0);
-
   const timestamp = useTimestamp();
+  const [updateTime, setUpdateTime]  = useState( true|| props.updateTime )
 
 
 
@@ -68,15 +68,15 @@ export default function House(props){
       texturefullName = section + '/'+ property[section]
     }
     else{
-      texturefullName = section + '/A001'
+      texturefullName = section + '/1'
     }
-    _mat.uniforms.uMap.value =TextureContext[texturefullName]
+    _mat.uniforms.uMap.value =TextureContext[texturefullName];
     _mat.uniforms.uSkyColorMap.value =TextureContext['env/skyColormap'];
-    _mat.uniforms.uTime.value= timestampToHourFloat(timestamp + property.timeoffset);
   }
 
   useEffect(()=>{
-    if(!mesh) return;
+    if(!mesh || !updateTime) return;
+
     if( Array.isArray(mesh.material) ){
       mesh.material.forEach( _mat=>{
         _mat.uniforms.uTime.value= timestampToHourFloat(timestamp + property.timeoffset);

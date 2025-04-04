@@ -46,7 +46,6 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
   
       uniform sampler2D uMap; 
       uniform sampler2D uSkyColorMap; 
-      uniform vec2 uUDIM; 
       uniform bool uMouseOver; 
       uniform bool uIsWindow; 
       uniform float uTime; 
@@ -105,7 +104,8 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           }
 
           if (diffuseMap.a < 0.5) discard; // Cutout effect
-          return vec4( diffuseMap.rgb * lighting , 1. ); ;
+          return vec4( diffuseMap.rgb * lighting , 1. ); 
+
       }
 
   
@@ -140,25 +140,20 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
               vec3 cloudShadow = texture2D( uSkyColorMap, vec2( 3.0/5. +.1, fract(uTime) ) ).xyz;
               vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
 
-
-              
               vec3 reflectCol = mix( skyColorMiddle, skyColorBottom , reflectionMask); 
               float reflecStr = GetStrengthByTime(12, 6);
               reflecStr = smoothstep(.0, .1 , reflecStr); 
               gl_FragColor.xyz = mix(  gl_FragColor.xyz  , reflectCol  , glassMask* reflecStr);
-
           
           }
 
-
-
+        
 
       }
       `,
       uniforms:{
           uMap: { value: null },
           uSkyColorMap:{ value: null },
-          uUDIM : {value: new Vector2(0.) },
           uMouseOver: { value : false },
           uIsWindow:{value: false}, 
           uTime: { value : 0.5 } //24 * 60 = 1440
