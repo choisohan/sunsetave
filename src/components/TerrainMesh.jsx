@@ -27,10 +27,10 @@ export default function TerrainMesh(props){
 
     const ReplaceMaterial= _mat=>{
  
-        var map; 
-    
+        var map;     
         if(_mat.map){
             map = _mat.map;
+            map.magFilter = NearestFilter;
             map.minFilter = NearestFilter; 
         }
     
@@ -46,6 +46,8 @@ export default function TerrainMesh(props){
         else{
             _mat = BasicMaterial();
             _mat.uniforms.uMap.value = map;
+            console.log( map.repeat)
+            _mat.uniforms.uMapRepeat.value = map.repeat; 
         }
         setMaterials(arr=> ([...arr, _mat]))
         return _mat;

@@ -70,7 +70,8 @@ export const SkyMaterial =  ( SkyColorMap )=>{
             noise = sin(noise + uTimestamp/100000000. ); 
             float ramp = SkyRamp( uSkyHeight+.2  , .3);
             float result  = ramp- noise ; 
-              result = smoothstep(-.5,.5 ,  result );
+            result = smoothstep(-.5,.5 ,  result );
+           // result = 1.; 
             return  result;
         }
 
@@ -78,8 +79,14 @@ export const SkyMaterial =  ( SkyColorMap )=>{
             vec2 offset; 
             offset.x +=  uTimestamp/100000000.; 
             offset.y = y; 
-            vec2 rotatingUV =  fract(vUv * vec2(uCloudScale) + offset )  ;
-            vec4 map = texture2D( uCloudMap,   rotatingUV );
+
+
+            vec2 uv = vUv + offset; 
+            uv.x += floor(uv.y * uCloudScale * 5. ) *.1;
+            uv =  fract( uv * vec2(uCloudScale))  ;
+
+
+            vec4 map = texture2D( uCloudMap,   uv );
             float shaded = dot( vec3( 0.0,1.0,.0 ) , map.xyz );
             return vec2(shaded , map.a);
         }
@@ -115,9 +122,11 @@ export const SkyMaterial =  ( SkyColorMap )=>{
             color =  mix(color, cloudColored, cloudsMixed.y);
 
 
+
             gl_FragColor= vec4( color , 1. );
 
-            //gl_FragColor = vec4( vec3(CloudScale() ), 1. );
+
+
 
 
             

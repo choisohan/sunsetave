@@ -1,5 +1,5 @@
 import React from 'react'
-import { RawShaderMaterial } from 'three'
+import { RawShaderMaterial, Vector2 } from 'three'
 import { useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 
@@ -47,6 +47,7 @@ export default function BasicMaterial() {
 
         uniform sampler2D uSkyColorMap; 
         uniform sampler2D uMap; 
+        uniform vec2 uMapRepeat; 
 
         uniform float uTime; 
 
@@ -54,8 +55,8 @@ export default function BasicMaterial() {
 
             vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
 
-
-            vec3 diffuseMap = texture2D( uMap, vUv ).xyz;
+            vec2 uv = fract(vUv * uMapRepeat); 
+            vec3 diffuseMap = texture2D( uMap, uv ).xyz;
 
             vec3 diffuse = diffuseMap;
             diffuse *= cloudHighlight; 
@@ -67,6 +68,7 @@ export default function BasicMaterial() {
     `,
     uniforms:{
         uMap :{value: null},
+        uMapRepeat:{value: new Vector2(1.)},
         uSkyColorMap:{value: skyColorMap},
         uTime:{value: 0.5}
 

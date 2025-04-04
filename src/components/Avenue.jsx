@@ -81,9 +81,9 @@ export default function Avenue() {
   return (
     <>
     <Canvas camera={{position: [0,50,0], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
-<Pixelate />
-  <OrbitControls />
-    <Sky />
+    <Pixelate />
+    <OrbitControls />
+      <Sky />
 
         <TerrainMesh editMode={editMode} setGrids={setGrid} onMouseEnter={()=>{}} onClick={()=>{}} />
         {items.map( (item,i) =>
