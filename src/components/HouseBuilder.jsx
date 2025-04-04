@@ -9,7 +9,7 @@ import { Pixelate } from '../shaders/CustomPostProcessing';
 
 
 export default function HouseBuilder(props) {
-  const [property, setProperty]= useState( { time: .5 , roof : 1, wallA:1, wallB:1, door:1, shade:1, windowsA:1, windowsB:1 });
+  const [property, setProperty]= useState( { time: .5 , mesh:1, roof : 1, wallA:3, wallB:2, door:1, shade:1, windowsA:3, windowsB:2 });
   const modelContext = useHouseModel(); 
   const textureContext = useTexture(); 
   const [currentInt, setCurrentInt] = useState(0)
@@ -56,43 +56,18 @@ export default function HouseBuilder(props) {
       return copy; 
     })
 
-    /*
-    setProperty(_property =>{
-      const copy = {..._property};
-      copy[selectedSection] = mapOptions[nextIndex]
-      return copy; 
-    })
-      */
-
-    /*
-    const mapOptions = Object.keys(textureContext).filter(key=> key.includes(selectedSection) ).map(name=> name.split('/')[1]);
-    const maxNumb = mapOptions.length; 
-    
-
-
-    const currentIndex =mapOptions.indexOf(currentName);
-    var nextIndex = currentIndex + changeNumb; 
-    if(nextIndex>=maxNumb){nextIndex = 0}
-    if(nextIndex < 0){ nextIndex = maxNumb-1}
-
-
-    setProperty(_property =>{
-      const copy = {..._property};
-      copy[selectedSection] = mapOptions[nextIndex]
-      return copy; 
-    })
-
-    */ 
   }
 
   const generateRandom = ()=>{
-    /*
-    swapGeometry(randInt(1,4));
+    
+    swapGeometry(randInt(1,7));
     swapMap('roof',randInt(0,5));
-    swapMap('wall',randInt(0,5));
-    swapMap('windows',randInt(0,5));
-    swapMap('signs',randInt(0,0));
-    */
+    swapMap('wallA',randInt(0,5));
+    swapMap('wallB',randInt(0,5));
+    swapMap('windowsA',randInt(0,5));
+    swapMap('windowsB',randInt(0,5));
+    swapMap('shade',randInt(0,3));
+    swapMap('door',randInt(0,3));
 
   }
 

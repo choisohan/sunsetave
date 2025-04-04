@@ -92,8 +92,8 @@ export default function House(props){
   },[timestamp])
 
   function updateMesh(){
-
-    var meshFound = modelContext[property.mesh]; 
+    const meshName =  'house_'+String( property.mesh).padStart(2,'0')
+    var meshFound = modelContext[meshName]; 
     if(!meshFound){
       meshFound = Object.values(modelContext)[0]
       const bbox = new Box3().setFromObject(meshFound);

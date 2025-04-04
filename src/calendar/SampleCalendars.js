@@ -85,6 +85,7 @@ export const SampleCalendars ={
         door:3,
         shade:3,
         roof:3,
+        mesh:3, 
         events: [
             {
                 summary: "Short Walk after waking up",
@@ -229,6 +230,7 @@ export const SampleCalendars ={
         door:2,
         shade:2,
         roof:2,
+        mesh:5, 
         events:[
             {
                 summary: "Morning Meditation",
@@ -293,6 +295,7 @@ export const SampleCalendars ={
         door:2,
         shade:3,
         roof:3,
+        mesh:2, 
         timezone: "America/New_York",
         events:[
             {
