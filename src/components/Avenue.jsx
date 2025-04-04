@@ -8,7 +8,6 @@ import TerrainMesh from './TerrainMesh'
 import HouseDetailWindow from './HouseDetailWindow'
 import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipForwardButton} from './Buttons'
 import {Clock} from './Clock'
-import SVGTerrain from './SVGTerrain'
 import { OrbitControls } from '@react-three/drei'
 import Ocean from './Ocean'
 
@@ -67,9 +66,12 @@ export default function Avenue() {
   }
 
   const onHouseClicked=(_i, _detailProperty)=>{
-    setSelectedItem({..._detailProperty, i: _i} )  
+
+    const thisItem = {..._detailProperty, i: _i} 
+    setSelectedItem(thisItem)  ;
+
     if(!editMode){
-      setPopup( <HouseDetailWindow property={selectedItem}
+      setPopup( <HouseDetailWindow property={thisItem}
         onClose={()=>{
           setSelectedItem(null);
           setPopup(null);
@@ -102,7 +104,7 @@ export default function Avenue() {
     <div className='fixed z-[1] bottom-0 right-0 ' >
       <div className='bg-white'><Clock /></div>
       <FastForwardButton /><SkipForwardButton />
-      <ReloadButton onClick={()=>{setItems(x=>[...x])}} /> {/* todos : Reload needs more works */}
+      <ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
       <AddNewHouseButton />
       <EditModeButton editMode={editMode} setEditMode={setEditMode}/>
     </div>

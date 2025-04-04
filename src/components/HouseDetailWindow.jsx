@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Clock} from './Clock'
 import PopupWindow from './PopupWindow'
 
 
 
 export default function HouseDetailWindow(props) {
-
+  
   const Header=() => {
     if(!props.property) return; 
     return <div className='w-full h-auto'>
@@ -25,7 +25,6 @@ export default function HouseDetailWindow(props) {
 
 
   const NextEvent = ()=>{
-
     if(!props.property) return; 
     return <div className='text-right'> "Next Event" Start in 3 Hours</div>
     
@@ -39,7 +38,6 @@ export default function HouseDetailWindow(props) {
           {CurrentEvent()}
           {NextEvent()}
       </PopupWindow>
-
     )
   }
 

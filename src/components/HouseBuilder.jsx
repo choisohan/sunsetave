@@ -6,6 +6,7 @@ import { randInt } from 'three/src/math/MathUtils.js';
 import { useHouseModel, useTexture } from '../contexts/modelContext';
 import Sky from './Sky';
 import { Pixelate } from '../shaders/CustomPostProcessing';
+import { CozyButton } from './Buttons';
 
 
 export default function HouseBuilder(props) {
@@ -90,7 +91,7 @@ export default function HouseBuilder(props) {
         <OptionSelector onChange={ d =>{ swapMap('windowsB',d) } } >Windows B</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('door',d) } } >Door</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('shade',d) } } >Shade</OptionSelector>
-        <button onClick={generateRandom}>R</button>
+        <CozyButton onClick={generateRandom} tooltip="A random house">R</CozyButton>
 
       </div>
     </div>
@@ -107,8 +108,8 @@ export default function HouseBuilder(props) {
 
 const OptionSelector = props =>{
   return <div className='optionSelector'>
-    <button onClick={()=>{props.onChange(-1)}}>←</button>
+    <CozyButton onClick={()=>{props.onChange(-1)}}>←</CozyButton>
     {props.children}
-    <button onClick={()=>{props.onChange(+1)}}>→</button>
+    <CozyButton onClick={()=>{props.onChange(+1)}}>→</CozyButton>
     </div>
 } 

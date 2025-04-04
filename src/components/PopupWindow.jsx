@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { CozyButton } from './Buttons';
 
 export default function PopupWindow(props) {
 

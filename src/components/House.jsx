@@ -133,19 +133,27 @@ export default function House(props){
   })
 
   const audioRef = useRef()
+
   useEffect(()=>{
-    gl.domElement.style.cursor = isHovered ? 'pointer': 'default'; 
+    gl.domElement.style.cursor = 'pointer'
+    if(isHovered){
+      gl.domElement.mouseOverItem = property.id;
+    }
+    else{
+      if(gl.domElement.mouseOverItem == property.id){
+        gl.domElement.style.cursor = ''
+      }
+    }
+
+
     if(isHovered && audioRef.current ){
       audioRef.current.volume = .2;
       audioRef.current.play().catch(err=>{
       })
-
     }
-
   },[isHovered])
-   
-//rotation={[-Math.PI / 2, 0, 0]}  
 
+   
   // Render
   if(! mesh ) return; 
 
@@ -154,10 +162,12 @@ export default function House(props){
   rotation = {property.rotation ? [0, property.rotation.z,0] :   [0,0,0] }
               onPointerEnter={()=>{setIsHovered(true)}}
               onPointerOut={()=>{setIsHovered(false)}}
-              onClick={()=>{props.onClick(property)}}>
+              onClick={()=>{ props.onClick(property) }}>
 
-      <primitive object={mesh} scale={[.75,.75,.75] } />
-          <EventStateBubble content={ property.events ? property.events[currentEventIndex].summary :'' } height={meshHeight} />
+      <primitive object={mesh} scale={[.75,.75,.75] }/>
+           {!isHovered ? null :
+            <EventStateBubble height={meshHeight} ownerName={property.name}  event={property.events[currentEventIndex]} />
+           }
           <Html>
             <audio ref={audioRef} src="/audios/jump.wav" />
           </Html>
@@ -171,10 +181,9 @@ export default function House(props){
 }
 
 const EventStateBubble = (props)=>{
-  return <Html zIndexRange={[0, 1]} style={{ transform: "none" }} position={[0, props.height , -0.25]} center style={{
-    background:'white', padding: '5px' , transform: 'translate(-50%,calc(-100% - 10px))', zIndex:1
-    }}>
-    {props.content}
+  return <Html zIndexRange={[0, 1]} position={[0, props.height +.5, -0.25]} center style={{
+    background:'white', padding: '5px' , transform: 'translate(-50%,calc(-100% - 10px))', zIndex:1,}}>
+      {props.ownerName}
     </Html>
 }
 

@@ -17,12 +17,49 @@
   -moz-osx-font-smoothing: grayscale;
 
 }
+
+@import url(styles/canvas.css);
 button{
   padding: 3px 5px;
   margin: 2px; 
+  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
 }
 button:hover{
-  background-color: rgb(221, 133, 61)
+  transform: translate(2px,2px);
+  box-shadow: none;
 }
-@import url(styles/canvas.css);
+.cozyButton{
+  background-color: white;
+  position: relative;
 
+}
+
+.cozyButton:hover .tooltip{
+  visibility:visible;
+}
+.cozyButton .tooltip{
+  visibility: hidden;
+  background-color: aqua;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 100;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -60px;
+  font-size: 80%;
+}
+.cozyButton .tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}

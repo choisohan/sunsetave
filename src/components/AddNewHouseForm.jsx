@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PopupWindow from './PopupWindow'
 import HouseBuilder from './HouseBuilder';
-
+import { CozyButton } from './Buttons';
 
 export default function AddNewHouseForm(props) {
     const [icalURL, setIcalURL] = useState("");
@@ -34,7 +34,7 @@ export default function AddNewHouseForm(props) {
 */}
 
 
-<button onClick={()=>{props.onAddNew()}} >Add to My Sunset Avenue</button>
+<CozyButton onClick={()=>{props.onAddNew()}} >Add to My Sunset Avenue</CozyButton>
 
 
 

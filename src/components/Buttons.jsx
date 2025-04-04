@@ -5,6 +5,14 @@ import AddNewHouseForm from "./AddNewHouseForm";
 
 
 
+
+export const CozyButton = (props)=>{
+
+  return <button className="cozyButton" onClick={props.onClick}>{props.children}
+      {props.tooltip ? <span className="tooltip">{props.tooltip}</span> : null }
+    </button>
+}
+
 export const FastForwardButton = ()=>{
   const updateTimestamp = useUpdateTimestamp();
   const [isPlaying, setIsPlaying] = useState(false);
@@ -29,9 +37,8 @@ export const FastForwardButton = ()=>{
   }, [isPlaying]);
 
 
-
-  return <button className="bg-white" onClick={()=>{setIsPlaying(!isPlaying);}} >
-        { !isPlaying ? "⏩" : "⏸️" }</button>
+  return <CozyButton tooltip="Play fast forward" onClick={()=>{setIsPlaying(!isPlaying);}} >{ !isPlaying ? "⏩" : "⏸️" } </CozyButton>
+  
 
 }
 
@@ -42,7 +49,7 @@ export const SkipBackwardButton = ()=>{
   const onClick = ()=>{
     updateTimestamp( timestamp - 3600000 ); // subtract one hour
   }
-  return<button onClick={ onClick} className="bg-white" >⏪</button>
+  return(<CozyButton tooltip="An hour backward" onClick={ onClick} >⏪</CozyButton>)
 }
 
 export const SkipForwardButton = ()=>{
@@ -52,11 +59,11 @@ export const SkipForwardButton = ()=>{
   const onClick = ()=>{
     updateTimestamp( timestamp + 3600000 ); //add one hour
   }
-  return<button onClick={ onClick} className="bg-white" >⏯️</button>
+  return<CozyButton tooltip="An hour forward" onClick={ onClick}  >⏯️</CozyButton>
 }
 
 export const ReloadButton = (props)=>{
-  return <button className="bg-white" onClick={props.onClick} >🔄</button>
+  return <CozyButton tooltip="Reload the scene"  onClick={props.onClick} >🔄</CozyButton>
 }
 
 
@@ -64,14 +71,14 @@ export const AddNewHouseButton =()=>{
   const [opened, setOpened] = useState(false);
 
   return <>
-  <button className="bg-white" onClick={()=>{setOpened(true)}}>Add New House</button>
+  <CozyButton tooltip="Add new calendar as a house" onClick={()=>{setOpened(true)}}>Add New House</CozyButton>
   {opened ? <AddNewHouseForm onClose={()=>{setOpened(false)}} onAddNew={()=>{}}/> :null }
   </>
 }
 
 
 export const EditModeButton = (props)=>{
-  return <button className="bg-white" onClick={()=>{props.setEditMode(!props.editMode)}}>{props.editMode?"Exit Edit Mode":"Enter Edit Mode"}</button>
+  return <CozyButton tooltip="Edit My sunset Avenue" onClick={()=>{props.setEditMode(!props.editMode)}}>{props.editMode?"Exit Edit Mode":"Enter Edit Mode"}</CozyButton>
 }
 
 
