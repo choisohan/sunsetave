@@ -1,18 +1,13 @@
 import React, { useEffect, useRef, useState }  from 'react'
-import Sky from '../components/Sky'
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { SkipForwardButton , SkipBackwardButton, FastForwardButton } from '../components/Buttons'
 import {Clock} from '../components/Clock'
-import TerrainMesh from '../components/TerrainMesh'
-import InstancingOnGrid from '../components/InstancingOnGrid'
-import SVGTerrain from '../components/SVGTerrain'
-import { Euler, Vector3 } from 'three'
-import LeavesMaterial from '../shaders/LeavesMaterial'
+import {  Vector3 } from 'three'
 import { SkyMaterial } from '../shaders/SkyMaterial'
 import { useSkyColorMap } from '../contexts/envContext'
 import { Pixelate } from '../shaders/CustomPostProcessing'
-
+import { useTexture } from '../contexts/modelContext'
 
 export default function Test() {
 
@@ -25,12 +20,13 @@ export default function Test() {
 
   const skyColorMap = useSkyColorMap();
   const meshRef = useRef();
-
+  const textures = useTexture();
 
 
   useEffect(()=>{
-    console.log( meshRef.current)
-  },[])
+    console.log('textures')
+    console.log( textures )
+  },[textures])
 
 
 

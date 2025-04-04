@@ -9,26 +9,26 @@ const HouseModelContext = React.createContext();
 const HouseTextureContext = React.createContext();
 
 
-const useTextures = () => {
-    const nameArr = ["roof/A001",
-                    "wallA/A001",
-                    "wallB/A001",
-                    "windowsA/A001",
-                    "windowsB/A001",
-                    "shade/A001",
-                    "door/A001"
+const useTextures =  () => {
+    const [paths, setPaths] = useState(null);
 
-                    ];
-    const textureFiles = useLoader(TextureLoader, nameArr.map(name => `/textures/${name}.png`))
-    const textures = {};
-    nameArr.forEach( (name,i)=>{
-        const textureFile = textureFiles[i];
-        textures[name] = textureFile;
-        textureFile.magFilter = NearestFilter;
-        textureFile.generateMipmaps = false;
-        textureFile.wrapS = textureFile.wrapT = ClampToEdgeWrapping; //prevent bleeding
-    })
-    return textures;
+    useEffect(() => {
+        fetch("/textures.json")
+          .then(res => res.json())
+          .then(setPaths);
+      }, []);
+
+      const textures = useLoader(TextureLoader, paths ?? []);
+
+      const textureMap = paths && textures
+      ? paths.reduce((acc, path, i) => {
+          acc[path.replace('/textures/','').replace('.png','')] = textures[i];
+          textures[i].magFilter = NearestFilter;
+          return acc;
+        }, {})
+      : null;
+        return textureMap;
+
 };
 
 const swapMaterialToHouse = (_currentMat)=>{
