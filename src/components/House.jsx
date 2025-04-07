@@ -166,7 +166,7 @@ export default function House(props){
 
       <primitive object={mesh} scale={[.75,.75,.75] }/>
            {!isHovered ? null :
-            <EventStateBubble height={meshHeight} ownerName={property.name}  event={property.events[currentEventIndex]} />
+            property.events ? <EventStateBubble height={meshHeight} ownerName={property.name}  event={property.events[currentEventIndex]} /> : null 
            }
           <Html>
             <audio ref={audioRef} src="/audios/jump.wav" />
