@@ -34,7 +34,7 @@ export const HeightMapMaterial = ()=>  new RawShaderMaterial({
         gl_Position = projectedPosition;
         vUv = uv;
         vNormal = normalize( normal ); 
-        vNormal2 = normalize(mat3(viewMatrix) * normal);; 
+        vNormal2 = normalize(mat3(viewMatrix) * normal);
 
         vPosition = gl_Position.xyz; 
         vViewDir =normalize(-viewPosition.xyz);

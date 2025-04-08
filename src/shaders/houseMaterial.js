@@ -61,8 +61,8 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
 
         float pattern ; 
         pattern = gl_FragCoord.x + gl_FragCoord.y;
-        pattern += dot(vNormal2, vViewDir)*100.;
-        pattern =  mod(pattern, 500.0 * _scale ); 
+        pattern += dot( vNormal2, vViewDir )*100.;
+        pattern =  mod(pattern- uTime*500.  , 500.0 * _scale ); 
 
         pattern = step(500.0 * _scale *.75 , pattern); // Makes it binary (black & white);
         return pattern;

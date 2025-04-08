@@ -19,6 +19,7 @@ export default function BasicMaterial() {
         varying vec3 vPosition;
         varying vec3 vViewDir;
 
+        uniform mat3 normalMatrix; // Built-in in WebGL
 
         void main()
         {
@@ -27,7 +28,9 @@ export default function BasicMaterial() {
             vec4 projectedPosition = projectionMatrix * viewPosition;
             gl_Position = projectedPosition;
             vUv = uv;
-            vNormal = normalize( normal ); 
+
+
+            vNormal =  normalMatrix * normal;//mat3(viewMatrix) * normal ; //normalize(mat3(viewMatrix) * normal);
 
             vPosition = gl_Position.xyz; 
             vViewDir =(-viewPosition.xyz);
@@ -49,15 +52,34 @@ export default function BasicMaterial() {
 
         void main(){
 
+            vec3 skyColorBottom = texture2D( uSkyColorMap, vec2( 0.0/5. +.1,fract(uTime)) ).xyz;
+            vec3 skyColorMiddle = texture2D( uSkyColorMap, vec2( 1.0/5.+.1 , fract(uTime)) ).xyz;
+            vec3 skyColorTop = texture2D( uSkyColorMap, vec2( 2.0/5. +.1, fract(uTime) ) ).xyz;
+            vec3 cloudShadow = texture2D( uSkyColorMap, vec2( 3.0/5. +.1, fract(uTime) ) ).xyz;
             vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
+
+
 
             vec2 uv = fract(vUv * uMapRepeat); 
             vec3 diffuseMap = texture2D( uMap, uv ).xyz;
 
-            vec3 diffuse = diffuseMap;
-            diffuse *= cloudHighlight; 
-            vec3 color = diffuse ;
-            gl_FragColor= vec4(color, 1. ) ;
+
+            vec3 color = diffuseMap;
+
+
+
+            float diffuseValue = smoothstep(  1., .0 , distance(diffuseMap.xyz, vec3( 1. ))); 
+            float specMask =  dot( vNormal, normalize(vec3( .25 , 1. ,  -.25 ) ));
+            specMask +=  diffuseValue *.1  ; 
+            specMask = sin(.9 + specMask*6. )*.5+.5; 
+            specMask= smoothstep(.5, 1.  ,specMask); 
+
+           
+            color = pow ( diffuseMap , vec3(mix( 1.   , .2   ,    specMask ) ) );
+            color *=  min( vec3(1.) , cloudHighlight * 1.25 );
+
+
+           gl_FragColor= vec4(color, 1. );
 
         }
     

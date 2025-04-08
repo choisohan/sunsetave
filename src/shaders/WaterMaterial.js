@@ -47,12 +47,15 @@ export const OceanMaterial = () => {
         uniform sampler2D uPerlinNoiseMap; 
 
         uniform float uTime; 
+        uniform float uFrame; 
 
 
         float Riffle(){
             vec2 coord = vUv ;
             coord.y+= (vViewDir.z*.1); 
+            coord.x += uFrame*.1 ; 
             coord= fract(coord);
+
             float result = texture2D( uPerlinNoiseMap, coord).x;
             return  result; 
         }
@@ -91,10 +94,12 @@ export const OceanMaterial = () => {
         `,
         transparent: false, 
         uniforms:{
+            uFrame :{value: 0 },  
             uPerlinNoiseMap : {value: null }, 
             uSkyColorMap : {value: null  },
-            uTime : { value : null  }, //define sky color and move the cloud
+            uTime : { value : .5   }, //define sky color and move the cloud
             uCloudiness: {value : 0. },  // desaturate the color of sky
             uSeason : {value : .5 } //eg. 0 = spring, .25 = summer, .5 = fall, .75 = weather
+
         }
 })}

@@ -49,7 +49,7 @@ export const SkipBackwardButton = ()=>{
   const onClick = ()=>{
     updateTimestamp( timestamp - 3600000 ); // subtract one hour
   }
-  return(<CozyButton tooltip="An hour backward" onClick={ onClick} >⏪</CozyButton>)
+  return(<CozyButton tooltip="An hour backward" onClick={ onClick} >⏮️</CozyButton>)
 }
 
 export const SkipForwardButton = ()=>{
@@ -62,9 +62,12 @@ export const SkipForwardButton = ()=>{
   return<CozyButton tooltip="An hour forward" onClick={ onClick}  >⏯️</CozyButton>
 }
 
+
 export const ReloadButton = (props)=>{
   return <CozyButton tooltip="Reload the scene"  onClick={props.onClick} >🔄</CozyButton>
 }
+
+
 
 
 export const AddNewHouseButton =()=>{

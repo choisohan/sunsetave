@@ -6,7 +6,7 @@ import {Pixelate} from '../shaders/CustomPostProcessing'
 import CameraControls from './CameraControls'
 import TerrainMesh from './TerrainMesh'
 import HouseDetailWindow from './HouseDetailWindow'
-import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipForwardButton} from './Buttons'
+import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipBackwardButton, SkipForwardButton} from './Buttons'
 import {Clock} from './Clock'
 import { OrbitControls } from '@react-three/drei'
 import Ocean from './Ocean'
@@ -28,8 +28,7 @@ export default function Avenue() {
   const [editMode, setEditMode] = useState(false)
   const [grid, setGrid] = useState();
   const [popup, setPopup] = useState();
-
-
+  const [focusPosition, setFocusPosition] = useState()
 
   const getTransformByCellNumb = (cellNumb)=>{
     if(!cellNumb) cellNumb = 1; 
@@ -82,11 +81,12 @@ export default function Avenue() {
 
   return (
     <>
-    <Canvas camera={{position: [0,50,0], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
-    <Pixelate />
-    <OrbitControls />
-      <Sky />
+    <Canvas camera={{position: [-20,7 ,10], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
 
+    <Pixelate />
+
+    <OrbitControls target={[8,1,-8 ]}/>
+      <Sky />
         <TerrainMesh editMode={editMode} setGrids={setGrid} onMouseEnter={()=>{}} onClick={()=>{}} />
         {items.map( (item,i) =>
         <House key={i} property ={item} onClick={_props=>{  onHouseClicked(i, _props )  }} />
@@ -103,7 +103,7 @@ export default function Avenue() {
 
     <div className='fixed z-[1] bottom-0 right-0 ' >
       <div className='bg-white'><Clock /></div>
-      <FastForwardButton /><SkipForwardButton />
+      <FastForwardButton /><SkipBackwardButton /><SkipForwardButton />
       <ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
       <AddNewHouseButton />
       <EditModeButton editMode={editMode} setEditMode={setEditMode}/>

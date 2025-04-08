@@ -48,10 +48,11 @@ export default function LeavesMaterial() {
         varying vec3 vViewDir;
 
         uniform sampler2D uSkyColorMap; 
-        uniform sampler2D uMap; 
         uniform sampler2D uPerlinNoiseNormal; 
 
         uniform float uTime; 
+        uniform float uFrame; 
+
         uniform vec3 uColor; 
         uniform float uNormalStrength; 
 
@@ -60,41 +61,49 @@ export default function LeavesMaterial() {
         void main(){
 
 
+            float gridSize = 20.;
+            vec2 pixelatedUV = floor( fract(  vPosition.xy   *.05   )* gridSize )/gridSize; 
+            pixelatedUV = fract(pixelatedUV - vec2( uFrame * .05, .0 ) ); 
+            // floor(vUv * 10.)/10. ;
+
+
+            vec2 uv = (vUv*4. ) - vec2( uFrame*.1, .0 ) ;
+            uv = fract(uv ); 
+
             //Apply Normal map
-            vec3 normalMap = texture2D( uPerlinNoiseNormal, fract(vUv * uMapRepeat) ).xyz * 2. -1. ;
+            vec3 normalMap = texture2D( uPerlinNoiseNormal, uv).xyz * 2. -1. ;
+            normalMap = normalMap * .25+.75; 
             normalMap.xy *= uNormalStrength;
-                normalMap.z = sqrt(1.0 - clamp(dot(normalMap.xy, normalMap.xy), 0.0, 1.0)); // Re-normalize Z
+            normalMap.z = sqrt(1.0 - clamp(dot(normalMap.xy, normalMap.xy), 0.0, 1.0)); // Re-normalize Z
             vec3 worldNormal = normalize(vNormal  + normalMap) ;
-
-
 
 
             vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
             vec3 skyColorBottom = texture2D( uSkyColorMap, vec2( 0.0/5. +.1,fract(uTime)) ).xyz;
 
-            vec3 diffuseMap = texture2D( uMap, vUv ).xyz;
-
-            vec3 diffuse = diffuseMap;
-            diffuse *= cloudHighlight; 
-
-
-
             float fresnel = dot(worldNormal, ( vec3( .0 , .0 ,1. ) ));
-            fresnel = step(.95 , fresnel);
+            fresnel = step(.9 , fresnel);
 
 
-            gl_FragColor= vec4(vec3(fresnel),1.);
             if (fresnel < 0.5) discard; // Cutout effect
 
             vec3 color = uColor * cloudHighlight ;
-            color += skyColorBottom*.05 * vNormal.y; 
+
+            normalMap = texture2D( uPerlinNoiseNormal, pixelatedUV).xyz * 2. -1. ;
+            normalMap.xy *= uNormalStrength;
+            normalMap.z = sqrt(1.0 - clamp(dot(normalMap.xy, normalMap.xy), 0.0, 1.0)); // Re-normalize Z
+            worldNormal = normalize(vNormal  + normalMap) ;
 
 
-            // float highlight = dot(worldNormal, vec3( -0.4 , 1., -.1 )  );
-            // highlight= step(.9, highlight); 
-            // color += skyColorBottom*.1 * highlight; 
+            color += skyColorBottom * worldNormal.y*.15 ; 
 
 
+            float highlight = dot(worldNormal, vec3( -0.5 , 1., -.1 )  );
+            highlight= step(.2, highlight); 
+            color += skyColorBottom*.1 * highlight; 
+
+
+            //color = vec3(fresnel); 
             gl_FragColor = vec4(color,1.);
 
         }
@@ -105,6 +114,7 @@ export default function LeavesMaterial() {
         uPerlinNoiseNormal:{value: null },
         uSkyColorMap:{value: null},
         uTime:{value: 0.5},
+        uFrame:{value: 0.},
         uNormalStrength: {value: .05 },
         uMapRepeat : {value: new Vector2(1.5,1.5 )},
         uColor:{value: new Color(0x619434)} ,

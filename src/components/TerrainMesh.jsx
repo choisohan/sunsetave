@@ -10,7 +10,7 @@ import LeavesMaterial from '../shaders/LeavesMaterial';
 import { useTexture } from '../contexts/modelContext';
 
 
-
+import { useFrame } from '@react-three/fiber';
 
 
 export default function TerrainMesh(props){
@@ -20,6 +20,7 @@ export default function TerrainMesh(props){
     const [grids, setGrids] = useState([]);
     const [materials, setMaterials] = useState([]);
     const textureContext = useTexture();
+    const timeRef = useRef(0);
 
     const ReplaceMaterial= _mat=>{
  
@@ -106,6 +107,14 @@ export default function TerrainMesh(props){
     },[timestamp])
 
 
+    useFrame((state, delta)=>{
+        timeRef.current += delta; // delta is time in seconds since last frame
+        materials.forEach(mat=>{
+            if( !mat.uniforms.uFrame )return; 
+            mat.uniforms.uFrame.value = timeRef.current; 
+        })
+    })
+
     return <>
 
 
@@ -130,6 +139,7 @@ const Grid=(props)=>{
 
     const [meshes,setMeshes] = useState(props.meshes || []);
     const grpRef = useRef();
+
     useEffect(()=>{
         setMeshes(props.meshes)
     },[props.meshes])
@@ -149,6 +159,8 @@ const Grid=(props)=>{
             grpRef.current.visible= props.editMode;
         }
     },[props.editMode])
+
+
 
     return <group ref={grpRef}>
     {meshes.map((item,i)=>

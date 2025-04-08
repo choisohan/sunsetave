@@ -6,6 +6,13 @@ import {Clock} from '../components/Clock'
 import {  Vector3 } from 'three'
 import { Pixelate } from '../shaders/CustomPostProcessing'
 import Sky from '../components/Sky'
+import LeavesMaterial from '../shaders/LeavesMaterial'
+import { useTexture } from '../contexts/modelContext'
+
+
+
+
+
 export default function Test() {
 
 
@@ -15,8 +22,18 @@ export default function Test() {
     position: new Vector3(0,5,9), rotation: new Vector3()
   });
 
+  const [leaveMat,setLeaveMat] = useState(LeavesMaterial()); 
+
+  const textureContext = useTexture();
   const meshRef = useRef();
 
+
+  useEffect(()=>{
+    if( textureContext){
+      leaveMat.uniforms.uSkyColorMap.value = textureContext['env/skyColormap']
+      leaveMat.uniforms.uPerlinNoiseNormal.value = textureContext['common/perlinNoiseNormal']
+    }
+  },[textureContext])
 
 
   const onClick = (i)=>{
@@ -28,6 +45,10 @@ export default function Test() {
     <Canvas camera={{position: [0,0,50], fov:30}}  style={{width:'100vw', height:'100vh', backgroundColor:"pink" }}   >
         
         <OrbitControls />
+
+        <mesh material={leaveMat}>
+          <sphereGeometry args={[5,10,10,10]}/>
+        </mesh>
 
     <Pixelate />
 

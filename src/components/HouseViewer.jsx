@@ -8,6 +8,7 @@ import { Pixelate } from '../shaders/CustomPostProcessing';
 import Sky from './Sky';
 import TerrainMesh from './TerrainMesh';
 import { FastForwardButton, SkipForwardButton } from './Buttons';
+import { Html } from '@react-three/drei';
 
 
 export default function HouseViewer(props) {
@@ -21,17 +22,21 @@ return (<>
 <Canvas style={{height:'100vh'}} camera={{position: [0,1,9], fov: 20}}>
   <CameraControls />
   <Sky />
-  <TerrainMesh editMode={false} onGridUpdate={()=>{}}/>
   <Pixelate />
-  <House property={property} onClick={()=>{}}/>
+  <House property={property} onClick={()=>{}} onMouseEnter={()=>{}}/>
+  {/*
+  <TerrainMesh editMode={false} setGrids={()=>{}}  onMouseEnter={()=>{}} />
+  */}
+
+  <Html>
+    <div className='flex center'>
+    <FastForwardButton /><SkipForwardButton />
+    </div>
+
+  </Html>
 
 </Canvas>
 
-
-<div className='fixed z-[1] bottom-0 right-0 ' >
-    <FastForwardButton />
-    <SkipForwardButton />
-</div>
 </>
 
 )

@@ -1,11 +1,10 @@
 import { useThree } from '@react-three/fiber';
-import {  EffectComposer, FXAA, Glitch, Noise, Outline, Ramp, ToneMapping } from '@react-three/postprocessing';
+import {  EffectComposer } from '@react-three/postprocessing';
 import {  Effect,  } from 'postprocessing';
 import { useState, useEffect } from 'react';
-import {  AdditiveBlending, MultiplyBlending, NoBlending, NormalBlending, Uniform } from 'three';
-import { Pixelation } from '@react-three/postprocessing';
+import {  NoBlending, Uniform } from 'three';
+import { BloomEffect } from 'postprocessing';
 
-import { RenderPixelatedPass } from 'three/examples/jsm/Addons.js'
 
 class PixelationEffect extends Effect {
   constructor({ pixelSize =10 , resolution = [window.innerWidth, window.innerHeight] } = {}) {
@@ -57,15 +56,21 @@ class PixelationEffect extends Effect {
 
 const Pixelate = ()=> {
 
-  const p =2; //pixel size 
+  const p =4; //pixel size 
   const {scene, camera} =useThree();
   const [pixelSize, setPixelSize] = useState(p); 
 
     // Listen for camera zoom or FOV changes
 
     const updatePixelSize = (e) => {
-      setPixelSize( ps => Math.max(p, ps - e.deltaY/600 ) );
+      setPixelSize( ps => Math.max(2, ps - e.deltaY/300 ) );
     };
+
+    /*
+    useEffect(()=>{
+      console.log( 'pixelSize : ',pixelSize)
+    },[pixelSize])
+    */ 
 
     useEffect(() => {
       window.addEventListener('wheel', updatePixelSize)
@@ -74,14 +79,9 @@ const Pixelate = ()=> {
 
   return <EffectComposer>
 <primitive object={new PixelationEffect({pixelSize: pixelSize})} />
-{/**
- * 
- * 
- *    
-<primitive object={new BloomEffect({luminanceThreshold : .5 , intensity:.15  , blendFunction : NoBlending })} />
+ 
+<primitive object={new BloomEffect({luminanceThreshold : .5 , intensity:.075  , blendFunction : NoBlending })} />
 
-       
- */}
 
 
       </EffectComposer>
