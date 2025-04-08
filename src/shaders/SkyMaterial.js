@@ -60,6 +60,7 @@ export const SkyMaterial =  (  )=>{
         float CloudScale(){
             vec2 offset;
             offset.x -=  uTimestamp/100000000.;
+
             vec2 uv =  fract( (vUv ) + offset );
             float noise =  texture2D( uPerlinNoiseMap, uv).x;
             noise = sin(noise + uTimestamp/100000000. ); 
@@ -75,11 +76,13 @@ export const SkyMaterial =  (  )=>{
             offset.x +=  uTimestamp/100000000.; 
             offset.y = y; 
 
+            vec2 uv = vUv;
+            uv.x += floor(uv.y * uCloudScale * 5. );// *.1;
+            uv += texture2D( uPerlinNoiseMap, fract(vUv *2.)  ).x  *.02 ; //Distortion
+            uv = fract(uv + offset); 
 
-            vec2 uv = vUv + offset; 
-            uv.x += floor(uv.y * uCloudScale * 5. ) *.1;
+
             uv =  fract( uv * vec2(uCloudScale))  ;
-
 
             vec4 map = texture2D( uCloudMap,   uv );
             float shaded = dot( vec3( 0.0,1.0,.0 ) , map.xyz );

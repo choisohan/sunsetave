@@ -23,7 +23,8 @@ export default function TerrainMesh(props){
     const timeRef = useRef(0);
 
     const ReplaceMaterial= _mat=>{
- 
+        const uTime =  timestampToHourFloat(timestamp); 
+
         var map;     
         if(_mat.map){
             map = _mat.map;
@@ -36,11 +37,13 @@ export default function TerrainMesh(props){
     
         if(_mat.name.includes('tree')){
             _mat = LeavesMaterial();
+            _mat.uniforms.uTime.value =uTime;
         }
         else{
             _mat = BasicMaterial();
             _mat.uniforms.uMap.value = map;
             _mat.uniforms.uMapRepeat.value = map.repeat; 
+            _mat.uniforms.uTime.value =uTime;
         }
         setMaterials(arr=> ([...arr, _mat]))
         return _mat;
@@ -60,7 +63,6 @@ export default function TerrainMesh(props){
 
 
     useEffect(()=>{
-
         if( grids.length > 0 ) return; 
         const _grids= [];
 
@@ -166,7 +168,7 @@ const Grid=(props)=>{
     {meshes.map((item,i)=>
         <mesh key = {i} onPointerEnter={e=>{onMouseEnter(e,i, true)}}
                         onPointerLeave={e=>{onMouseEnter(e,i, false)}}
-                        onClick={e=>{props.onClick(i); console.log( e.object )}}> 
+                        onClick={e=>{props.onClick(i); console.log('clicked', e.object )}}> 
             <primitive object={item} material={GridMaterial()}/>
         </mesh>
     )}

@@ -57,7 +57,6 @@ class PixelationEffect extends Effect {
 const Pixelate = ()=> {
 
   const p =4; //pixel size 
-  const {scene, camera} =useThree();
   const [pixelSize, setPixelSize] = useState(p); 
 
     // Listen for camera zoom or FOV changes
@@ -65,12 +64,6 @@ const Pixelate = ()=> {
     const updatePixelSize = (e) => {
       setPixelSize( ps => Math.max(2, ps - e.deltaY/300 ) );
     };
-
-    /*
-    useEffect(()=>{
-      console.log( 'pixelSize : ',pixelSize)
-    },[pixelSize])
-    */ 
 
     useEffect(() => {
       window.addEventListener('wheel', updatePixelSize)
@@ -80,8 +73,11 @@ const Pixelate = ()=> {
   return <EffectComposer>
 <primitive object={new PixelationEffect({pixelSize: pixelSize})} />
  
-<primitive object={new BloomEffect({luminanceThreshold : .5 , intensity:.075  , blendFunction : NoBlending })} />
+{/*
 
+<primitive object={new BloomEffect({luminanceThreshold : .5 , intensity:.075  , blendFunction : NoBlending })} />
+// Todos: I omit this buecause this bloom effects cause "CANNOT READ PROPERTIES OF NULL(READING 'ALPHA')...
+*/}
 
 
       </EffectComposer>

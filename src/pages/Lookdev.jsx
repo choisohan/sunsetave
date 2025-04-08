@@ -20,7 +20,7 @@ export default function Lookdev() {
 
     useEffect(()=>{
       if(!modelContext || !textureContext) return;
-      console.log(textureContext)
+      console.log('textureContext : ',textureContext)
 
       const meshArr = Object.keys(modelContext).map(key=>parseInt(key.split('_')[1]))
       const wallArr = Object.keys(textureContext).filter(key=>key.includes('wallA/')).map(key=>parseInt(key.split('/')[1]))

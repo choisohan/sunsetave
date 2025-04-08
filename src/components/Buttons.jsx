@@ -17,24 +17,50 @@ export const FastForwardButton = ()=>{
   const updateTimestamp = useUpdateTimestamp();
   const [isPlaying, setIsPlaying] = useState(false);
 
+
+/*
   useEffect(() => {
     let animationFrameId;
-
-    const tick = () => {
+    let count = 0;
+    let lastUpdate = performance.now();
+    const interval =1; // ms between updates (200ms = 5 times per second)
+    
+    const tick = (now) => {
+      count+=1; 
+      console.log( 'count',count)
       if (isPlaying) {
-        updateTimestamp( x=> x + 3600000/30 ); // add 2 min per frame
-        animationFrameId = requestAnimationFrame(tick); 
+        if (now - lastUpdate >= interval) {
+          updateTimestamp( x=> x + 3600000/30 ); // add 2 min per frame
+          animationFrameId = requestAnimationFrame(tick); 
+        }
       }
     };
 
     if (isPlaying) {
       animationFrameId = requestAnimationFrame(tick); 
     }
-    
+
     return () => cancelAnimationFrame(animationFrameId);
 
 
   }, [isPlaying]);
+  */
+
+  useEffect(() => {
+    let count = 0;
+
+    if (!isPlaying) return;
+  
+    const interval = setInterval(() => {
+      count+=1; 
+      console.log( 'count',count)
+      updateTimestamp(x => x + 3600000 / 30);
+    }, 200); // update every 200ms
+  
+    return () => clearInterval(interval);
+  }, [isPlaying]);
+
+
 
 
   return <CozyButton tooltip="Play fast forward" onClick={()=>{setIsPlaying(!isPlaying);}} >{ !isPlaying ? "⏩" : "⏸️" } </CozyButton>
@@ -61,6 +87,19 @@ export const SkipForwardButton = ()=>{
   }
   return<CozyButton tooltip="An hour forward" onClick={ onClick}  >⏯️</CozyButton>
 }
+
+
+
+export const TimeTestButton = ()=>{
+  const timestamp = useTimestamp();
+  const updateTimestamp = useUpdateTimestamp();
+  
+  const onClick = ()=>{
+    updateTimestamp(  timestamp + 3600000*1000 ); //add one hour
+  }
+  return<CozyButton tooltip="timestamp = 0 " onClick={ onClick}  >🕵️</CozyButton>
+}
+
 
 
 export const ReloadButton = (props)=>{

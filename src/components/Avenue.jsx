@@ -6,7 +6,7 @@ import {Pixelate} from '../shaders/CustomPostProcessing'
 import CameraControls from './CameraControls'
 import TerrainMesh from './TerrainMesh'
 import HouseDetailWindow from './HouseDetailWindow'
-import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipBackwardButton, SkipForwardButton} from './Buttons'
+import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipBackwardButton, SkipForwardButton, TimeTestButton} from './Buttons'
 import {Clock} from './Clock'
 import { OrbitControls } from '@react-three/drei'
 import Ocean from './Ocean'
@@ -46,7 +46,7 @@ export default function Avenue() {
       return _items.map( _item =>{
         const cellNumb = _item.cellNumb;
         const transform = grid[cellNumb];
-        console.log( transform)
+        console.log( 'transform : ',transform)
        return {..._item, ...transform};
       })
     })
@@ -103,7 +103,8 @@ export default function Avenue() {
 
     <div className='fixed z-[1] bottom-0 right-0 ' >
       <div className='bg-white'><Clock /></div>
-      <FastForwardButton /><SkipBackwardButton /><SkipForwardButton />
+      <TimeTestButton />
+      <SkipBackwardButton /><SkipForwardButton /> <FastForwardButton />
       <ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
       <AddNewHouseButton />
       <EditModeButton editMode={editMode} setEditMode={setEditMode}/>

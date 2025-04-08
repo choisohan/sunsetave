@@ -29,7 +29,6 @@ export default function BasicMaterial() {
             gl_Position = projectedPosition;
             vUv = uv;
 
-
             vNormal =  normalMatrix * normal;//mat3(viewMatrix) * normal ; //normalize(mat3(viewMatrix) * normal);
 
             vPosition = gl_Position.xyz; 
@@ -75,8 +74,9 @@ export default function BasicMaterial() {
             specMask= smoothstep(.5, 1.  ,specMask); 
 
            
-            color = pow ( diffuseMap , vec3(mix( 1.   , .2   ,    specMask ) ) );
-            color *=  min( vec3(1.) , cloudHighlight * 1.25 );
+          //  color = pow ( diffuseMap , vec3(mix( 1.   , .2   ,  specMask ) ) );
+            color *=  min( vec3(1.) ,cloudHighlight+vec3(.15 )  );
+
 
 
            gl_FragColor= vec4(color, 1. );

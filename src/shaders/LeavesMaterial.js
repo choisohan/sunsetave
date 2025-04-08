@@ -103,6 +103,8 @@ export default function LeavesMaterial() {
             color += skyColorBottom*.1 * highlight; 
 
 
+
+            color *= cloudHighlight;
             //color = vec3(fresnel); 
             gl_FragColor = vec4(color,1.);
 
