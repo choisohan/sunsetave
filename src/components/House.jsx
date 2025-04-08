@@ -30,6 +30,7 @@ export default function House(props){
 
 
   useEffect(()=>{
+    console.log( props.property )
     if( props.property.id !==property.id ){
       FindCalendar(props.property.id).then( calendar =>{
 

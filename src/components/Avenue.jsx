@@ -30,14 +30,6 @@ export default function Avenue() {
   const [popup, setPopup] = useState();
   const [focusPosition, setFocusPosition] = useState()
 
-  const getTransformByCellNumb = (cellNumb)=>{
-    if(!cellNumb) cellNumb = 1; 
-    cellNumb = String(cellNumb).padStart(3,"0");
-    const cell = grid.getObjectByName(`cell_${cellNumb}`)
-    const position = [cell.position.x,cell.position.z, 0];
-    const rotation = [cell.rotation.x, cell.rotation.z , 0 ];
-    return [position, rotation]
-  }
 
   useEffect(()=>{
     if(!grid) return;
@@ -46,7 +38,6 @@ export default function Avenue() {
       return _items.map( _item =>{
         const cellNumb = _item.cellNumb;
         const transform = grid[cellNumb];
-        console.log( 'transform : ',transform)
        return {..._item, ...transform};
       })
     })
@@ -78,6 +69,26 @@ export default function Avenue() {
     }
   }
 
+  const onEnterNewCell= i =>{
+    if(editMode && selectedItem){
+      //const [position, rotation] = getTransformByCellNumb(i);
+
+
+      const transform = grid[i];
+
+
+      console.log( i , selectedItem  , transform )
+
+
+      setItems(_arr =>{
+        _arr[selectedItem.i] = {..._arr[selectedItem.i],  cellNumb : i , ...transform  }
+        return _arr; 
+      })
+
+      setSelectedItem( item=>({...item, cellNumb : i ,...transform }))
+    }
+  }
+
 
   return (
     <>
@@ -87,7 +98,7 @@ export default function Avenue() {
 
     <OrbitControls target={[8,1,-8 ]}/>
       <Sky />
-        <TerrainMesh editMode={editMode} setGrids={setGrid} onMouseEnter={()=>{}} onClick={()=>{}} />
+        <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
         {items.map( (item,i) =>
         <House key={i} property ={item} onClick={_props=>{  onHouseClicked(i, _props )  }} />
     )}

@@ -125,7 +125,7 @@ export default function TerrainMesh(props){
         </mesh>
 
     <group rotation={[-Math.PI / 2, 0, 0]} >
-    <Grid meshes={grids} onClick={props.onClick} onMouseEnter={props.onMouseEnter} editMode={props.editMode}/>
+    <Grid meshes={grids} onClick={props.onClick} onMouseEnter={props.onEnterNewCell} editMode={props.editMode}/>
     </group>
 
  </>
@@ -168,7 +168,7 @@ const Grid=(props)=>{
     {meshes.map((item,i)=>
         <mesh key = {i} onPointerEnter={e=>{onMouseEnter(e,i, true)}}
                         onPointerLeave={e=>{onMouseEnter(e,i, false)}}
-                        onClick={e=>{props.onClick(i); console.log('clicked', e.object )}}> 
+                        onClick={  e=>{props.onClick(i) }}> 
             <primitive object={item} material={GridMaterial()}/>
         </mesh>
     )}
