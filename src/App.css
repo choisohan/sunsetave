@@ -32,8 +32,7 @@ button:hover{
 .cozyButton{
   position: relative;
   appearance: auto;
-}
-.cozyButton{
+  cursor: pointer;
 
 }
 
@@ -44,7 +43,12 @@ button:hover{
   image-rendering: pixelated;
   background-size: contain;
   margin: 0px 10px;
+  place-self:flex-start;
+  cursor: pointer;
+
+  padding: 5px; 
 }
+
 .pixelButton::before{
   content: ' ';
   width: 10px;
@@ -56,7 +60,11 @@ button:hover{
   image-rendering: pixelated;
   background-repeat: no-repeat;
   background-position-x:right;
+  margin: -5px; 
+
 }
+
+
 .pixelButton::after{
   content: ' ';
   width: 10px;
@@ -80,8 +88,6 @@ button:hover{
 .pixelButton:hover::after {
   background-image: url('/public/images/buttonPressed_end.png');
 }
-.pixelButton  *{
-}
 .pixelButton:hover  *{
   transform: translate(0px,10px);
 }
@@ -90,11 +96,14 @@ button:hover{
   width: 50px;
   scale: 60%;
   translate: -10px -5px;
+  margin: -5px; 
 }
 .pixelButton:has(img){
   width: 30px;
 }
-
+.pixelButton div{
+  translate: -5px -5px;
+}
 .cozyButton:hover .tooltip{
   visibility:visible;
 }

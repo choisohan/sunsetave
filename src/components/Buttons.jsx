@@ -97,14 +97,17 @@ export const ReloadButton = (props)=>{
 
 
 
-export const AddNewHouseButton =()=>{
+export const AddNewHouseButton =(props)=>{
   const [opened, setOpened] = useState(false);
 
   return <>
   <CozyButton  className='pixelButton'  tooltip="Add new calendar as a house" onClick={()=>{setOpened(true)}}>
     <img src='/images/plus_sign.png' />
   </CozyButton>
-  {opened ? <AddNewHouseForm onClose={()=>{setOpened(false)}} onAddNew={()=>{}}/> :null }
+  {opened ? <AddNewHouseForm currentIds={props.currentIds} onClose={()=>{setOpened(false)}} onAddNew={newProperty=>{
+    setOpened(false);
+    props.onAddNew(newProperty);
+  }}/> :null }
   </>
 }
 

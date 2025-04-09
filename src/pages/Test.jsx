@@ -42,7 +42,7 @@ export default function Test() {
   }
 
   return (<>
-    <Canvas camera={{position: [0,0,50], fov:30}}  style={{width:'100vw', height:'100vh', backgroundColor:"pink" }}   >
+    <Canvas camera={{position: [0,0,50], fov:30}}  style={{width:'100vw', height:'100vh'}}   >
         
         <OrbitControls />
 
@@ -52,7 +52,6 @@ export default function Test() {
 
     <Pixelate />
 
-    <Sky />
 
 
 

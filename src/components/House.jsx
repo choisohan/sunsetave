@@ -182,7 +182,7 @@ const GetTimestampOffset = (tz) => {
 };
 
 
-const FindCalendar = async(_id)=>{
+export const FindCalendar = async(_id)=>{
   var cal; 
   if(_id.includes('sample&&')){
     _id = _id.split('sample&&')[1];

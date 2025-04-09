@@ -58,7 +58,8 @@ const Pixelate = ()=> {
 
   const p =4; //pixel size 
   const [pixelSize, setPixelSize] = useState(p); 
-
+  const {gl } = useThree();
+  gl.setClearColor('white')
     // Listen for camera zoom or FOV changes
 
     const updatePixelSize = (e) => {

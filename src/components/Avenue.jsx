@@ -93,6 +93,12 @@ export default function Avenue() {
     }
   }
 
+  const AddNewHouse = (newProperty)=>{
+    setItems(_arr=> [..._arr, newProperty])
+    setSelectedItem({...newProperty , i : items.length });
+    setEditMode(true)
+  }
+
 
   return (
     <>
@@ -120,7 +126,7 @@ export default function Avenue() {
     <div className='fixed z-[1] bottom-0 right-0 m-[10px] flex gap-[5px]' >
       <SkipBackwardButton /><SkipForwardButton /> <FastForwardButton />
       <ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
-      <AddNewHouseButton />
+      <AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
       <EditModeButton editMode={editMode} setEditMode={setEditMode}/>
       <CozyButton  className='pixelButton'  tooltip="Suffle Avenue" onClick={ShuffleStreet}>
       <img src='/images/game_die.png' />    
