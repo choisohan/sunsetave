@@ -59,11 +59,11 @@ export const SkyMaterial =  (  )=>{
 
         float CloudScale(){
             vec2 offset;
-            offset.x -=  uTimestamp*100.;
+            offset.x -=  uTimestamp;
 
             vec2 uv =  fract( (vUv ) + offset );
             float noise =  texture2D( uPerlinNoiseMap, uv).x;
-            noise = sin(noise + uTimestamp *100.); 
+            noise = sin(noise + uTimestamp ); 
             float ramp = SkyRamp( uSkyHeight+.2  , .3);
             float result  = ramp- noise ; 
             result = smoothstep(-.5,.5 ,  result );
@@ -73,7 +73,7 @@ export const SkyMaterial =  (  )=>{
 
         vec2 Clouds( float x, float y ){
             vec2 offset; 
-            offset.x +=  uTimestamp*100.; 
+            offset.x +=  uTimestamp; 
             offset.y = y; 
 
             vec2 uv = vUv;

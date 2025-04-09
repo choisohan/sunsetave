@@ -22,7 +22,7 @@ export default function HouseViewer(props) {
 return (<div className="w-full h-screen flex flex-col md:flex-row" style={{opacity: property ?  1 : 0 }}>
 <Canvas camera={{ position: [0,-5,8], fov: 20}}>
   <CameraControls target={new Vector3(0,.75,0)}/>
-  <Sky />
+  <Sky timezone={property? property.timezone : null } />
   <Pixelate />
   <House property={{id: param}} onUpdateProperty={ d=> setProperty( d)} onClick={()=>{}} onMouseEnter={()=>{}}/>
 </Canvas>

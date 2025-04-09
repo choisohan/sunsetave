@@ -14,7 +14,7 @@ export default function Ocean() {
     const timeRef = useRef(0);
 
     useEffect(()=>{
-        mat.uniforms.uTime.value = timestampToHourFloat(timestamp);
+        mat.uniforms.uTime.value = timestampToHourFloat( timestamp , null );
     },[timestamp])
 
     useEffect(()=>{

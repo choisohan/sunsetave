@@ -23,7 +23,7 @@ export default function TerrainMesh(props){
     const timeRef = useRef(0);
 
     const ReplaceMaterial= _mat=>{
-        const uTime =  timestampToHourFloat(timestamp); 
+        const uTime =  timestampToHourFloat(timestamp, null ); 
 
         var map;     
         if(_mat.map){
@@ -102,7 +102,7 @@ export default function TerrainMesh(props){
     },[_fbxFile])
 
     useEffect(()=>{
-        const uTime =  timestampToHourFloat(timestamp); 
+        const uTime =  timestampToHourFloat(timestamp , null ); 
         materials.forEach(mat=>{
             mat.uniforms.uTime.value =uTime;
         })

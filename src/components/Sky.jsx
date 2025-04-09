@@ -4,17 +4,23 @@ import { useState } from 'react';
 import { useTimestamp } from '../contexts/envContext';
 import { timestampToHourFloat } from './Clock';
 import { useTexture } from '../contexts/modelContext';
+import { fract } from 'three/tsl';
 
 
-export default function Sky() {
+export default function Sky(props) {
     const timestamp = useTimestamp();
     const textureContext = useTexture();
     const [mat, setMat] = useState( SkyMaterial());
+    const [timezone, setTimezone] = useState( props.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone);
 
     useEffect(()=>{
-      mat.uniforms.uTime.value = timestampToHourFloat(timestamp);
-      mat.uniforms.uTimestamp.value = timestamp /10000000000;
-    },[timestamp])
+      setTimezone(props.timezone);
+    },[props])
+
+    useEffect(()=>{
+      mat.uniforms.uTime.value = timestampToHourFloat( timestamp , timezone );
+      mat.uniforms.uTimestamp.value =  (Math.floor(timestamp/100000)%1000)/1000;
+    },[ timezone, timestamp])
 
 
     useEffect(()=>{

@@ -6,7 +6,7 @@ const UpdateTimestampContext = React.createContext();
 
 
 export function EnvProvider({children}){
-    const [ timestamp,setTimeSamp] = useState( new Date().getTime()  );
+    const [ timestamp,setTimeSamp] = useState( new Date().valueOf()  );
 
 
     return (

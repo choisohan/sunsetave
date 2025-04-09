@@ -88,7 +88,7 @@ export default function BasicMaterial() {
         uMap :{value: null},
         uMapRepeat:{value: new Vector2(1.)},
         uSkyColorMap:{value: null },
-        uTime:{value: 0.5}
+        uTime:{value: 0.0}
 
     }
 

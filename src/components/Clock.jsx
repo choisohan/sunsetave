@@ -22,8 +22,7 @@ export function Clock(props){
 };
   
 
-export function timestampToHourFloat(_timestamp){
-  const date = new Date(_timestamp);
-  const hours = date.getHours();
-  return hours/24; 
+export function timestampToHourFloat(_timestamp , _timezone){
+ var tz = _timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return moment(_timestamp).tz(tz).hours()/24; 
 }

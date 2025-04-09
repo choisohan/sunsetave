@@ -68,7 +68,7 @@ export default function SVGTerrain(props) {
     },[textureContext])
 
     useEffect(()=>{
-        meshRef.current.material.uniforms.uTime.value=timestampToHourFloat(timestamp);
+        meshRef.current.material.uniforms.uTime.value=timestampToHourFloat(timestamp, null );
     },[timestamp])
 
     useEffect(()=>{

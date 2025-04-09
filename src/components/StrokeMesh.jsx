@@ -13,7 +13,7 @@ export default function StrokeMesh ({ path }){
     const [material, setMaterial ] = useState(StreetLineMaterial());
 
     useEffect(()=>{
-        material.uniforms.uTime.value = timestampToHourFloat(timestamp);
+        material.uniforms.uTime.value = timestampToHourFloat(timestamp, null );
     },[timestamp] )
 
     const strokeMeshes = useMemo(()=>{

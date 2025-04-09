@@ -25,15 +25,13 @@ export default function House(props){
   const meshRef = useRef();
   const [meshHeight, setMeshHeight] = useState(0);
   const timestamp = useTimestamp();
-  const [updateTime, setUpdateTime]  = useState( true|| props.updateTime )
 
 
 
   useEffect(()=>{
     if( props.property.id !== property.id ){
       FindCalendar(props.property.id).then( calendar =>{
-        const timeoffset = GetTimestampOffset(calendar.timezone);
-        const newProperty = {...property, ...props.property , ...calendar , timeoffset : timeoffset }; 
+        const newProperty = {...property, ...props.property , ...calendar  }; 
         setProperty(newProperty)
         props.onUpdateProperty(newProperty);
         setCurrentEventIndex(getCurrentEventIndex(calendar.events))
@@ -81,18 +79,18 @@ export default function House(props){
   }
 
   useEffect(()=>{
-    if(!mesh || !updateTime) return;
+    if(!mesh) return;
+    const time =  timestampToHourFloat( timestamp, property.timezone );
 
     if( Array.isArray(mesh.material) ){
       mesh.material.forEach( _mat=>{
-        _mat.uniforms.uTime.value= timestampToHourFloat(timestamp + property.timeoffset);
+        _mat.uniforms.uTime.value= time;
       })
     }else{
-      mesh.material.uniforms.uTime.value= timestampToHourFloat(timestamp + property.timeoffset);
+      mesh.material.uniforms.uTime.value= time;
     }
 
-
-  },[timestamp])
+  },[ timestamp, property , mesh ])
 
   function updateMesh(){
     const meshName =  'house_'+String( property.mesh).padStart(2,'0')
