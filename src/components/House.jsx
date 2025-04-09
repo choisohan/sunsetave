@@ -30,13 +30,15 @@ export default function House(props){
 
 
   useEffect(()=>{
-    if( props.property.id !==property.id ){
+    if( props.property.id !== property.id ){
       FindCalendar(props.property.id).then( calendar =>{
         const timeoffset = GetTimestampOffset(calendar.timezone);
         const newProperty = {...property, ...props.property , ...calendar , timeoffset : timeoffset }; 
         setProperty(newProperty)
         props.onUpdateProperty(newProperty);
         setCurrentEventIndex(getCurrentEventIndex(calendar.events))
+      }).catch(err =>{
+        console.log('failed to fetch calendar of '+ props.property.id  )
       })
 
     }
@@ -46,6 +48,7 @@ export default function House(props){
       ))
     }
   },[props.property])
+
 
 
 
@@ -72,7 +75,9 @@ export default function House(props){
       texturefullName = folderName + '/1'
     }
     _mat.uniforms.uMap.value =TextureContext[texturefullName];
-    _mat.uniforms.uSkyColorMap.value =TextureContext['env/skyColormap'];
+    if( TextureContext['env/skyColormap']){
+      _mat.uniforms.uSkyColorMap.value = TextureContext['env/skyColormap'];
+    }
   }
 
   useEffect(()=>{
@@ -112,9 +117,6 @@ export default function House(props){
 
       return newMesh
     })
-
-
-
     
   }
 
@@ -187,7 +189,7 @@ const FindCalendar = async(_id)=>{
     _id = _id.split('sample&&')[1];
     cal = await SampleCalendars[_id]
   }else{
-    cal =  await fetchCalendar(_id);
+    cal =  await fetchCalendar(_id)
   }
   return await SortCalendarData(cal);
 }

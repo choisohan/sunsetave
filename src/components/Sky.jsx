@@ -13,7 +13,7 @@ export default function Sky() {
 
     useEffect(()=>{
       mat.uniforms.uTime.value = timestampToHourFloat(timestamp);
-      mat.uniforms.uTimestamp.value = timestamp;
+      mat.uniforms.uTimestamp.value = timestamp /10000000000;
     },[timestamp])
 
 
@@ -21,7 +21,6 @@ export default function Sky() {
       mat.uniforms.uSkyColorMap.value = textureContext['env/skyColormap'] ;
       mat.uniforms.uPerlinNoiseMap.value = textureContext['common/PerlinNoise'] ;
       mat.uniforms.uCloudMap.value = textureContext['env/clouds'] ;
-
     },[textureContext])
 
 

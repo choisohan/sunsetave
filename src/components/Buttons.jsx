@@ -33,7 +33,6 @@ export const FastForwardButton = ()=>{
   
     const interval = setInterval(() => {
       count+=1; 
-      console.log( 'count',count)
       updateTimestamp(x => x + 3600000 / 30);
     }, 200); // update every 200ms
   
@@ -44,7 +43,7 @@ export const FastForwardButton = ()=>{
 
 
   return <CozyButton className='pixelButton' tooltip="Play fast forward" onClick={()=>{setIsPlaying(!isPlaying);}} >
-   <img src='/images/fast_forward.png' />
+   <img src={!isPlaying? '/images/fast_forward.png' : '/images/pause.png' } />
      </CozyButton>
   
 
@@ -115,6 +114,15 @@ export const EditModeButton = (props)=>{
         <img src='/images/hammer_and_pick.png' />    
     </CozyButton>
 }
+
+
+
+export const RecordButton = (props)=>{
+  return <CozyButton  className='pixelButton'  tooltip="Startb Record" onClick={()=>{}}>
+        <img src='/images/record.png' />    
+    </CozyButton>
+}
+
 
 
 

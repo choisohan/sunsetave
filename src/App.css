@@ -109,10 +109,10 @@ button:hover{
   padding: 5px 0;
   position: absolute;
   z-index: 100;
-  bottom: 150%;
+  bottom: 120%;
   left: 50%;
   margin-left: -60px;
-  font-size: 80%;
+  font-size: 90%;
 }
 .cozyButton .tooltip::after {
   content: "";
