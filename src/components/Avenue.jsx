@@ -16,9 +16,11 @@ import { SampleCalendars } from '../calendar/SampleCalendars'
 export default function Avenue() {
 
   const [items, setItems] = useState([
-   {id : 'sample&&SampleCalendar' , cellNumb : 0  },
-   {id : 'sample&&BruceLee' , cellNumb : 1 },   
+    {id : 'sample&&SampleCalendar' , cellNumb : 0  },
+
+    {id : 'xere' , cellNumb : 1  }
    /*
+   {id : 'sample&&BruceLee' , cellNumb : 1 },   
    {id : 'sample&&Einstein' ,  cellNumb : 2},
    {id : 'sample&&Darwin' ,  cellNumb : 3},
    */
@@ -40,7 +42,7 @@ export default function Avenue() {
        return {..._item, ...transform};
       })
     })
-  },[grid])
+  },[grid, items.length ])
 
 
   const onHouseClicked=(_i, _detailProperty)=>{
@@ -81,6 +83,16 @@ export default function Avenue() {
 
   }
 
+  const onHouseUpdate = (newProperty, i ) =>{
+    if(!newProperty){
+      console.log(`N${i} item failed to be found. remove from the array`)
+      const _items =[...items];
+      _items.splice(i, 1)
+      console.log(items, _items )
+      setItems(_items);
+    }
+  }
+
 
   return (
     <>
@@ -92,7 +104,7 @@ export default function Avenue() {
       <Sky />
         <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
         {items.map( (item,i) =>
-        <House key={i} property ={item} onUpdateProperty={()=>{}}  onClick={_props=>{  onHouseClicked(i, _props )  }} />
+        <House key={i} property ={item} onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}  onClick={_props=>{  onHouseClicked(i, _props )  }} />
     )}
     <Ocean />
 

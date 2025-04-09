@@ -12,34 +12,38 @@ import { Clock } from './Clock';
 
 export default function HouseViewer(props) {
   const { param } = useParams();
-  const [property, setProperty]= useState();
-
-  useState(()=>{
-    console.log( 'viewer: ',param, property )
-  },[property])
+  const [ property , setProperty]= useState({id: param , name :'????', events:[] , timezone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+  const [name , setName] = useState('????')
 
 
-return (<div className="w-full h-screen flex flex-col md:flex-row" style={{opacity: property ?  1 : 0 }}>
+  const onUpdateProperty =( newProperty )=>{
+    if(!newProperty){
+      setName( 'NOT FOUND')
+    }
+  }
+
+
+return (<div className="w-full h-screen flex flex-col md:flex-row" >
 <Canvas camera={{ position: [0,-5,8], fov: 20}}>
   <CameraControls target={new Vector3(0,.75,0)}/>
-  <Sky timezone={property? property.timezone : null } />
+  <Sky timezone={ property.timezone  } />
   <Pixelate />
-  <House property={{id: param}} onUpdateProperty={ d=> setProperty( d)} onClick={()=>{}} onMouseEnter={()=>{}}/>
+  <House property={ { id : param  } } onUpdateProperty ={ onUpdateProperty } onClick={()=>{}} onMouseEnter={()=>{}}/>
 </Canvas>
-
-
-{!property? null : 
 <div className="w-full md:w-1/2 p-4">
 
   <div>
     <span className='inline-flex'>
       <img src='/images/userProfile.png' className='w-[100px] h-[100px]'/>
-      <h2 className='[line-break:anywhere]'>{ property.name }</h2>
+      <h2 className='[line-break:anywhere]'>{ name }</h2>
     </span>
 
     <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black' >
       <Clock timezone={property.timezone}/>{property.timezone} </div>
   </div>
+
+
+  
   <div className='flex column gap-2' style={{marginTop:'10px', marginBottom:'10px'}}>
     <SkipBackwardButton />
     <FastForwardButton />
@@ -56,12 +60,10 @@ return (<div className="w-full h-screen flex flex-col md:flex-row" style={{opaci
     ): null }
   </div>
 </div>
-}
-
 
 
 </div>
-
 )
 
 }
+

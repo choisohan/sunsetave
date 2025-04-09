@@ -29,23 +29,24 @@ export default function House(props){
 
 
   useEffect(()=>{
+
     if( props.property.id !== property.id ){
+
       FindCalendar(props.property.id).then( calendar =>{
         const newProperty = {...property, ...props.property , ...calendar  }; 
         setProperty(newProperty)
-        props.onUpdateProperty(newProperty);
+        props.onUpdateProperty( newProperty );
         setCurrentEventIndex(getCurrentEventIndex(calendar.events))
       }).catch(err =>{
-        console.log('failed to fetch calendar of '+ props.property.id  )
+        props.onUpdateProperty();
       })
-
     }
     else{
       setProperty(_property =>(
         {..._property, ...props.property   }
       ))
     }
-  },[props.property])
+  },[ props.property ])
 
 
 
