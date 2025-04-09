@@ -33,7 +33,6 @@ export default function House(props){
     if( props.property.id !==property.id ){
       FindCalendar(props.property.id).then( calendar =>{
         const timeoffset = GetTimestampOffset(calendar.timezone);
-
         const newProperty = {...property, ...props.property , ...calendar , timeoffset : timeoffset }; 
         setProperty(newProperty)
         props.onUpdateProperty(newProperty);

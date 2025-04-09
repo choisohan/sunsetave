@@ -10,18 +10,18 @@ import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, Sk
 import {Clock} from './Clock'
 import { OrbitControls } from '@react-three/drei'
 import Ocean from './Ocean'
-
-
+import { CozyButton } from './Buttons'
+import { SampleCalendars } from '../calendar/SampleCalendars'
 
 export default function Avenue() {
-
-
 
   const [items, setItems] = useState([
    {id : 'sample&&SampleCalendar' , cellNumb : 0  },
    {id : 'sample&&BruceLee' , cellNumb : 1 },   
+   /*
    {id : 'sample&&Einstein' ,  cellNumb : 2},
    {id : 'sample&&Darwin' ,  cellNumb : 3},
+   */
   ])
 
   const [selectedItem, setSelectedItem] = useState();
@@ -33,7 +33,6 @@ export default function Avenue() {
 
   useEffect(()=>{
     if(!grid) return;
-
     setItems( _items =>{
       return _items.map( _item =>{
         const cellNumb = _item.cellNumb;
@@ -43,17 +42,6 @@ export default function Avenue() {
     })
   },[grid])
 
-  const onMouseMoveOnGrid= (cellNumb)=>{
-    if(!selectedItem) return;
-
-    const transforms = grid[cellNumb]
-    
-    setItems(_items =>{
-      const itemArr = [..._items];
-      itemArr[selectedItem.i] = {...itemArr[selectedItem.i], position: transforms.position ,rotation: transforms.rotation }
-      return itemArr; 
-    })
-  }
 
   const onHouseClicked=(_i, _detailProperty)=>{
 
@@ -71,22 +59,26 @@ export default function Avenue() {
 
   const onEnterNewCell= i =>{
     if(editMode && selectedItem){
-      //const [position, rotation] = getTransformByCellNumb(i);
-
-
       const transform = grid[i];
-
-
-      console.log( i , selectedItem  , transform )
-
-
       setItems(_arr =>{
         _arr[selectedItem.i] = {..._arr[selectedItem.i],  cellNumb : i , ...transform  }
         return _arr; 
       })
-
       setSelectedItem( item=>({...item, cellNumb : i ,...transform }))
     }
+  }
+
+  const ShuffleStreet=()=>{
+
+    const count = 7; //Math.floor(Math.random() * Object.keys(SampleCalendars).length) + 1;
+    
+    const randomItems = Object.keys(SampleCalendars).sort(() => Math.random() - 0.5).slice(0, count).map(key=>({
+        id: 'sample&&'+key , cellNumb: Math.floor( Math.random() * grid.length )
+    }))
+
+    setItems(randomItems)
+    setGrid(arr=>[...arr])
+
   }
 
 
@@ -102,9 +94,7 @@ export default function Avenue() {
         {items.map( (item,i) =>
         <House key={i} property ={item} onUpdateProperty={()=>{}}  onClick={_props=>{  onHouseClicked(i, _props )  }} />
     )}
-
-
-<Ocean />
+    <Ocean />
 
 
 
@@ -120,6 +110,9 @@ export default function Avenue() {
       <ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
       <AddNewHouseButton />
       <EditModeButton editMode={editMode} setEditMode={setEditMode}/>
+      <CozyButton  className='pixelButton'  tooltip="Suffle Avenue" onClick={ShuffleStreet}>
+      <img src='/images/game_die.png' />    
+      </CozyButton>
     </div>
 
 
