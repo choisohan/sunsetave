@@ -2,11 +2,25 @@ import React, { useEffect, useRef, useState } from 'react'
 import { OrbitControls } from '@react-three/drei'
 import { Vector3 } from 'three'
 import { useThree } from '@react-three/fiber'
+import { SRGBColorSpace, NoToneMapping } from 'three';
 
 export default function CameraControls(props) {
 
   const maxPanDistance = 1.5; 
   const [target,setTarget] = useState( props.target ||  new Vector3(0,0.35,0) );
+
+  /*
+  const {gl} = useThree();
+
+  useEffect(()=>{
+    console.log(  gl.outputColorSpace ,gl.toneMapping )
+    gl.outputColorSpace = SRGBColorSpace;
+    gl.toneMapping = NoToneMapping;
+    gl.setClearColor(0x000000, 1); // solid black background
+
+  },[gl])
+  */
+
 
 
   const onEnd = (e)=>{

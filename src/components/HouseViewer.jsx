@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useState } from 'react';
 import House from './House';
 import { Canvas } from '@react-three/fiber';
@@ -7,13 +7,14 @@ import CameraControls from './CameraControls';
 import { Pixelate } from '../shaders/CustomPostProcessing';
 import Sky from './Sky';
 import { FastForwardButton, RecordButton, SkipBackwardButton, SkipForwardButton } from './Buttons';
-import { Vector3 } from 'three';
+import {  Vector3 , SRGBColorSpace , NoToneMapping, WebGLRenderer} from 'three';
 import { Clock } from './Clock';
 
 export default function HouseViewer(props) {
   const { param } = useParams();
   const [ property , setProperty]= useState({id: param , name :'????', events:[] , timezone: Intl.DateTimeFormat().resolvedOptions().timeZone });
   const [name , setName] = useState('????')
+  const canvasRef = useRef();  
 
 
   const onUpdateProperty =( newProperty )=>{
@@ -23,11 +24,27 @@ export default function HouseViewer(props) {
   }
 
 
+
+
 return (<div className="w-full h-screen flex flex-col md:flex-row" >
-<Canvas camera={{ position: [0,-5,8], fov: 20}}>
+<Canvas camera={{ position: [0,-5,8], fov: 20}} ref={canvasRef}
+/*
+  gl={{
+    preserveDrawingBuffer: true,
+    premultipliedAlpha: false,
+    alpha: false,
+  }}
+  onCreated={({ gl }) => {
+    gl.setClearColor(0x000000, 1);
+    gl.outputColorSpace = SRGBColorSpace;  // Use sRGB color space
+    gl.toneMapping = NoToneMapping;   
+  }}
+      style={{ backgroundColor: 'black' }}
+
+    */
+>
   <CameraControls target={new Vector3(0,.75,0)}/>
   <Sky timezone={ property.timezone  } />
-  <Pixelate />
   <House property={ { id : param  } } onUpdateProperty ={ onUpdateProperty } onClick={()=>{}} onMouseEnter={()=>{}}/>
 </Canvas>
 <div className="w-full md:w-1/2 p-4">
@@ -48,7 +65,7 @@ return (<div className="w-full h-screen flex flex-col md:flex-row" >
     <SkipBackwardButton />
     <FastForwardButton />
     <SkipForwardButton />
-    <RecordButton />
+    <RecordButton canvasRef={canvasRef}/>
   </div>
 
   <div className='p-1 m-1 border-2 border-black overflow-auto min-h-[100px] max-h-[600px] '>

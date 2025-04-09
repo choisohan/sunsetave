@@ -121,9 +121,84 @@ export const EditModeButton = (props)=>{
 
 
 export const RecordButton = (props)=>{
-  return <CozyButton  className='pixelButton'  tooltip="Startb Record" onClick={()=>{}}>
-        <img src='/images/record.png' />    
-    </CozyButton>
+
+  const [isRecording , setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const chunksRef = useRef([]);  // Ref to store video chunks
+
+  const downloadLink= useRef(document.createElement('a'));
+
+  
+
+
+  const StartRecording = ()=>{
+    setIsRecording(true)
+    // Get the canvas element from the ref (ensure it's your Three.js canvas)
+    const canvas = props.canvasRef.current;
+
+    if (canvas) {
+      const stream = canvas.captureStream(30);  // Capture the stream at 30 FPS
+
+      const options = {
+        mimeType: 'video/webm;codecs=vp8', 
+        videoBitsPerSecond: 5000000 // high bitrate = better quality
+      };
+      const recorder = new MediaRecorder(stream, options);
+
+      recorder.ondataavailable = (e) => {
+        chunksRef.current.push(e.data);  // Store video chunks
+      };
+
+      recorder.onstop = () => {
+        const blob = new Blob(chunksRef.current, { type: 'video/webm' });
+        downloadVideo(blob);
+      };
+
+      recorder.start();
+      setMediaRecorder(recorder);  // Store the recorder reference for stopping
+    }
+  }
+
+  const StopRecording = ()=>{
+    setIsRecording(false)
+    if (mediaRecorder) {
+      mediaRecorder.stop();  // Stop the recording
+    }
+  }
+
+  const downloadVideo = (blob) => {
+    if (blob) {
+      downloadLink.current.href =  URL.createObjectURL(blob);
+      downloadLink.current.download = 'output-video.webm';
+      downloadLink.current.click();
+    }
+  };
+
+
+  return (
+    <div>
+      {!isRecording ? (
+        <CozyButton
+          className="pixelButton"
+          tooltip="Start Record"
+          onClick={StartRecording}
+        >
+          <img src="/images/record.png" alt="Start Recording" />
+        </CozyButton>
+      ) : (
+        <CozyButton
+          className="pixelButton"
+          tooltip="Stop Record"
+          onClick={StopRecording}
+        >
+          <img src="/images/stop.png" alt="Stop Recording" />
+        </CozyButton>
+      )}
+      
+    </div>
+  );
+
+
 }
 
 
