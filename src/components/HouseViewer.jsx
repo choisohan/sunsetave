@@ -6,38 +6,61 @@ import { useParams } from 'react-router-dom';
 import CameraControls from './CameraControls';
 import { Pixelate } from '../shaders/CustomPostProcessing';
 import Sky from './Sky';
-import TerrainMesh from './TerrainMesh';
-import { FastForwardButton, SkipForwardButton } from './Buttons';
-import { Html } from '@react-three/drei';
-
+import { FastForwardButton, SkipBackwardButton, SkipForwardButton } from './Buttons';
+import { Vector3 } from 'three';
+import { Clock } from './Clock';
 
 export default function HouseViewer(props) {
   const { param } = useParams();
-  const [property, setProperty]= useState({id: param, cellNumb: 0});
+  const [property, setProperty]= useState( {id: param, name : '' , timezone : Intl.DateTimeFormat().resolvedOptions().timeZone , events:[] });
 
 
+  useEffect(()=>{
+    if(property.events){
+      console.log(property )
+    }
 
 
-return (<>
-<Canvas style={{height:'100vh'}} camera={{position: [0,1,9], fov: 20}}>
-  <CameraControls />
+  },[property])
+
+return (<div className="w-full h-screen flex flex-col md:flex-row">
+<Canvas camera={{ position: [0,-5,8], fov: 20}}>
+  <CameraControls target={new Vector3(0,.75,0)}/>
   <Sky />
   <Pixelate />
-  <House property={property} onClick={()=>{}} onMouseEnter={()=>{}}/>
-  {/*
-  <TerrainMesh editMode={false} setGrids={()=>{}}  onMouseEnter={()=>{}} />
-  */}
-
-  <Html>
-    <div className='flex center'>
-    <FastForwardButton /><SkipForwardButton />
-    </div>
-
-  </Html>
-
+  <House property={property} onUpdateProperty={d=>setProperty(d)} onClick={()=>{}} onMouseEnter={()=>{}}/>
 </Canvas>
 
-</>
+<div className="w-full md:w-1/2 p-4">
+
+  <div>
+    <span className='flex row'>
+      <img src='/images/userProfile.png' className='w-[100px]'/>
+      <h2>{ property.name }</h2>
+    </span>
+
+    <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black' ><Clock timezone={property.timezone}/>{property.timezone} </div>
+  </div>
+  <div className='flex column gap-2' style={{marginTop:'10px', marginBottom:'10px'}}>
+    <SkipBackwardButton />
+    <FastForwardButton />
+    <SkipForwardButton />
+  </div>
+
+
+  <div className='p-1 m-1 border-2 border-black overflow-auto min-h-[100px] max-h-[600px] '>
+
+  {property.events.map((evt, i)=>
+      <div key={i} className='flex cursor-pointer hover:bg-gray-200'>
+        <span style={{width:'100px'}}>{evt.startMoment.format("hh:mm A")}</span>
+        <span>{evt.summary}</span>
+      </div>
+  )}
+  </div>
+
+</div>
+
+</div>
 
 )
 

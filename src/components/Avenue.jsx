@@ -100,7 +100,7 @@ export default function Avenue() {
       <Sky />
         <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
         {items.map( (item,i) =>
-        <House key={i} property ={item} onClick={_props=>{  onHouseClicked(i, _props )  }} />
+        <House key={i} property ={item} onUpdateProperty={()=>{}}  onClick={_props=>{  onHouseClicked(i, _props )  }} />
     )}
 
 
@@ -111,10 +111,11 @@ export default function Avenue() {
   
      
     </Canvas>
+   <div className='fixed z-[1] bottom-0 left-0  m-[20px]' >
+      <div className='bg-[#748060] text-[150%] p-[10px] border-4 border-black'><Clock /></div>
+  </div>
 
-    <div className='fixed z-[1] bottom-0 right-0 ' >
-      <div className='bg-white'><Clock /></div>
-      <TimeTestButton />
+    <div className='fixed z-[1] bottom-0 right-0 m-[10px] flex gap-[5px]' >
       <SkipBackwardButton /><SkipForwardButton /> <FastForwardButton />
       <ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
       <AddNewHouseButton />

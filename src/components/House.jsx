@@ -30,19 +30,17 @@ export default function House(props){
 
 
   useEffect(()=>{
-    console.log( props.property )
     if( props.property.id !==property.id ){
       FindCalendar(props.property.id).then( calendar =>{
-
         const timeoffset = GetTimestampOffset(calendar.timezone);
-        setProperty(_property =>(
-          {..._property, ...props.property , ...calendar , timeoffset : timeoffset }
-        ))
+
+        const newProperty = {...property, ...props.property , ...calendar , timeoffset : timeoffset }; 
+        setProperty(newProperty)
+        props.onUpdateProperty(newProperty);
         setCurrentEventIndex(getCurrentEventIndex(calendar.events))
       })
 
     }
-    
     else{
       setProperty(_property =>(
         {..._property, ...props.property   }
@@ -156,7 +154,7 @@ export default function House(props){
 
    
   // Render
-  if(! mesh ) return; 
+  if(! mesh || !property.events  ) return; 
 
   return <mesh ref={meshRef} 
   position ={ property.position ? [property.position.x, property.position.y, property.position.z] :   [0,0,0] }
@@ -166,27 +164,17 @@ export default function House(props){
               onClick={()=>{ props.onClick(property) }}>
 
       <primitive object={mesh} scale={[.75,.75,.75] }/>
-           {!isHovered ? null :
-            property.events ? <EventStateBubble height={meshHeight} ownerName={property.name}  event={property.events[currentEventIndex]} /> : null 
-           }
-          <Html>
-            <audio ref={audioRef} src="/audios/jump.wav" />
+
+          <Html className='bubble' zIndexRange={[0, 1]} position={[0, meshHeight +.5, -0.25]} center style={{
+        transform: 'translate(-50%,calc(-100% - 10px))', zIndex:1,}}>
+          
+                <span>[{property.name}]</span><br />
+                <span>{property.events[currentEventIndex].summary}</span>
+                <audio ref={audioRef} src="/audios/jump.wav" />
           </Html>
       </mesh>
-
-
-
-  
-
-
 }
 
-const EventStateBubble = (props)=>{
-  return <Html zIndexRange={[0, 1]} position={[0, props.height +.5, -0.25]} center style={{
-    background:'white', padding: '5px' , transform: 'translate(-50%,calc(-100% - 10px))', zIndex:1,}}>
-      {props.ownerName}
-    </Html>
-}
 
 
 const GetTimestampOffset = (tz) => {

@@ -9,9 +9,17 @@ export default function HouseDetailWindow(props) {
   const Header=() => {
     if(!props.property) return; 
     return <div className='w-full h-auto'>
-    <h3>{props.property.name}</h3>
-    <Clock timezone={props.property.timezone}/>
-    <h4>{props.property.timezone}</h4>
+      <span style={{display:'ruby'}} >
+      <a href={`/${props.property.id}`}>
+        <img src='/images/userProfile.png' className='w-[100px]'/>
+      </a>
+      <h3>{props.property.name}</h3>
+      </span>
+
+      <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black' >
+      <Clock timezone={props.property.timezone}/>
+      {props.property.timezone}
+      </div>
     </div>
   }
 

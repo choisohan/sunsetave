@@ -18,20 +18,81 @@
 
 }
 
-@import url(styles/canvas.css);
+
 button{
   padding: 3px 5px;
   margin: 2px; 
-  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+  /*box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);*/
 }
+
 button:hover{
   transform: translate(2px,2px);
-  box-shadow: none;
+}
+
+.cozyButton{
+  position: relative;
+  appearance: auto;
 }
 .cozyButton{
-  background-color: white;
-  position: relative;
 
+}
+
+
+.pixelButton{
+  background-image: url('/public/images/button_middle.png');
+  background-size: cover;
+  image-rendering: pixelated;
+  background-size: contain;
+  margin: 0px 10px;
+}
+.pixelButton::before{
+  content: ' ';
+  width: 10px;
+  height:100%;
+  position: absolute;
+  transform: translate(-100%, 0px);
+  background-image: url('/public/images/button_start.png');
+  background-size:contain;
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  background-position-x:right;
+}
+.pixelButton::after{
+  content: ' ';
+  width: 10px;
+  height:100%;
+  position: absolute;
+  transform: translate(100%, 0px);
+  background-image: url('/public/images/button_end.png');
+  background-size:contain;
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  background-position-x:left;
+  top:0;
+  right:0
+}
+.pixelButton:hover {
+  background-image: url('/public/images/buttonPressed_middle.png');
+}
+.pixelButton:hover::before {
+  background-image: url('/public/images/buttonPressed_start.png');
+}
+.pixelButton:hover::after {
+  background-image: url('/public/images/buttonPressed_end.png');
+}
+.pixelButton  *{
+}
+.pixelButton:hover  *{
+  transform: translate(0px,10px);
+}
+.pixelButton img{
+  height: 50px;
+  width: 50px;
+  scale: 60%;
+  translate: -10px -5px;
+}
+.pixelButton:has(img){
+  width: 30px;
 }
 
 .cozyButton:hover .tooltip{
@@ -44,7 +105,7 @@ button:hover{
   background-color: black;
   color: #fff;
   text-align: center;
-  border-radius: 6px;
+  border-radius: 2px;
   padding: 5px 0;
   position: absolute;
   z-index: 100;
@@ -62,4 +123,26 @@ button:hover{
   border-width: 5px;
   border-style: solid;
   border-color: black transparent transparent transparent;
+}
+
+img{
+  image-rendering: pixelated;
+  max-width: none;
+}
+
+.bubble{
+  background-color: white;
+  border: none;
+  outline:none;
+  padding: 2px 5px;
+}
+.bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: white transparent transparent transparent;
 }

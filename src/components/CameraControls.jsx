@@ -3,9 +3,10 @@ import { OrbitControls } from '@react-three/drei'
 import { Vector3 } from 'three'
 import { useThree } from '@react-three/fiber'
 
-export default function CameraControls() {
+export default function CameraControls(props) {
 
   const maxPanDistance = 1.5; 
+  const [target,setTarget] = useState( props.target ||  new Vector3(0,0.35,0) );
 
 
   const onEnd = (e)=>{
@@ -22,7 +23,7 @@ export default function CameraControls() {
   return (
         <OrbitControls
           onEnd={onEnd}
-          target={new Vector3(0,0.35,0)}
+          target={target}
           maxDolly ={0}
           minPolarAngle={0} 
           maxPolarAngle={Math.PI / 2} 
