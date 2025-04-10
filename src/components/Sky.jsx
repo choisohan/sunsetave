@@ -23,6 +23,8 @@ export default function Sky(props) {
 
 
     useEffect(()=>{
+      if(!textureContext)return;
+
       mat.uniforms.uSkyColorMap.value = textureContext['env/skyColormap'] ;
       mat.uniforms.uPerlinNoiseMap.value = textureContext['common/PerlinNoise'] ;
       mat.uniforms.uCloudMap.value = textureContext['env/clouds'] ;

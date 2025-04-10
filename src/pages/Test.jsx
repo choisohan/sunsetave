@@ -20,10 +20,11 @@ export default function Test() {
 
 
   useEffect(()=>{
-    if( textureContext){
-      leaveMat.uniforms.uSkyColorMap.value = textureContext['env/skyColormap']
-      leaveMat.uniforms.uPerlinNoiseNormal.value = textureContext['common/perlinNoiseNormal']
-    }
+    if(!textureContext)return;
+    
+    leaveMat.uniforms.uSkyColorMap.value = textureContext['env/skyColormap']
+    leaveMat.uniforms.uPerlinNoiseNormal.value = textureContext['common/perlinNoiseNormal']
+    
   },[textureContext])
 
   return (<>

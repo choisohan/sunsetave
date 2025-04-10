@@ -50,6 +50,8 @@ export default function TerrainMesh(props){
     }
 
     useEffect(()=>{
+        if(!textureContext)return;
+
         materials.forEach( mat=>{
             if(mat.uniforms.uPerlinNoiseNormal){
                 mat.uniforms.uPerlinNoiseNormal.value = textureContext['common/perlinNoiseNormal'];

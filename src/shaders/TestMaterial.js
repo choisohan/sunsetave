@@ -1,10 +1,7 @@
 import { RawShaderMaterial } from 'three'
-import { useLoader } from '@react-three/fiber';
-import { TextureLoader } from 'three';
+
 
 export default function TestMaterial() {
-
-    const skyColorMap = useLoader(TextureLoader, '/textures/env/skyColormap.png');;
     
     return new RawShaderMaterial({
     vertexShader:`

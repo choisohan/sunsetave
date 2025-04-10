@@ -18,9 +18,9 @@ export default function Ocean() {
     },[timestamp])
 
     useEffect(()=>{
+      if(!textureContext)return;
       mat.uniforms.uSkyColorMap.value = textureContext['env/skyColormap'] 
       mat.uniforms.uPerlinNoiseMap.value = textureContext['common/PerlinNoise'] 
-
     },[textureContext])
 
     useFrame((state, delta)=>{

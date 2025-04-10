@@ -112,7 +112,7 @@ export default function House(props){
               onClick={()=>{ props.onClick(property) }}>
 
       <primitive object={mesh} scale={[.75,.75,.75] } />
-      <EventBubble isHovered={isHovered} mesh={mesh} events={property.events} currentEventIndex={currentEventIndex} />
+      <EventBubble isHovered={isHovered} mesh={mesh} events={property.events ? property.events : [] } currentEventIndex={currentEventIndex} />
 </mesh>
 }
 

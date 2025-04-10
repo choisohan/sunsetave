@@ -6,7 +6,7 @@ import {Pixelate} from '../shaders/CustomPostProcessing'
 import CameraControls from '../components/CameraControls'
 import TerrainMesh from '../components/TerrainMesh'
 import HouseDetailWindow from '../components/HouseDetailWindow'
-import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipBackwardButton, SkipForwardButton} from '../components/Buttons'
+import { AddNewHouseButton, EditModeButton, FastForwardButton , InfoButton, ReloadButton, SkipBackwardButton, SkipForwardButton} from '../components/Buttons'
 import {Clock} from '../components/Clock'
 import { OrbitControls } from '@react-three/drei'
 import Ocean from '../components/Ocean'
@@ -122,18 +122,17 @@ export default function Avenue() {
   </div>
 
     <div className='fixed z-[1] bottom-0 right-0 m-[10px] flex gap-[5px]' >
+    <InfoButton />
+
       <SkipBackwardButton /><SkipForwardButton /> <FastForwardButton />
       <ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
       <AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
       <EditModeButton editMode={editMode} setEditMode={setEditMode}/>
-      <CozyButton  className='pixelButton'  tooltip="Suffle Avenue" onClick={ShuffleStreet}>
-      <img src='/images/game_die.png' />    
-      </CozyButton>
+      <CozyButton  className='pixelButton'  tooltip="Suffle Avenue" onClick={ShuffleStreet}><img src='/images/game_die.png' />    </CozyButton>
     </div>
 
 
     {popup}
-
 
 
 
