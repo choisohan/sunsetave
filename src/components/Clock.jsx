@@ -8,6 +8,10 @@ export function Clock(props){
     const timestamp = useTimestamp();
     const updateTimestamp = useUpdateTimestamp();
 
+    useEffect(()=>{
+      setTimezone(props.timezone); 
+    },[props.timezone])
+    
     useEffect(() => {
 
       const interval = setInterval(() => {
@@ -18,7 +22,7 @@ export function Clock(props){
     }, []);
   
 
-    return <div>{ moment(timestamp).tz(timezone).format('MMM D YYYY ddd hh:mm A') }</div>;
+    return <div>{ moment.tz(timestamp, timezone).format('MMM D YYYY ddd hh:mm A') }</div>;
 };
   
 

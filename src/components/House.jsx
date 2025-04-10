@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
 import { useHouseModel , useTexture } from '../contexts/modelContext';
 import { useFrame } from '@react-three/fiber';
-import { getCurrentEventIndex , getNextEventIndex } from '../calendar/SortEvents';
+import { getCurrentEventIndex  } from '../calendar/SortEvents';
 import {FindCalendar} from '../calendar/FetchCalendar'
 import { Vector3 , Box3 } from 'three';
 import { useThree } from '@react-three/fiber';
 import { useTimestamp } from '../contexts/envContext';
 import { timestampToHourFloat } from './Clock';
-
+import moment from 'moment-timezone';
 
 export default function House(props){
   const { gl } = useThree(); 
@@ -28,12 +28,10 @@ export default function House(props){
 
     if( props.property.id !== property.id ){
       FindCalendar(props.property.id).then( calendar =>{
-        //console.log( '🟢sorted',calendar )
         const newProperty = {...property, ...props.property , ...calendar  }; 
         setProperty(newProperty)
         props.onUpdateProperty( newProperty );
 
-        setCurrentEventIndex(getCurrentEventIndex(calendar.events))
       }).catch(err =>{
         props.onUpdateProperty();
       })
@@ -87,6 +85,13 @@ export default function House(props){
     }else{
       mesh.material.uniforms.uTime.value= time;
     }
+
+    if(property.events){
+      const _currentIndex = getCurrentEventIndex( property.events ,timestamp );  
+      const _currentEvent = property.events[_currentIndex];
+      if( new moment().isBetween(_currentEvent.startMoment, _currentEvent.endMoment ) ) setCurrentEventIndex(_currentIndex);  
+    }
+
 
   },[ timestamp, property , mesh ])
 

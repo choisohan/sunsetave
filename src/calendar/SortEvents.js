@@ -31,13 +31,6 @@ export const GetDayArrayFromRRule = (event, _timezone)=>{
     delete options.bynmonthday;
 
 
-
-    console.log( options.dtstart  )
-
-
-
-    console.log( '____')
-
     const rule = new RRule(options);
     const recentOccurrences = rule.between( DateFromNow(-3), DateFromNow(+3) , true);
 
