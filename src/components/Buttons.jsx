@@ -179,7 +179,7 @@ export const RecordButton = (props)=>{
     <div>
       {!isRecording ? (
         <CozyButton
-          className="pixelButton"
+          className={`pixelButton  ${isRecording? 'pressed':''}`}
           tooltip="Start Record"
           onClick={StartRecording}
         >
@@ -187,7 +187,7 @@ export const RecordButton = (props)=>{
         </CozyButton>
       ) : (
         <CozyButton
-          className="pixelButton"
+          className={`pixelButton  ${isRecording? 'pressed':''}`}
           tooltip="Stop Record"
           onClick={StopRecording}
         >

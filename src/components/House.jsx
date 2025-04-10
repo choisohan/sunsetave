@@ -162,13 +162,15 @@ export default function House(props){
 
       <primitive object={mesh} scale={[.75,.75,.75] }/>
 
+{/*
           <Html className='bubble' zIndexRange={[0, 1]} position={[0, meshHeight +.5, -0.25]} center style={{
         transform: 'translate(-50%,calc(-100% - 10px))', zIndex:1,}}>
-          
                 <span>[{property.name}]</span><br />
                 <span>{property.events[currentEventIndex].summary}</span>
                 <audio ref={audioRef} src="/audios/jump.wav" />
           </Html>
+
+*/}
       </mesh>
 }
 

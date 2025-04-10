@@ -79,18 +79,19 @@ button:hover{
   top:0;
   right:0
 }
-.pixelButton:hover {
+.pixelButton:hover, .pixelButton.pressed {
   background-image: url('/public/images/buttonPressed_middle.png');
 }
-.pixelButton:hover::before {
+.pixelButton:hover::before, .pixelButton.pressed::before {
   background-image: url('/public/images/buttonPressed_start.png');
 }
-.pixelButton:hover::after {
+.pixelButton:hover::after, .pixelButton.pressed::after {
   background-image: url('/public/images/buttonPressed_end.png');
 }
-.pixelButton:hover  *{
+.pixelButton:hover *, .pixelButton.pressed *{
   transform: translate(0px,10px);
 }
+
 .pixelButton img{
   height: 50px;
   width: 50px;

@@ -10,20 +10,17 @@ const WeekRange = ( tz , offset )=>{
 }
 
 
-
-
-
-
-
+const LastWeek = ()=>{
+    var date = new Date();
+    date.setDate(new Date().getDate() - 7);
+    return date; 
+}
 
 export const GetDayArrayFromRRule = (event, _timezone)=>{
-    console.log( event )
-    const lastWeek = new Date();
-    lastWeek.setDate(new Date().getDate() - 7);
-
     const rule =  RRule.fromString(event.rrule );
-    rule.options.count = 10;  // todo :limit for performance
-    rule.options.dtstart = lastWeek; 
+    rule.options.count = 30 ;  // todo :limit for performance
+    rule.options.dtstart = LastWeek(); 
+    
     return rule.all().map( d=> {
         const minutes = moment(event.end).diff(moment(event.start),'minutes');
         var start = moment(d).tz(_timezone)

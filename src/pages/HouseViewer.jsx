@@ -9,13 +9,15 @@ import Sky from '../components/Sky';
 import { FastForwardButton, RecordButton, SkipBackwardButton, SkipForwardButton } from '../components/Buttons';
 import {  Vector3} from 'three';
 import { Clock } from '../components/Clock';
-
+import { getCurrentEventIndex } from '../calendar/SortEvents';
 
 export default function HouseViewer(props) {
   const { param } = useParams();
   const [ property , setProperty]= useState({id: param , name :'????', events:[] , timezone: Intl.DateTimeFormat().resolvedOptions().timeZone });
   const [name , setName] = useState('????')
   const canvasRef = useRef();  
+  const [currentEventIndex, setCurrentEventIndex] = useState(null)
+  
 
   const onUpdateProperty =( newProperty )=>{
   
@@ -24,7 +26,7 @@ export default function HouseViewer(props) {
     }else if(newProperty.name){
       setName(newProperty.name)
       setProperty(newProperty);
-
+      setCurrentEventIndex(getCurrentEventIndex(newProperty.events));
     }
   }
 
@@ -46,7 +48,7 @@ return (
 
     <div>
       <span className='inline-flex'>
-        <img src='/images/userProfile.png' className='w-[100px] h-[100px]'/>
+        <img src='/images/userProfile.png' className='w-[70px] h-[70px]'/>
         <h2 className='[line-break:anywhere]'>{ name }</h2>
       </span>
 
@@ -63,9 +65,10 @@ return (
       <RecordButton canvasRef={canvasRef}/>
     </div>
 
-    <div className='p-1 m-1 border-2 border-black overflow-auto min-h-[100px] max-h-[600px] '>
+    <div className='p-1 m-1 border-2 border-black overflow-auto min-h-[100px] max-h-[600px] min-h-[300px] '>
       { property.events ? property.events.map((evt, i)=>
-          <div key={i} className='flex cursor-pointer hover:bg-gray-200'>
+          <div key={i} className='flex cursor-pointer hover:bg-gray-200'
+          style={{backgroundColor: currentEventIndex == i ? 'lightgray': ''  }}>
             <span style={{width:'200px'}}>{evt.startMoment.format("MM/DD hh:mm A")}</span>
             <span>{evt.summary}</span>
           </div>
