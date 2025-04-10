@@ -1,24 +1,22 @@
 import React, {  useEffect, useState } from 'react'
-import House from './House'
+import House from '../components/House'
 import { Canvas } from '@react-three/fiber'
-import Sky from './Sky'
+import Sky from '../components/Sky'
 import {Pixelate} from '../shaders/CustomPostProcessing'
-import CameraControls from './CameraControls'
-import TerrainMesh from './TerrainMesh'
-import HouseDetailWindow from './HouseDetailWindow'
-import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipBackwardButton, SkipForwardButton, TimeTestButton} from './Buttons'
-import {Clock} from './Clock'
+import CameraControls from '../components/CameraControls'
+import TerrainMesh from '../components/TerrainMesh'
+import HouseDetailWindow from '../components/HouseDetailWindow'
+import { AddNewHouseButton, EditModeButton, FastForwardButton , ReloadButton, SkipBackwardButton, SkipForwardButton} from '../components/Buttons'
+import {Clock} from '../components/Clock'
 import { OrbitControls } from '@react-three/drei'
-import Ocean from './Ocean'
-import { CozyButton } from './Buttons'
+import Ocean from '../components/Ocean'
+import { CozyButton } from '../components/Buttons'
 import { SampleCalendars } from '../calendar/SampleCalendars'
 
 export default function Avenue() {
 
   const [items, setItems] = useState([
     {id : 'sample&&SampleCalendar' , cellNumb : 0  },
-
-    {id : 'xere' , cellNumb : 1  }
    /*
    {id : 'sample&&BruceLee' , cellNumb : 1 },   
    {id : 'sample&&Einstein' ,  cellNumb : 2},

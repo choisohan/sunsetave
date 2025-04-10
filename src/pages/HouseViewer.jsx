@@ -1,14 +1,15 @@
 import React, { useRef } from 'react'
 import { useState } from 'react';
-import House from './House';
+import House from '../components/House';
 import { Canvas } from '@react-three/fiber';
 import { useParams } from 'react-router-dom';
-import CameraControls from './CameraControls';
+import CameraControls from '../components/CameraControls';
 import { Pixelate } from '../shaders/CustomPostProcessing';
-import Sky from './Sky';
-import { FastForwardButton, RecordButton, SkipBackwardButton, SkipForwardButton } from './Buttons';
+import Sky from '../components/Sky';
+import { FastForwardButton, RecordButton, SkipBackwardButton, SkipForwardButton } from '../components/Buttons';
 import {  Vector3} from 'three';
-import { Clock } from './Clock';
+import { Clock } from '../components/Clock';
+
 
 export default function HouseViewer(props) {
   const { param } = useParams();
@@ -18,6 +19,7 @@ export default function HouseViewer(props) {
 
 
   const onUpdateProperty =( newProperty )=>{
+  
     if(!newProperty){
       setName( 'NOT FOUND')
     }else if(newProperty.name){

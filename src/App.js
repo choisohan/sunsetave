@@ -1,9 +1,8 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ModelProvider } from './contexts/modelContext';
-import Avenue from './components/Avenue';
-
-import HouseViewer from './components/HouseViewer';
+import Avenue from './pages/Avenue';
+import HouseViewer from './pages/HouseViewer';
 import { EnvProvider } from './contexts/envContext';
 import Test from './pages/Test';
 import About from './pages/About';
