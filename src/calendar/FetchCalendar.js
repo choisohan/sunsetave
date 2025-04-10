@@ -32,7 +32,6 @@ export const fetchCalendar = async (icalUrl) => {
             const vevent = new ICAL.Event(event);
             const rruleProp = event.getFirstPropertyValue("rrule");
             const rrule = rruleProp ? new ICAL.Recur(rruleProp) : null;
-            console.log( 'vevent.startDate : ',vevent.startDate )
             return {
                 summary: vevent.summary,
                 description: vevent.description,
@@ -68,8 +67,6 @@ export const FindCalendar = async(_id)=>{
     }else{
       cal =  await fetchCalendar(_id)
     }
-    console.log( '1. fetching Calendar ',cal )
-
     return await SortCalendarData(cal);
   }
   
