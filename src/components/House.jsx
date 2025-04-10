@@ -29,7 +29,7 @@ export default function House(props){
 
     if( props.property.id !== property.id ){
       FindCalendar(props.property.id).then( calendar =>{
-        console.log( 'sorted',calendar )
+        console.log( '🟢sorted',calendar )
         const newProperty = {...property, ...props.property , ...calendar  }; 
         setProperty(newProperty)
         props.onUpdateProperty( newProperty );

@@ -8,20 +8,13 @@ export const SampleCalendars ={
                 summary: "Walk Outside",
                 description: "I will walk outside!",
                 start: "2024-03-06T10:00:00",
-                rrule: {
-                    freq: "DAILY",
-                    interval: 1,
-                }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Sleep",
                 description: "sleep!",
                 start: "2024-03-06T20:00:00",
-                rrule: {
-                    freq: "DAILY",
-                    interval: 1,
-
-                }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             }
         ]
     },
@@ -34,43 +27,43 @@ export const SampleCalendars ={
                 summary: "Breakfast",
                 start: "2025-03-06T06:00:00",
                 end: "2025-03-06T07:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Compose Music",
                 start: "2025-03-06T07:00:00",
                 end: "2025-03-06T09:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Music Lesson",
                 start: "2025-03-06T09:00:00",
                 end: "2025-03-06T13:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Lunch and Socializing",
                 start: "2025-03-06T13:00:00",
                 end: "2025-03-06T15:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Compose Music",
                 start: "2025-03-06T15:00:00",
                 end: "2025-03-06T19:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Socializing",
                 start: "2025-03-06T19:00:00",
                 end: "2025-03-06T21:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Extra Composing Before bed",
                 start: "2025-03-06T21:00:00",
                 end: "2025-03-07T00:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             }
         ]
         
@@ -91,54 +84,54 @@ export const SampleCalendars ={
                 summary: "Short Walk after waking up",
                 start: "2025-03-06T07:00:00",
                 end: "2025-03-06T08:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Morning Work(Writing and Research)",
                 start: "2025-03-06T08:00:00",
                 end: "2025-03-06T10:30:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Long Walk and Thinking",
                 start: "2025-03-06T10:30:00",
                 end: "2025-03-06T12:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Lunch(And Reading mails)",
                 start: "2025-03-06T12:00:00",
                 end: "2025-03-06T15:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Afternoon Work",
                 start: "2025-03-06T15:00:00",
                 end: "2025-03-06T16:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Tea and Book",
                 start: "2025-03-06T16:00:00",
                 end: "2025-03-06T17:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Social or Relax",
                 start: "2025-03-06T17:00:00",
                 end: "2025-03-06T19:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Dinner and Leisure",
                 start: "2025-03-06T19:00:00",
                 end: "2025-03-06T22:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Sleep",
                 start: "2025-03-06T22:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             }
     ]},
     "Freud": {
@@ -150,37 +143,37 @@ export const SampleCalendars ={
                 summary: "Breakfast and Cigar",
                 start: "2025-03-06T07:00:00",
                 end: "2025-03-06T08:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "See Patients",
                 start: "2025-03-06T08:00:00",
                 end: "2025-03-06T12:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Lunch with family",
                 start: "2025-03-06T12:00:00",
                 end: "2025-03-06T13:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Writing and Research",
                 start: "2025-03-06T13:00:00",
                 end: "2025-03-06T15:00:00",
-                rrule: { freq: "DAILY" }
+                rrule:"FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "See patient",
                 start: "2025-03-06T15:00:00",
                 end: "2025-03-06T21:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Reading and Socializing",
                 start: "2025-03-06T21:00:00",
                 end: "2025-03-06T23:00:00",
-                rrule: { freq: "DAILY" }
+                rrule:"FREQ=DAILY;INTERVAL=1" 
             }
         ]},
     "VanGogh":{
@@ -192,31 +185,31 @@ export const SampleCalendars ={
                 summary: "Breakfast",
                 start: "2025-03-06T06:00:00",
                 end: "2025-03-06T19:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Outdoor Painting",
                 start: "2025-03-06T07:00:00",
                 end: "2025-03-06T14:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Lunch and Rest",
                 start: "2025-03-06T14:00:00",
                 end: "2025-03-06T16:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Painting",
                 start: "2025-03-06T16:00:00",
                 end: "2025-03-06T19:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Writing Letter or Reading, Meeting up other artists",
                 start: "2025-03-06T07:00:00",
                 end: "2025-03-06T21:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             }
         ]
         },
@@ -236,55 +229,55 @@ export const SampleCalendars ={
                 summary: "Morning Meditation",
                 start: "2025-03-06T06:30:00",
                 end: "2025-03-06T07:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Strength training and stretching",
                 start: "2025-03-06T07:00:00",
                 end: "2025-03-06T08:00:00",
-                rrule: { freq: "DAILY" }
+                rrule:"FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Breakfast",
                 start: "2025-03-06T08:00:00",
                 end: "2025-03-06T09:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Martial arts practice",
                 start: "2025-03-06T09:00:00",
                 end: "2025-03-06T12:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Lunch",
                 start: "2025-03-06T12:00:00",
                 end: "2025-03-06T13:00:00",
-                rrule: { freq: "DAILY" }
+                rrule:"FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Read about philosophy",
                 start: "2025-03-06T13:00:00",
                 end: "2025-03-06T15:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Evening Martial arts training",
                 start: "2025-03-06T15:00:00",
                 end: "2025-03-06T18:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Family time",
                 start: "2025-03-06T18:00:00",
                 end: "2025-03-06T20:00:00",
-                rrule: { freq: "DAILY" }
+                rrule:"FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Light Dinner and Reflect",
                 start: "2025-03-06T20:00:00",
                 end: "2025-03-06T22:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             }
         ]},
     "Einstein":{
@@ -302,49 +295,49 @@ export const SampleCalendars ={
                 summary: "Simple Breakfast",
                 start: "2025-03-06T07:00:00",
                 end: "2025-03-06T08:00:00",
-                rrule: { freq: "DAILY" }
+                rrule:"FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Study",
                 start: "2025-03-06T08:00:00",
                 end: "2025-03-06T12:00:00",
-                rrule: { freq: "DAILY" }
+                rrule:"FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Lunch",
                 start: "2025-03-06T12:00:00",
                 end: "2025-03-06T13:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Work alone or talk with colleagues, lectures",
                 start: "2025-03-06T13:00:00",
                 end: "2025-03-06T16:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Walk or Listening Musics",
                 start: "2025-03-06T16:00:00",
                 end: "2025-03-06T17:00:00",
-                rrule: { freq: "DAILY" }
+                rrule:"FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Writing Letters",
                 start: "2025-03-06T17:00:00",
                 end: "2025-03-07T07:00:00",
-                rrule: { freq: "DAILY" }
+                rrule:"FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Dinner",
                 start: "2025-03-06T19:00:00",
                 end: "2025-03-06T21:00:00",
-                rrule: { freq: "DAILY" }
+                rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
                 summary: "Reading",
                 start: "2025-03-06T21:00:00",
                 end: "2025-03-06T22:00:00",
-                rrule: { freq: "DAILY" }
+                rrule:"FREQ=DAILY;INTERVAL=1" 
             }
         ]}
     }

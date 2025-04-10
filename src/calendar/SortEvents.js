@@ -17,6 +17,7 @@ const WeekRange = ( tz , offset )=>{
 
 
 export const GetDayArrayFromRRule = (event, _timezone)=>{
+    console.log( event )
     const lastWeek = new Date();
     lastWeek.setDate(new Date().getDate() - 7);
 
@@ -42,11 +43,12 @@ export const SortCalendarData = async (_calendar)=>{
     // filter first
     const tz = _calendar.timezone;
     const weekRange = WeekRange(tz, 1);
-    console.log( 'weekRange',weekRange )
 
+    console.log( 'events before soring : ',_calendar.events )
     const events =  _calendar.events.filter(evt => moment(evt.start).isBefore(weekRange.end))
                                     .map(evt => ({...evt, days: GetDayArrayFromRRule(evt, tz) }) )
-    
+   
+    console.log( 'events : ',events)
     var arr = [];
     const promises = events.map(evt =>
         new Promise((resolve,reject)=>{
@@ -59,6 +61,7 @@ export const SortCalendarData = async (_calendar)=>{
             resolve(true) ;
         }
     ))
+
 
     return {..._calendar, events: await Promise.all(promises).then( () =>{
         arr = arr.sort((a, b) =>  a.startMoment.diff(b.startMoment));

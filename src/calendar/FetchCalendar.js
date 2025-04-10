@@ -67,8 +67,9 @@ export const FindCalendar = async(_id)=>{
       cal = await SampleCalendars[_id]
     }else{
       cal =  await fetchCalendar(_id)
-      console.log( 'fetched ',cal )
     }
+    console.log( '1. fetching Calendar ',cal )
+
     return await SortCalendarData(cal);
   }
   
