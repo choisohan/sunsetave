@@ -8,6 +8,9 @@ import { Vector3 , Box3 } from 'three';
 import { useThree } from '@react-three/fiber';
 import { useTimestamp } from '../contexts/envContext';
 import { timestampToHourFloat } from './Clock';
+import EventBubble from './EventBubble';
+
+
 import moment from 'moment-timezone';
 
 export default function House(props){
@@ -133,7 +136,6 @@ export default function House(props){
     }
   })
 
-  const audioRef = useRef()
 
   useEffect(()=>{
     gl.domElement.style.cursor = 'pointer'
@@ -144,13 +146,6 @@ export default function House(props){
       if(gl.domElement.mouseOverItem == property.id){
         gl.domElement.style.cursor = ''
       }
-    }
-
-
-    if(isHovered && audioRef.current ){
-      audioRef.current.volume = .2;
-      audioRef.current.play().catch(err=>{
-      })
     }
   },[isHovered])
 
@@ -165,18 +160,9 @@ export default function House(props){
               onPointerOut={()=>{setIsHovered(false)}}
               onClick={()=>{ props.onClick(property) }}>
 
-      <primitive object={mesh} scale={[.75,.75,.75] }/>
-
-{/*
-          <Html className='bubble' zIndexRange={[0, 1]} position={[0, meshHeight +.5, -0.25]} center style={{
-        transform: 'translate(-50%,calc(-100% - 10px))', zIndex:1,}}>
-                <span>[{property.name}]</span><br />
-                <span>{property.events[currentEventIndex].summary}</span>
-                <audio ref={audioRef} src="/audios/jump.wav" />
-          </Html>
-
-*/}
-      </mesh>
+      <primitive object={mesh} scale={[.75,.75,.75] } />
+      <EventBubble isHovered={isHovered} position={[0, meshHeight +.5, -0.25]} event={property.events[currentEventIndex]} />
+</mesh>
 }
 
 
