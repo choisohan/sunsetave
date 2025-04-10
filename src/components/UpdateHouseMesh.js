@@ -29,7 +29,7 @@ export  const UpdateMap = (_mat , property , TextureContext ) =>{
 
   var folderName = section;
   //WallB is using WallA folder as a texture source
-  if( folderName[folderName.length-1] == "B"){
+  if( folderName[folderName.length-1] === "B"){
     folderName= folderName.replace('B','A');
   }
   var texturefullName; 

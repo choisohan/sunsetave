@@ -1,4 +1,4 @@
-import React, {  useEffect, useRef } from 'react'
+import React, {  useRef } from 'react'
 import { useState } from 'react';
 import House from '../components/House';
 import { Canvas } from '@react-three/fiber';
