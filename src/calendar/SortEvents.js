@@ -2,18 +2,6 @@ import { RRule } from "rrule";
 import moment from "moment-timezone";
 
 
-// Mapping string to RRule constant
-const freqMap = {
-    "YEARLY": RRule.YEARLY,
-    "MONTHLY": RRule.MONTHLY,
-    "WEEKLY": RRule.WEEKLY,
-    "DAILY": RRule.DAILY,
-    "HOURLY": RRule.HOURLY,
-    "MINUTELY": RRule.MINUTELY,
-    "SECONDLY": RRule.SECONDLY
-};
-
-
 const WeekRange = ( tz , offset )=>{
     const nowMoment = moment().tz(tz || Intl.DateTimeFormat().resolvedOptions().timeZone);
     const lastMondayStart = nowMoment.clone().startOf('week').add(offset, 'week').add(1, 'day');
@@ -22,19 +10,19 @@ const WeekRange = ( tz , offset )=>{
 }
 
 
+
+
+
+
+
+
 export const GetDayArrayFromRRule = (event, _timezone)=>{
     const lastWeek = new Date();
     lastWeek.setDate(new Date().getDate() - 7);
 
-
-    const rule = new RRule({ // Convert JSON to RRule
-        freq: freqMap[event.rrule.freq], 
-        interval: event.rrule.interval || null ,
-        until: event.rrule.until   ? new Date(event.rrule.until): null,
-        dtstart: lastWeek,
-        count: 10,  // todo :limit for performance
-    });
-
+    const rule =  RRule.fromString(event.rrule );
+    rule.options.count = 10;  // todo :limit for performance
+    rule.options.dtstart = lastWeek; 
     return rule.all().map( d=> {
         const minutes = moment(event.end).diff(moment(event.start),'minutes');
         var start = moment(d).tz(_timezone)
@@ -44,14 +32,21 @@ export const GetDayArrayFromRRule = (event, _timezone)=>{
 }
 
 
+
+
+
+
+
 export const SortCalendarData = async (_calendar)=>{
+    console.log('start sorting...', _calendar)
     // filter first
     const tz = _calendar.timezone;
     const weekRange = WeekRange(tz, 1);
+    console.log( 'weekRange',weekRange )
+
     const events =  _calendar.events.filter(evt => moment(evt.start).isBefore(weekRange.end))
                                     .map(evt => ({...evt, days: GetDayArrayFromRRule(evt, tz) }) )
     
-
     var arr = [];
     const promises = events.map(evt =>
         new Promise((resolve,reject)=>{
@@ -71,6 +66,15 @@ export const SortCalendarData = async (_calendar)=>{
         return(arr);
     })}
 }
+
+
+
+
+
+
+
+
+
 
 export const getCurrentEventIndex = (events)=>{
     const now = moment();

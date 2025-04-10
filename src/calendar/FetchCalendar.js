@@ -1,9 +1,11 @@
 import ICAL from "ical.js";
 
 
-//http://localhost:3000/?url=8c063daee6e0ebb0eac75293727a2b85d9024b26c96fd2ad4f9a7489bbf835a1
+//http://localhost:3000/8c063daee6e0ebb0eac75293727a2b85d9024b26c96fd2ad4f9a7489bbf835a1
+
 export const fetchCalendar = async (icalUrl) => {
 
+    console.log( 'fetch ')
     const serverURL = 'https://unruly-calm-sorrel.glitch.me'
 
     return fetch(serverURL+'/fetch-ical',{
@@ -17,7 +19,7 @@ export const fetchCalendar = async (icalUrl) => {
     })  
     .then(response => response.json())  
     .then(async data => {
-
+        console.log( data )
         const jcalData = ICAL.parse(data.icalData);
         const comp = new ICAL.Component(jcalData);
         const vevents = comp.getAllSubcomponents("vevent");
@@ -50,7 +52,7 @@ export const fetchCalendar = async (icalUrl) => {
         
     })
     .catch(error => {
-      console.error('Error fetching iCal data:', error);
+      console.error('🔴Error fetching iCal data:', error);
     });
 
 };

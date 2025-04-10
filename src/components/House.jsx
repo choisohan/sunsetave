@@ -31,8 +31,8 @@ export default function House(props){
   useEffect(()=>{
 
     if( props.property.id !== property.id ){
-
       FindCalendar(props.property.id).then( calendar =>{
+        console.log( 'sorted',calendar )
         const newProperty = {...property, ...props.property , ...calendar  }; 
         setProperty(newProperty)
         props.onUpdateProperty( newProperty );
@@ -177,11 +177,6 @@ export default function House(props){
 
 
 
-const GetTimestampOffset = (tz) => {
-  return moment.tz(tz).utcOffset()  * 60 * 1000 ; 
-};
-
-
 export const FindCalendar = async(_id)=>{
   var cal; 
   if(_id.includes('sample&&')){
@@ -189,6 +184,7 @@ export const FindCalendar = async(_id)=>{
     cal = await SampleCalendars[_id]
   }else{
     cal =  await fetchCalendar(_id)
+    console.log( 'fetched ',cal )
   }
   return await SortCalendarData(cal);
 }
