@@ -32,7 +32,7 @@ export const fetchCalendar = async (icalUrl) => {
             const vevent = new ICAL.Event(event);
             const rruleProp = event.getFirstPropertyValue("rrule");
             const rrule = rruleProp ? new ICAL.Recur(rruleProp) : null;
-
+            console.log( 'vevent.startDate : ',vevent.startDate )
             return {
                 summary: vevent.summary,
                 description: vevent.description,

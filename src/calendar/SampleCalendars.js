@@ -9,12 +9,6 @@ export const SampleCalendars ={
                 description: "I will walk outside!",
                 start: "2024-03-06T10:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
-            },
-            {
-                summary: "Sleep",
-                description: "sleep!",
-                start: "2024-03-06T20:00:00",
-                rrule: "FREQ=DAILY;INTERVAL=1" 
             }
         ]
     },

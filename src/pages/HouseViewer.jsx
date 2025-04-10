@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, {  useEffect, useRef } from 'react'
 import { useState } from 'react';
 import House from '../components/House';
 import { Canvas } from '@react-three/fiber';
@@ -9,15 +9,14 @@ import Sky from '../components/Sky';
 import { FastForwardButton, RecordButton, SkipBackwardButton, SkipForwardButton } from '../components/Buttons';
 import {  Vector3} from 'three';
 import { Clock } from '../components/Clock';
-import { getCurrentEventIndex } from '../calendar/SortEvents';
+import { EventTable } from '../components/EventTable';
 
 export default function HouseViewer(props) {
   const { param } = useParams();
-  const [ property , setProperty]= useState({id: param , name :'????', events:[] , timezone: Intl.DateTimeFormat().resolvedOptions().timeZone });
-  const [name , setName] = useState('????')
+  const [ property , setProperty]= useState({id: param , name :'????', timezone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+  const [ name , setName ] = useState('????')
   const canvasRef = useRef();  
-  const [currentEventIndex, setCurrentEventIndex] = useState(null)
-  
+
 
   const onUpdateProperty =( newProperty )=>{
   
@@ -26,7 +25,6 @@ export default function HouseViewer(props) {
     }else if(newProperty.name){
       setName(newProperty.name)
       setProperty(newProperty);
-      setCurrentEventIndex(getCurrentEventIndex(newProperty.events));
     }
   }
 
@@ -65,15 +63,7 @@ return (
       <RecordButton canvasRef={canvasRef}/>
     </div>
 
-    <div className='p-1 m-1 border-2 border-black overflow-auto min-h-[100px] max-h-[600px] min-h-[300px] '>
-      { property.events ? property.events.map((evt, i)=>
-          <div key={i} className='flex cursor-pointer hover:bg-gray-200'
-          style={{backgroundColor: currentEventIndex == i ? 'lightgray': ''  }}>
-            <span style={{width:'200px'}}>{evt.startMoment.format("MM/DD hh:mm A")}</span>
-            <span>{evt.summary}</span>
-          </div>
-      ): null }
-    </div>
+    <EventTable events={property.events}/>
   </div>
   <h1 className='fixed top-0 left-0'><a href='/'>Sunset Ave</a></h1>
 
@@ -82,4 +72,7 @@ return (
 )
 
 }
+
+
+
 

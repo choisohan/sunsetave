@@ -10,22 +10,43 @@ const WeekRange = ( tz , offset )=>{
 }
 
 
-const LastWeek = ()=>{
+const DateFromNow = (days)=>{
     var date = new Date();
-    date.setDate(new Date().getDate() - 7);
+    date.setDate( new Date().getDate() + days );
     return date; 
 }
 
+
+
 export const GetDayArrayFromRRule = (event, _timezone)=>{
-    const rule =  RRule.fromString(event.rrule );
-    rule.options.count = 30 ;  // todo :limit for performance
-    rule.options.dtstart = LastWeek(); 
-    
-    return rule.all().map( d=> {
-        const minutes = moment(event.end).diff(moment(event.start),'minutes');
-        var start = moment(d).tz(_timezone)
-        return {start : start , end : start.clone().add( minutes, 'minutes')  }
+    var options =  RRule.fromString( event.rrule ).options;
+
+    options.dtstart = new moment.tz(event.start, _timezone).toDate() ;
+    // new Date(event.start);
+    delete options.byhour;
+    delete options.byminute;
+    delete options.bysecond;
+    delete options.byhour;
+    delete options.bymonthday;
+    delete options.bynmonthday;
+
+
+
+    console.log( options.dtstart  )
+
+
+
+    console.log( '____')
+
+    const rule = new RRule(options);
+    const recentOccurrences = rule.between( DateFromNow(-3), DateFromNow(+3) , true);
+
+    return recentOccurrences.map( date => {
+        const minutes = moment(event.end).diff( moment(event.start) ,'minutes' );
+        var start = moment(date).tz(_timezone)
+        return { start : start , end : start.clone().add( minutes, 'minutes')  }
     })
+
 
 }
 
@@ -36,23 +57,20 @@ export const GetDayArrayFromRRule = (event, _timezone)=>{
 
 
 export const SortCalendarData = async (_calendar)=>{
-    console.log('start sorting...', _calendar)
     // filter first
     const tz = _calendar.timezone;
     const weekRange = WeekRange(tz, 1);
 
-    console.log( 'events before soring : ',_calendar.events )
     const events =  _calendar.events.filter(evt => moment(evt.start).isBefore(weekRange.end))
                                     .map(evt => ({...evt, days: GetDayArrayFromRRule(evt, tz) }) )
    
-    console.log( 'events : ',events)
     var arr = [];
     const promises = events.map(evt =>
         new Promise((resolve,reject)=>{
             const newArrays = evt.days.map( day => {
-                var a = {...evt, startMoment : day.start.tz(tz) , start : day.start.toISOString(), end : day.end.toISOString()  };
-                delete a.days;
-                return a;
+                const _evt = {...evt, startMoment : day.start.tz(tz) , endMoment: day.end.tz(tz) }; //,start : day.start.toISOString(), end : day.end.toISOString() 
+                delete _evt.days;
+                return _evt;
             })
             arr = [...arr,...newArrays]
             resolve(true) ;
@@ -76,11 +94,13 @@ export const SortCalendarData = async (_calendar)=>{
 
 
 
-export const getCurrentEventIndex = (events)=>{
-    const now = moment();
-    const closest = events.reduce((a, b) =>
-        Math.abs(b.startMoment.diff(now)) < Math.abs(a.startMoment.diff(now)) ? b : a
-      );
-    return events.indexOf(closest)
+export const getCurrentEventIndex = ( events, _timestamp )=>{
+    
+    const future = events.filter( evt =>
+    evt.endMoment.isAfter( new moment(_timestamp) )
+    )
+
+   return Math.max(0, Math.min(  events.length -1 , events.length - future.length ))
       
 }
+

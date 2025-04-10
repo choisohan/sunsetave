@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
 import { useHouseModel , useTexture } from '../contexts/modelContext';
-import { Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { getCurrentEventIndex } from '../calendar/SortEvents';
+import { getCurrentEventIndex , getNextEventIndex } from '../calendar/SortEvents';
 import {FindCalendar} from '../calendar/FetchCalendar'
 import { Vector3 , Box3 } from 'three';
 import { useThree } from '@react-three/fiber';
@@ -29,10 +28,11 @@ export default function House(props){
 
     if( props.property.id !== property.id ){
       FindCalendar(props.property.id).then( calendar =>{
-        console.log( '🟢sorted',calendar )
+        //console.log( '🟢sorted',calendar )
         const newProperty = {...property, ...props.property , ...calendar  }; 
         setProperty(newProperty)
         props.onUpdateProperty( newProperty );
+
         setCurrentEventIndex(getCurrentEventIndex(calendar.events))
       }).catch(err =>{
         props.onUpdateProperty();
