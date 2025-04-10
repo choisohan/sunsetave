@@ -1,8 +1,6 @@
-import React from 'react'
 import { RawShaderMaterial } from 'three'
 import { useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
-import { Wireframe } from '@react-three/drei';
 
 export default function TestMaterial() {
 

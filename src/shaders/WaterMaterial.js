@@ -1,7 +1,4 @@
-import {  NearestFilter, RawShaderMaterial } from "three";
-import {  useLoader } from "@react-three/fiber";
-import { TextureLoader } from "three";
-import { useState } from "react";
+import {  RawShaderMaterial } from "three";
 
 
 export const OceanMaterial = () => {

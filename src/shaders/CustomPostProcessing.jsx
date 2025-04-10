@@ -2,8 +2,7 @@ import { useThree } from '@react-three/fiber';
 import {  EffectComposer } from '@react-three/postprocessing';
 import {  Effect,  } from 'postprocessing';
 import { useState, useEffect } from 'react';
-import {  NoBlending, Uniform } from 'three';
-import { BloomEffect } from 'postprocessing';
+import {   Uniform } from 'three';
 
 
 class PixelationEffect extends Effect {

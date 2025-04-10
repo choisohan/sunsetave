@@ -1,4 +1,4 @@
-import {  RawShaderMaterial, Vector2  } from 'three';
+import {  RawShaderMaterial  } from 'three';
 
 
 export const HeightMapMaterial = ()=>  new RawShaderMaterial({

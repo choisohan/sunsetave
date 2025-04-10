@@ -1,4 +1,4 @@
-import { RawShaderMaterial , Color, AdditiveBlending, DoubleSide, MultiplyBlending } from "three"
+import { RawShaderMaterial , Color, AdditiveBlending } from "three"
 
 
 export const GridMaterial = ()=> new RawShaderMaterial({

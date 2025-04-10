@@ -1,4 +1,3 @@
-import React from 'react'
 import { RawShaderMaterial, Vector2 } from 'three'
 
 export default function BasicMaterial() {

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useTimestamp } from '../contexts/envContext';
 import { timestampToHourFloat } from './Clock';
 import { useTexture } from '../contexts/modelContext';
-import { fract } from 'three/tsl';
 
 
 export default function Sky(props) {

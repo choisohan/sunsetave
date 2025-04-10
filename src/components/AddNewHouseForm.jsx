@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react'
 import PopupWindow from './PopupWindow'
-import HouseBuilder from './HouseBuilder';
 import { CozyButton } from './Buttons';
-import House, { FindCalendar } from './House';
+import House from './House';
 import { Canvas } from '@react-three/fiber';
 import { Vector3 } from 'three';
 import { Pixelate } from '../shaders/CustomPostProcessing';
+import { FindCalendar } from '../calendar/FetchCalendar';
 
 export default function AddNewHouseForm(props) {
 

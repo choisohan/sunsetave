@@ -3,11 +3,8 @@ import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
 import { useHouseModel , useTexture } from '../contexts/modelContext';
 import { Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import moment from 'moment-timezone';
-
-import {SampleCalendars} from '../calendar/SampleCalendars'
-import { fetchCalendar } from '../calendar/FetchCalendar';
-import { getCurrentEventIndex, SortCalendarData } from '../calendar/SortEvents';
+import { getCurrentEventIndex } from '../calendar/SortEvents';
+import {FindCalendar} from '../calendar/FetchCalendar'
 import { Vector3 , Box3 } from 'three';
 import { useThree } from '@react-three/fiber';
 import { useTimestamp } from '../contexts/envContext';
@@ -175,18 +172,5 @@ export default function House(props){
       </mesh>
 }
 
-
-
-export const FindCalendar = async(_id)=>{
-  var cal; 
-  if(_id.includes('sample&&')){
-    _id = _id.split('sample&&')[1];
-    cal = await SampleCalendars[_id]
-  }else{
-    cal =  await fetchCalendar(_id)
-    console.log( 'fetched ',cal )
-  }
-  return await SortCalendarData(cal);
-}
 
 

@@ -1,4 +1,7 @@
 import ICAL from "ical.js";
+import { SampleCalendars } from "./SampleCalendars";
+import {SortCalendarData} from  './SortEvents'
+
 
 
 //http://localhost:3000/8c063daee6e0ebb0eac75293727a2b85d9024b26c96fd2ad4f9a7489bbf835a1
@@ -56,3 +59,18 @@ export const fetchCalendar = async (icalUrl) => {
     });
 
 };
+
+export const FindCalendar = async(_id)=>{
+    var cal; 
+    if(_id.includes('sample&&')){
+      _id = _id.split('sample&&')[1];
+      cal = await SampleCalendars[_id]
+    }else{
+      cal =  await fetchCalendar(_id)
+      console.log( 'fetched ',cal )
+    }
+    return await SortCalendarData(cal);
+  }
+  
+  
+  

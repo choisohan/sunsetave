@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import { useEffect, useMemo, useState } from "react";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
 import { useTimestamp, useUpdateTimestamp } from "../contexts/envContext"

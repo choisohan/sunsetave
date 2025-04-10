@@ -1,6 +1,4 @@
 import { BackSide, RawShaderMaterial } from "three";
-import { useFrame, useLoader } from "@react-three/fiber";
-import { TextureLoader ,NearestFilter } from "three";
 
 export const SkyMaterial =  (  )=>{
     return new RawShaderMaterial({
