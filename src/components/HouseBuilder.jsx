@@ -10,28 +10,21 @@ import { CozyButton } from './Buttons';
 
 
 export default function HouseBuilder(props) {
-  const [property, setProperty]= useState( { time: .5 , mesh:1, roof : 1, wallA:3, wallB:2, door:1, shade:1, windowsA:3, windowsB:2 });
+  const [property, setProperty]= useState( { time: .5 , mesh: 1 , roof : 1, wallA:1, wallB:1, door:1, shade:1, windowsA:1, windowsB:1 });
   const modelContext = useHouseModel(); 
   const textureContext = useTexture(); 
-  const [currentInt, setCurrentInt] = useState(0)
 
   useEffect(()=>{
     setProperty(_property=>({..._property,...props.property}))
   },[props.property])
 
 
-
   const swapGeometry=(changeNumb)=>{
-
     const maxNumb = Object.keys(modelContext).length-1; 
-
-    var newNumb = currentInt + changeNumb; 
+    var newNumb = property.mesh + changeNumb; 
     if(newNumb>maxNumb){ newNumb = 1}
     if(newNumb < 1){ newNumb = maxNumb}
-    setCurrentInt(newNumb);
-
-    const newHouseMesh = Object.values(modelContext)[newNumb]
-    setProperty(x=>({...x, mesh: newHouseMesh.name }))
+    setProperty(x=>({...x, mesh: newNumb }))
   }
 
   const swapMap = ( selectedSection, changeNumb)=>{
@@ -51,8 +44,6 @@ export default function HouseBuilder(props) {
 
     setProperty(_property =>{
       const copy = {..._property};
-      console.log( selectedSection, nextIndex )
-
       copy[selectedSection] = nextIndex ;
       return copy; 
     })

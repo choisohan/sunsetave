@@ -25,6 +25,12 @@ export default function House(props){
 
 
   useEffect(()=>{
+    console.log(  'property', property )
+
+  },[property])
+
+
+  useEffect(()=>{
 
     if( props.property.id !== property.id ){
       FindCalendar(props.property.id).then( calendar =>{
@@ -96,7 +102,7 @@ export default function House(props){
 
    
   // Render
-  if(! mesh || !property.events  ) return; 
+  if(! mesh   ) return; 
 
   return <mesh ref={meshRef} 
   position ={ property.position ? [property.position.x, property.position.y, property.position.z] :   [0,0,0] }
@@ -106,7 +112,7 @@ export default function House(props){
               onClick={()=>{ props.onClick(property) }}>
 
       <primitive object={mesh} scale={[.75,.75,.75] } />
-      <EventBubble isHovered={isHovered} mesh={mesh} event={property.events[currentEventIndex]} />
+      <EventBubble isHovered={isHovered} mesh={mesh} events={property.events} currentEventIndex={currentEventIndex} />
 </mesh>
 }
 
