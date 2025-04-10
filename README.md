@@ -1,4 +1,6 @@
 # Sunset Ave.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/52b0c550-9c5e-4f87-8344-11b589d67a4b/deploy-status)](https://app.netlify.com/sites/sunave/deploys)
+
 
 ## Instruction
 
