@@ -3,7 +3,6 @@ import House from '../components/House'
 import { Canvas } from '@react-three/fiber'
 import Sky from '../components/Sky'
 import {Pixelate} from '../shaders/CustomPostProcessing'
-import CameraControls from '../components/CameraControls'
 import TerrainMesh from '../components/TerrainMesh'
 import HouseDetailWindow from '../components/HouseDetailWindow'
 import { AddNewHouseButton, EditModeButton, FastForwardButton , InfoButton, ReloadButton, SkipBackwardButton, SkipForwardButton} from '../components/Buttons'
@@ -17,18 +16,15 @@ export default function Avenue() {
 
   const [items, setItems] = useState([
     {id : 'sample&&SampleCalendar' , cellNumb : 0  },
-   /*
    {id : 'sample&&BruceLee' , cellNumb : 1 },   
    {id : 'sample&&Einstein' ,  cellNumb : 2},
    {id : 'sample&&Darwin' ,  cellNumb : 3},
-   */
   ])
 
   const [selectedItem, setSelectedItem] = useState();
   const [editMode, setEditMode] = useState(false)
   const [grid, setGrid] = useState();
   const [popup, setPopup] = useState();
-  const [focusPosition, setFocusPosition] = useState()
 
 
   useEffect(()=>{
@@ -83,10 +79,8 @@ export default function Avenue() {
 
   const onHouseUpdate = (newProperty, i ) =>{
     if(!newProperty){
-      console.log(`N${i} item failed to be found. remove from the array`)
       const _items =[...items];
       _items.splice(i, 1)
-      console.log(items, _items )
       setItems(_items);
     }
   }

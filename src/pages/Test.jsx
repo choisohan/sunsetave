@@ -1,4 +1,4 @@
-import React, { useEffect, useState }  from 'react'
+import React, { useEffect , useRef }  from 'react'
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { SkipForwardButton , SkipBackwardButton, FastForwardButton } from '../components/Buttons'
@@ -13,8 +13,7 @@ import { useTexture } from '../contexts/modelContext'
 
 export default function Test() {
 
-
-  const [leaveMat,setLeaveMat] = useState(LeavesMaterial()); 
+  const matRef = useRef(LeavesMaterial());
 
   const textureContext = useTexture();
 
@@ -22,8 +21,8 @@ export default function Test() {
   useEffect(()=>{
     if(!textureContext)return;
     
-    leaveMat.uniforms.uSkyColorMap.value = textureContext['env/skyColormap']
-    leaveMat.uniforms.uPerlinNoiseNormal.value = textureContext['common/perlinNoiseNormal']
+    matRef.current.uniforms.uSkyColorMap.value = textureContext['env/skyColormap']
+    matRef.current.uniforms.uPerlinNoiseNormal.value = textureContext['common/perlinNoiseNormal']
     
   },[textureContext])
 
@@ -32,7 +31,7 @@ export default function Test() {
         
         <OrbitControls />
 
-        <mesh material={leaveMat}>
+        <mesh material={matRef.current}>
           <sphereGeometry args={[5,10,10,10]}/>
         </mesh>
 

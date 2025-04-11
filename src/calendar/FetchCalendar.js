@@ -8,7 +8,6 @@ import {SortCalendarData} from  './SortEvents'
 
 export const fetchCalendar = async (icalUrl) => {
 
-    console.log( 'fetch ')
     const serverURL = 'https://unruly-calm-sorrel.glitch.me'
 
     return fetch(serverURL+'/fetch-ical',{
@@ -22,7 +21,6 @@ export const fetchCalendar = async (icalUrl) => {
     })  
     .then(response => response.json())  
     .then(async data => {
-        console.log( data )
         const jcalData = ICAL.parse(data.icalData);
         const comp = new ICAL.Component(jcalData);
         const vevents = comp.getAllSubcomponents("vevent");

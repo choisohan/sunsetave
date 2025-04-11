@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {Clock} from './Clock'
 import PopupWindow from './PopupWindow'
 import { getCurrentEventIndex } from '../calendar/SortEvents'
-
 import moment from 'moment-timezone'
+
+
 export default function HouseDetailWindow(props) {
   
-  const [property, setProperty] = useState(props.property)
-  const [ currentEventIndex, setCurrentEventIndex] = useState(getCurrentEventIndex(props.property.events));
+  const currentIndex = useRef(getCurrentEventIndex(props.property.events)); 
+   
 
   if(!props.property) return null; 
   return (
     <PopupWindow isOpened={true} setIsOpened={()=>{props.onClose()}} >
       <Header id={props.property.id} name={props.property.name} timezone={props.property.timezone}/>
-      <CurrentEvent event={property.events[currentEventIndex]}/>
-      <NextEvent event={property.events[currentEventIndex+1]}/>
+      <CurrentEvent event={props.property.events[currentIndex.current]}/>
+      <NextEvent event={props.property.events[currentIndex.current+1]}/>
     </PopupWindow>
   )
   

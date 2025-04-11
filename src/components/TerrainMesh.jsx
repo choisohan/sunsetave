@@ -57,7 +57,6 @@ export default function TerrainMesh(props){
                 mat.uniforms.uPerlinNoiseNormal.value = textureContext['common/perlinNoiseNormal'];
             }
             if(mat.uniforms.uSkyColorMap){
-                console.log( mat)
                 mat.uniforms.uSkyColorMap.value = textureContext['env/skyColormap'];
             }
         })

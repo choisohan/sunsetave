@@ -22,14 +22,6 @@ export default function House(props){
   const meshRef = useRef();
   const timestamp = useTimestamp();
 
-
-
-  useEffect(()=>{
-    console.log(  'property', property )
-
-  },[property])
-
-
   useEffect(()=>{
 
     if( props.property.id !== property.id ){
