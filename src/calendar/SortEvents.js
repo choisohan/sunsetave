@@ -61,7 +61,7 @@ export const SortCalendarData = async (_calendar)=>{
     const promises = events.map(evt =>
         new Promise((resolve,reject)=>{
             const newArrays = evt.days.map( day => {
-                const _evt = {...evt, startMoment : day.start.tz(tz) , endMoment: day.end.tz(tz) }; //,start : day.start.toISOString(), end : day.end.toISOString() 
+                const _evt = {...evt, startMoment : day.start.tz(tz) , endMoment: day.end.tz(tz) };
                 delete _evt.days;
                 return _evt;
             })

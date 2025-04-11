@@ -10,14 +10,15 @@ export default function EventBubble({isHovered , events , currentEventIndex , me
    
   
   useEffect(()=>{
-    if(events && currentEventIndex ){
+    if( events && currentEventIndex ){
       const evt = events[currentEventIndex];
+      console.log( evt )
       if(evt){
         setText(evt.summary)
       }
     }
 
-  },[events, currentEventIndex ])
+  },[ events, currentEventIndex ])
 
     useEffect(()=>{
         if(isHovered && audioRef.current ){

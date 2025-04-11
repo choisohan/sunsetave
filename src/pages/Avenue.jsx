@@ -14,9 +14,7 @@ export default function Avenue() {
 
   const [items, setItems] = useState([
     {id : 'sample&&SampleCalendar' , cellNumb : 0  },
-   {id : 'sample&&BruceLee' , cellNumb : 1 },   
-   {id : 'sample&&Einstein' ,  cellNumb : 2},
-   {id : 'sample&&Darwin' ,  cellNumb : 3},
+   {id : 'sample&&Mozart' , cellNumb : 1 },   
   ])
 
   const [selectedItem, setSelectedItem] = useState();
@@ -112,7 +110,9 @@ export default function Avenue() {
      
     </Canvas>
    <div className='fixed z-[1] top-0 left-0  m-1 lg:m-6' >
-      <div className='bg-[#748060] lg:text-[150%] px-1 py-1 lg:px-4 lg:py-2 border-4 border-black '><Clock /></div>
+      <div className='bg-[#748060] lg:text-[150%] px-1 py-1 lg:px-4 lg:py-2 border-4 border-black '>
+        <Clock />
+        </div>
   </div>
 
     <div className='fixed z-[1] bottom-1 right-0  flex  max-w-full gap-0 lg:gap-1 m-0 lg:m-6 ' >
@@ -120,6 +120,7 @@ export default function Avenue() {
       <Buttons.SkipBackwardButton /><Buttons.SkipForwardButton /> <Buttons.FastForwardButton />
       <Buttons.EditModeButton editMode={editMode} setEditMode={setEditMode}/>
       <Buttons.AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
+      
       <Buttons.ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
 
     </div>

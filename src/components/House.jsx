@@ -25,6 +25,12 @@ export default function House(props){
 
 
   useEffect(()=>{
+    if(!currentEventIndex) return; 
+    console.log( property.events[currentEventIndex])
+
+  },[currentEventIndex])
+
+  useEffect(()=>{
 
     if( props.property.id !== property.id ){
       FindCalendar(props.property.id).then( calendar =>{
@@ -60,7 +66,7 @@ export default function House(props){
     if(property.events){
       const _currentIndex = getCurrentEventIndex( property.events ,timestamp );  
       const _currentEvent = property.events[_currentIndex];
-      if( new moment().isBetween(_currentEvent.startMoment, _currentEvent.endMoment ) ) setCurrentEventIndex(_currentIndex);  
+      if( new moment(timestamp).isBetween(_currentEvent.startMoment, _currentEvent.endMoment ) ) setCurrentEventIndex(_currentIndex);  
     }
 
 

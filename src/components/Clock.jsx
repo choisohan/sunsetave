@@ -9,6 +9,7 @@ export function Clock(props){
     const updateTimestamp = useUpdateTimestamp();
 
     useEffect(()=>{
+      if(!props.timezone) return; 
       setTimezone(props.timezone); 
     },[props.timezone])
     

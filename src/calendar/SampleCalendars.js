@@ -8,6 +8,7 @@ export const SampleCalendars ={
                 summary: "Walk Outside",
                 description: "I will walk outside!",
                 start: "2024-03-06T10:00:00",
+                end: "2024-03-06T12:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             }
         ]
@@ -16,6 +17,13 @@ export const SampleCalendars ={
         name:"Mozart",
         timezone:"Europe/Vienna",
         description:"Mozart's House",
+        wallB:5,
+        wallA:6,
+        windowsB:4,
+        door:3,
+        shade:3,
+        roof:3,
+        mesh:3, 
         events: [
             {
                 summary: "Breakfast",
