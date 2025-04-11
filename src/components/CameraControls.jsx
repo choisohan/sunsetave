@@ -20,7 +20,7 @@ export default function CameraControls(props) {
 
   return (
         <OrbitControls
-          onEnd={onEnd}
+        //  onEnd={onEnd}
           target={targetRef.current}
           maxDolly ={0}
           minPolarAngle={0} 
@@ -28,7 +28,7 @@ export default function CameraControls(props) {
           minAzimuthAngle={-Math.PI / 4} 
           maxAzimuthAngle={Math.PI / 4} 
           minDistance={0} 
-          maxDistance={25}
+          maxDistance={90}
           enablePan={true} />
     
   )

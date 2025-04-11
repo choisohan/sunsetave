@@ -70,7 +70,7 @@ export default function HouseBuilder(props) {
         <CameraControls target={[0,1,0]} />
           <Sky /> 
           <Pixelate />
-          <House property={property}  onClick={()=>{}} updateTime={false}/>
+          <House property={property}  onClick={()=>{}} updateTime={false} onUpdateProperty={()=>{}}/>
       </Canvas>
 
       <div className='lg:p-2 self-center flex flex-wrap lg:flex-nowrap lg:flex-col' id='options'>

@@ -9,6 +9,7 @@ import * as Buttons from '../components/Buttons'
 import {Clock} from '../components/Clock'
 import Ocean from '../components/Ocean'
 import { OrbitControls } from '@react-three/drei'
+import CameraControls from '../components/CameraControls'
 
 export default function Avenue() {
 
@@ -92,10 +93,9 @@ export default function Avenue() {
 
   return (
     <>
-    <Canvas camera={{position: [-20,7 ,10], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
-
-    <Pixelate />
-    <OrbitControls target={[8,1,-8 ]} />
+    <Canvas camera={{position: [-35, 8 ,15], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
+    <CameraControls target={[0 ,2,-5 ]} />
+    <Pixelate />    
 
       <Sky />
         <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
@@ -109,19 +109,22 @@ export default function Avenue() {
   
      
     </Canvas>
-   <div className='fixed z-[1] top-0 left-0  m-1 lg:m-6' >
+
+    <div className='fixed z-[1] bottom-1 right-0  lg:m-3 gap-1 flex flex-col' >
+
       <div className='bg-[#748060] lg:text-[150%] px-1 py-1 lg:px-4 lg:py-2 border-4 border-black '>
         <Clock />
-        </div>
-  </div>
+      </div>
 
-    <div className='fixed z-[1] bottom-1 right-0  flex  max-w-full gap-0 lg:gap-1 m-0 lg:m-6 ' >
-      <Buttons.InfoButton />
-      <Buttons.SkipBackwardButton /><Buttons.SkipForwardButton /> <Buttons.FastForwardButton />
-      <Buttons.EditModeButton editMode={editMode} setEditMode={setEditMode}/>
-      <Buttons.AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
-      
-      <Buttons.ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
+      <div className='flex max-w-full gap-0 lg:gap-1 '>
+        <Buttons.InfoButton />
+        <Buttons.SkipBackwardButton /><Buttons.SkipForwardButton /> <Buttons.FastForwardButton />
+        <Buttons.EditModeButton editMode={editMode} setEditMode={setEditMode}/>
+        <Buttons.AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
+        <Buttons.ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
+      </div>
+
+
 
     </div>
 

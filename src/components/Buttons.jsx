@@ -87,7 +87,13 @@ export const TimeTestButton = ()=>{
 
 
 export const ReloadButton = (props)=>{
-  return <CozyButton  className='pixelButton'  tooltip="Reload the scene"  onClick={props.onClick} >
+
+  const updateTimestamp = useUpdateTimestamp();
+
+  const onClick = ()=>{
+    updateTimestamp(new Date().valueOf() )
+  }
+  return <CozyButton  className='pixelButton'  tooltip="Reload the scene"  onClick={onClick} >
     <img alt='reload' src='/images/arrows_counterclockwise.png' />
 </CozyButton>
 }
