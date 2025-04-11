@@ -1,62 +1,38 @@
-import React, { useEffect , useRef }  from 'react'
+import React, { useEffect  }  from 'react'
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { SkipForwardButton , SkipBackwardButton, FastForwardButton } from '../components/Buttons'
-import {Clock} from '../components/Clock'
 import { Pixelate } from '../shaders/CustomPostProcessing'
-import LeavesMaterial from '../shaders/LeavesMaterial'
 import { useTexture } from '../contexts/modelContext'
-import { HouseMaterial } from '../shaders/houseMaterial'
 
-
-
-
+import House from '../components/House'
+import Sky from '../components/Sky'
+import EmojiEmitter from '../components/EmojiEmitter'
 
 export default function Test() {
-
-  const leafMat = useRef(LeavesMaterial());
-  const houseMat = useRef(HouseMaterial());
 
   const textureContext = useTexture();
 
 
   useEffect(()=>{
     if(!textureContext)return;
-    
-    leafMat.current.uniforms.uSkyColorMap.value = textureContext['env/skyColormap']
-    leafMat.current.uniforms.uPerlinNoiseNormal.value = textureContext['common/perlinNoiseNormal']
-    
-    houseMat.current.uniforms.uIsWindow.value=true;
   },[textureContext])
 
   return (<>
-    <Canvas camera={{position: [0,0,50], fov:30}}  style={{width:'100vw', height:'100vh'}}  >
+    <Canvas camera={{position: [5,5,10], fov:20}}  style={{width:'100vw', height:'100vh'}}  >
         
-        <OrbitControls />
-{/*
+        <Sky />
+        <OrbitControls target ={[0,1,0]} />
 
-        <mesh material={leafMat.current} position={[-5,0,0]}>
-          <sphereGeometry args={[5,10,10,10]}/>
-        </mesh>
 
-*/}
 
-        <mesh material={houseMat.current}>
-          <boxGeometry args={[9,9,9]}/>
-        </mesh>
+        <House property={{ time: .5 , mesh: 1 , roof : 1, wallA:1, wallB:1, door:1, shade:1, windowsA:1, windowsB:1 }}
+                onClick={()=>{}} updateTime={false} onUpdateProperty={()=>{}}/>
+
+        <EmojiEmitter emoji='❤️'/>
+
 
     <Pixelate />
     </Canvas>
-
-  <div className='fixed z-[1] bottom-0 right-0 p-5 ' >
-    <div className='bg-white p-2' >
-      <Clock />
-    {Intl.DateTimeFormat().resolvedOptions().timeZone}
-    </div>
-      <SkipBackwardButton />
-      <FastForwardButton />
-      <SkipForwardButton />
-    </div>
   </>
 
   )

@@ -8,7 +8,6 @@ import HouseDetailWindow from '../components/HouseDetailWindow'
 import * as Buttons from '../components/Buttons'
 import {Clock} from '../components/Clock'
 import Ocean from '../components/Ocean'
-import { OrbitControls } from '@react-three/drei'
 import CameraControls from '../components/CameraControls'
 
 export default function Avenue() {
