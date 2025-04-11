@@ -16,6 +16,8 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
     varying vec3 vNormal2;
 
     varying vec3 vPosition;
+    varying vec3 vLocalPosition;
+
     varying vec3 vViewDir;
 
   
@@ -31,6 +33,8 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
 
         vPosition = gl_Position.xyz; 
         vViewDir =normalize(-viewPosition.xyz);
+        
+        vLocalPosition= position.xyz; 
 
     }
     `,
@@ -38,6 +42,8 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
     fragmentShader: `
       precision mediump float;
       varying vec3 vPosition;
+        varying vec3 vLocalPosition;
+
       varying vec2 vUv;
       varying vec3 vNormal;
       varying vec3 vNormal2;
@@ -129,8 +135,11 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
 
               // Add IndoorLight
               vec3 indoorLight = vec3(1., .5,.2);
-              float indoorLightStrength = GetStrengthByTime(18, 3);
+              float indoorDepth = 2./ distance( vLocalPosition, vec3(.0 ,1. ,1.25) ) ;  
+              indoorDepth= pow(indoorDepth,1.15) ;
+              float indoorLightStrength = min(1., GetStrengthByTime(20, 5) *2.)* indoorDepth;
               gl_FragColor.xyz = mix(gl_FragColor.xyz, indoorLight * indoorLightStrength ,glassMask);
+
 
               //Add Reflection
               float reflectionMask = step(.25, Fresnel()) + DiagonalLine(.5) * 20. ;
@@ -142,11 +151,11 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
 
               vec3 reflectCol = mix( skyColorMiddle, skyColorBottom , reflectionMask); 
               float reflecStr = GetStrengthByTime(12, 6);
-              reflecStr = smoothstep(.0, .1 , reflecStr); 
+              reflecStr = smoothstep(.0, .5, reflecStr); 
               gl_FragColor.xyz = mix(  gl_FragColor.xyz  , reflectCol  , glassMask* reflecStr);
+
           
           }
-
         
 
       }

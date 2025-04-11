@@ -65,6 +65,7 @@ return (
       <Buttons.FastForwardButton />
       <Buttons.SkipForwardButton />
       <Buttons.RecordButton canvasRef={canvasRef}/>
+      <Buttons.ReloadButton />
     </div>
 
     <EventTable events={events}/>

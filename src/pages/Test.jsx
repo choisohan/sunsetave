@@ -6,6 +6,7 @@ import {Clock} from '../components/Clock'
 import { Pixelate } from '../shaders/CustomPostProcessing'
 import LeavesMaterial from '../shaders/LeavesMaterial'
 import { useTexture } from '../contexts/modelContext'
+import { HouseMaterial } from '../shaders/houseMaterial'
 
 
 
@@ -13,7 +14,8 @@ import { useTexture } from '../contexts/modelContext'
 
 export default function Test() {
 
-  const matRef = useRef(LeavesMaterial());
+  const leafMat = useRef(LeavesMaterial());
+  const houseMat = useRef(HouseMaterial());
 
   const textureContext = useTexture();
 
@@ -21,18 +23,26 @@ export default function Test() {
   useEffect(()=>{
     if(!textureContext)return;
     
-    matRef.current.uniforms.uSkyColorMap.value = textureContext['env/skyColormap']
-    matRef.current.uniforms.uPerlinNoiseNormal.value = textureContext['common/perlinNoiseNormal']
+    leafMat.current.uniforms.uSkyColorMap.value = textureContext['env/skyColormap']
+    leafMat.current.uniforms.uPerlinNoiseNormal.value = textureContext['common/perlinNoiseNormal']
     
+    houseMat.current.uniforms.uIsWindow.value=true;
   },[textureContext])
 
   return (<>
-    <Canvas camera={{position: [0,0,50], fov:30}}  style={{width:'100vw', height:'100vh'}}   >
+    <Canvas camera={{position: [0,0,50], fov:30}}  style={{width:'100vw', height:'100vh'}}  >
         
         <OrbitControls />
+{/*
 
-        <mesh material={matRef.current}>
+        <mesh material={leafMat.current} position={[-5,0,0]}>
           <sphereGeometry args={[5,10,10,10]}/>
+        </mesh>
+
+*/}
+
+        <mesh material={houseMat.current}>
+          <boxGeometry args={[9,9,9]}/>
         </mesh>
 
     <Pixelate />
