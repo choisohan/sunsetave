@@ -11,12 +11,12 @@ export default function AddNewHouseForm(props) {
 
     const icalInput = useRef();
     const [ property, setProperty ] = useState(null);
-    const [ currentIds , setCurrentIds] = useState( props.currentIds|| [] )
     const [ msg , setMsg ] = useState() 
 
 
     const Search = ()=>{
       const icalURL = icalInput.current.value;
+      const currentIds =  props.currentIds|| [] ;
       if(currentIds.includes(icalURL)){
         setMsg("This house exists in your avenue already.")
       }

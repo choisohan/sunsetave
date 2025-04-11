@@ -17,7 +17,7 @@ export default function EventBubble({isHovered , events , currentEventIndex , me
       }
     }
 
-  },[events])
+  },[events, currentEventIndex ])
 
     useEffect(()=>{
         if(isHovered && audioRef.current ){

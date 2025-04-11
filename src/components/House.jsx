@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
+import moment from 'moment-timezone';
+import { Vector3  } from 'three';
 import { useHouseModel , useTexture } from '../contexts/modelContext';
 import { useFrame } from '@react-three/fiber';
 import { getCurrentEventIndex  } from '../calendar/SortEvents';
 import {FindCalendar} from '../calendar/FetchCalendar'
-import { Vector3  } from 'three';
 import { useThree } from '@react-three/fiber';
 import { useTimestamp } from '../contexts/envContext';
 import EventBubble from './EventBubble';
-import {UpdateHouseMesh, updateUtimes} from './UpdateHouseMesh';
+import { UpdateHouseMesh, updateUtimes} from './UpdateHouseMesh';
 
-import moment from 'moment-timezone';
 
 export default function House(props){
   const { gl } = useThree(); 
@@ -22,26 +22,23 @@ export default function House(props){
   const meshRef = useRef();
   const timestamp = useTimestamp();
 
+
   useEffect(()=>{
 
     if( props.property.id !== property.id ){
       FindCalendar(props.property.id).then( calendar =>{
-        const newProperty = {...property, ...props.property , ...calendar  }; 
-        setProperty(newProperty)
-        props.onUpdateProperty( newProperty );
-
-      }).catch(err =>{
-        props.onUpdateProperty();
-      })
+        setProperty((_property)=>({..._property, ...props.property , ...calendar  }))
+      }).catch(err =>{})
     }
     else{
-      setProperty(_property =>(
-        {..._property, ...props.property   }
-      ))
+      setProperty(_property =>({..._property, ...props.property   }))
     }
-  },[ props.property ])
+  },[  props.property  , property.id ])
 
 
+  useEffect(()=>{
+     // props.onUpdateProperty( property );
+  },[property , props])
 
 
   useEffect(()=>{
@@ -67,7 +64,6 @@ export default function House(props){
   },[ timestamp, property , mesh ])
 
 
-
   useFrame(()=>{
     if(!meshRef.current) return;
 
@@ -79,20 +75,18 @@ export default function House(props){
     }
   })
 
-
   useEffect(()=>{
     gl.domElement.style.cursor = 'pointer'
     if(isHovered){
       gl.domElement.mouseOverItem = property.id;
     }
     else{
-      if(gl.domElement.mouseOverItem == property.id){
+      if(gl.domElement.mouseOverItem === property.id){
         gl.domElement.style.cursor = ''
       }
     }
-  },[isHovered])
+  },[isHovered , gl.domElement , property.id ])
 
-   
   // Render
   if(! mesh   ) return; 
 

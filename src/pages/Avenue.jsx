@@ -122,7 +122,7 @@ export default function Avenue() {
       <ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
       <AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
       <EditModeButton editMode={editMode} setEditMode={setEditMode}/>
-      <CozyButton  className='pixelButton'  tooltip="Suffle Avenue" onClick={ShuffleStreet}><img src='/images/game_die.png' />    </CozyButton>
+      <CozyButton  className='pixelButton'  tooltip="Suffle Avenue" onClick={ShuffleStreet}><img src='/images/game_die.png' alt='shuffle'/>    </CozyButton>
     </div>
 
 

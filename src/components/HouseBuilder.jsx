@@ -33,7 +33,7 @@ export default function HouseBuilder(props) {
 
 
     var folderName = selectedSection;
-    if( folderName[folderName.length-1] == "B"){
+    if( folderName[folderName.length-1] === "B"){
       folderName= folderName.replace('B','A');
     }
 
@@ -70,7 +70,7 @@ export default function HouseBuilder(props) {
           <OrbitControls  target={[0,.9,0]}/>
           <Sky /> 
           <Pixelate />
-          <House property ={property} onClick={()=>{}} updateTime={false}/>
+          <House id={null}  onClick={()=>{}} updateTime={false}/>
       </Canvas>
 
       <div className='options'>

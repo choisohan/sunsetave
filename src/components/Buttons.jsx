@@ -28,23 +28,20 @@ export const FastForwardButton = ()=>{
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    let count = 0;
-
     if (!isPlaying) return;
-  
+
     const interval = setInterval(() => {
-      count+=1; 
       updateTimestamp(x => x + 3600000 / 30);
     }, 200); // update every 200ms
   
     return () => clearInterval(interval);
-  }, [isPlaying]);
+  }, [isPlaying, updateTimestamp]);
 
 
 
 
   return <CozyButton className='pixelButton' tooltip="Play fast forward" onClick={()=>{setIsPlaying(!isPlaying);}} >
-   <img src={!isPlaying? '/images/fast_forward.png' : '/images/pause.png' } />
+   <img alt='fast_forward' src={!isPlaying? '/images/fast_forward.png' : '/images/pause.png' } />
      </CozyButton>
   
 
@@ -57,7 +54,7 @@ export const SkipBackwardButton = ()=>{
   const onClick = ()=>{
     updateTimestamp( timestamp - 3600000 ); // subtract one hour
   }
-  return(<CozyButton  className='pixelButton'  tooltip="An hour backward" onClick={ onClick} ><img src='/images/arrow_skip_backward.png' />
+  return(<CozyButton  className='pixelButton'  tooltip="An hour backward" onClick={ onClick} ><img alt='backward' src='/images/arrow_skip_backward.png' />
 </CozyButton>)
 }
 
@@ -70,7 +67,7 @@ export const SkipForwardButton = ()=>{
   }
   return<CozyButton  className='pixelButton'  tooltip="An hour forward" onClick={ onClick}  >
 
-<img src='/images/arrow_skip_forward.png' />
+<img alt='skip_forward' src='/images/arrow_skip_forward.png' />
 
   </CozyButton>
 }
@@ -91,7 +88,7 @@ export const TimeTestButton = ()=>{
 
 export const ReloadButton = (props)=>{
   return <CozyButton  className='pixelButton'  tooltip="Reload the scene"  onClick={props.onClick} >
-    <img src='/images/arrows_counterclockwise.png' />
+    <img alt='reload' src='/images/arrows_counterclockwise.png' />
 </CozyButton>
 }
 
@@ -103,7 +100,7 @@ export const AddNewHouseButton =(props)=>{
 
   return <>
   <CozyButton  className='pixelButton'  tooltip="Add new calendar as a house" onClick={()=>{setOpened(true)}}>
-    <img src='/images/plus_sign.png' />
+    <img alt='add' src='/images/plus_sign.png' />
   </CozyButton>
   {opened ? <AddNewHouseForm currentIds={props.currentIds} onClose={()=>{setOpened(false)}} onAddNew={newProperty=>{
     setOpened(false);
@@ -117,7 +114,7 @@ export const InfoButton = (props)=>{
 
   return <>
   <CozyButton  className='pixelButton'  tooltip="???" onClick={()=>{setOpened(true)}}>
-        <img src='/images/house.png' />    
+        <img alt='info' src='/images/house.png' />    
     </CozyButton>
     
     {opened ? <Info onClose={()=>{setOpened(false)}} /> :null }
@@ -129,7 +126,7 @@ export const InfoButton = (props)=>{
 
 export const EditModeButton = (props)=>{
   return <CozyButton  className='pixelButton'  tooltip="Edit My sunset Avenue" onClick={()=>{props.setEditMode(!props.editMode)}}>
-        <img src='/images/hammer_and_pick.png' />    
+        <img alt='edit' src='/images/hammer_and_pick.png' />    
     </CozyButton>
 }
 

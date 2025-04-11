@@ -19,7 +19,7 @@ export function Clock(props){
       }, 60000);
 
       return () => clearInterval(interval);
-    }, []);
+    }, [updateTimestamp]);
   
 
     return <div>{ moment.tz(timestamp, timezone).format('MMM D YYYY ddd hh:mm A') }</div>;

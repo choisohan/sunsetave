@@ -31,8 +31,8 @@ export const EventTable = ({events})=>{
     },[nextEventIndex] )
   
     const bgColor =(i)=>{
-      if(i== currentEventIndex)return 'bg-gray-200';
-      if(i== nextEventIndex)return 'bg-blue-100';
+      if(i=== currentEventIndex)return 'bg-gray-200';
+      if(i=== nextEventIndex)return 'bg-blue-100';
     }
 
     const opacity =(i) =>{
@@ -42,7 +42,7 @@ export const EventTable = ({events})=>{
     if(!events) return; 
     return <div ref={parentDivRef} className='p-1 m-1 border-2 border-black overflow-auto min-h-[100px] max-h-[600px] min-h-[300px] '>
     {events.map((evt, i)=>
-        <div key={i} className={`flex cursor-pointer hover:bg-gray-200 ${bgColor(i)} ${opacity(i)} ${nextEventIndex== i ? 'nextEvent' :'' }`}>
+        <div key={i} className={`flex cursor-pointer hover:bg-gray-200 ${bgColor(i)} ${opacity(i)} ${nextEventIndex=== i ? 'nextEvent' :'' }`}>
           <span style={{width:'200px'}}>{evt.startMoment.format("MM/DD hh:mm A")}</span>
           <span>{evt.summary}</span>
         </div>
