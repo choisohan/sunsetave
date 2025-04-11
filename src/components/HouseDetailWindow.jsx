@@ -27,7 +27,7 @@ const Header = ({id , name , timezone} )=>{
     return <div className='w-full h-auto'>
     <span style={{display:'ruby'}} >
     <a href={`/${id}`}>
-      <img src='/images/userProfile.png' className='w-[50px]'/>
+      <img src='/images/userProfile.png' className='w-[50px]' alt='profile'/>
     </a>
     <h3>{name}</h3>
     </span>
@@ -75,7 +75,7 @@ const NextEvent = ({event})=>{
     if (value === 0) setTimeDiffString('just now');
     setTimeDiffString(`${value} ${unit} ${suffix}`);
 
-  },[])
+  },[event.startMoment])
 
   return <div className='text-right'> "{event.summary}" starts {hourDiffString}</div>
   

@@ -8,8 +8,6 @@ import { timestampToHourFloat } from './Clock';
 import { Euler, NearestFilter, Quaternion, Vector3 } from 'three';
 import LeavesMaterial from '../shaders/LeavesMaterial';
 import { useTexture } from '../contexts/modelContext';
-
-
 import { useFrame } from '@react-three/fiber';
 
 
@@ -22,32 +20,7 @@ export default function TerrainMesh(props){
     const textureContext = useTexture();
     const timeRef = useRef(0);
 
-    const ReplaceMaterial= _mat=>{
-        const uTime =  timestampToHourFloat(timestamp, null ); 
 
-        var map;     
-        if(_mat.map){
-            map = _mat.map;
-            map.magFilter = NearestFilter;
-            map.minFilter = NearestFilter; 
-        }
-    
-        if(!_mat.name.includes('_mat')) return _mat;
-    
-    
-        if(_mat.name.includes('tree')){
-            _mat = LeavesMaterial();
-            _mat.uniforms.uTime.value =uTime;
-        }
-        else{
-            _mat = BasicMaterial();
-            _mat.uniforms.uMap.value = map;
-            _mat.uniforms.uMapRepeat.value = map.repeat; 
-            _mat.uniforms.uTime.value =uTime;
-        }
-        setMaterials(arr=> ([...arr, _mat]))
-        return _mat;
-    }
 
     useEffect(()=>{
         if(!textureContext)return;
@@ -60,10 +33,33 @@ export default function TerrainMesh(props){
                 mat.uniforms.uSkyColorMap.value = textureContext['env/skyColormap'];
             }
         })
-    },[ textureContext, materials ])
+    },[ textureContext, materials  ])
 
 
     useEffect(()=>{
+        const ReplaceMaterial= _mat=>{
+    
+            var map;     
+            if(_mat.map){
+                map = _mat.map;
+                map.magFilter = NearestFilter;
+                map.minFilter = NearestFilter; 
+            }
+        
+            if(!_mat.name.includes('_mat')) return _mat;
+        
+        
+            if(_mat.name.includes('tree')){
+                _mat = LeavesMaterial();
+            }
+            else{
+                _mat = BasicMaterial();
+                _mat.uniforms.uMap.value = map;
+                _mat.uniforms.uMapRepeat.value = map.repeat; 
+            }
+            setMaterials(arr=> ([...arr, _mat]))
+            return _mat;
+        }
         if( grids.length > 0 ) return; 
         const _grids= [];
 
@@ -100,14 +96,14 @@ export default function TerrainMesh(props){
             return {position:newPosition, rotation:newRotation}
         }))
 
-    },[_fbxFile])
+    },[_fbxFile  , grids.length  ,props ])
 
     useEffect(()=>{
         const uTime =  timestampToHourFloat(timestamp , null ); 
         materials.forEach(mat=>{
             mat.uniforms.uTime.value =uTime;
         })
-    },[timestamp])
+    },[timestamp , materials])
 
 
     useFrame((state, delta)=>{

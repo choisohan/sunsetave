@@ -46,7 +46,7 @@ return (
 
     <div>
       <span className='inline-flex'>
-        <img src='/images/userProfile.png' className='w-[70px] h-[70px]'/>
+        <img src='/images/userProfile.png' className='w-[70px] h-[70px]' alt='profile'/>
         <h2 className='[line-break:anywhere]'>{ name }</h2>
       </span>
 
