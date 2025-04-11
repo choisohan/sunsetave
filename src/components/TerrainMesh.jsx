@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
-import { GridMaterial } from '../shaders/GridMaterial';
 import {  useTimestamp  } from '../contexts/envContext';
 import BasicMaterial from '../shaders/BasicMaterial';
 import { timestampToHourFloat } from './Clock';
@@ -9,6 +8,10 @@ import { Euler, NearestFilter, Quaternion, Vector3 } from 'three';
 import LeavesMaterial from '../shaders/LeavesMaterial';
 import { useTexture } from '../contexts/modelContext';
 import { useFrame } from '@react-three/fiber';
+import { Grid } from './Grid';
+import { InteractiveMesh } from './InteractiveMesh';
+
+
 
 
 export default function TerrainMesh(props){
@@ -20,6 +23,7 @@ export default function TerrainMesh(props){
     const textureContext = useTexture();
     const timeRef = useRef(0);
 
+    const [geos, setGeos] = useState([])
 
 
     useEffect(()=>{
@@ -37,31 +41,11 @@ export default function TerrainMesh(props){
 
 
     useEffect(()=>{
-        const ReplaceMaterial= _mat=>{
-    
-            var map;     
-            if(_mat.map){
-                map = _mat.map;
-                map.magFilter = NearestFilter;
-                map.minFilter = NearestFilter; 
-            }
-        
-            if(!_mat.name.includes('_mat')) return _mat;
-        
-        
-            if(_mat.name.includes('tree')){
-                _mat = LeavesMaterial();
-            }
-            else{
-                _mat = BasicMaterial();
-                _mat.uniforms.uMap.value = map;
-                _mat.uniforms.uMapRepeat.value = map.repeat; 
-            }
-            setMaterials(arr=> ([...arr, _mat]))
-            return _mat;
-        }
+
         if( grids.length > 0 ) return; 
         const _grids= [];
+        const _geos = [];
+
 
         _fbxFile.traverse(child =>{
             if(!child.isMesh){
@@ -74,14 +58,25 @@ export default function TerrainMesh(props){
             else{
                 if(Array.isArray(child.material)){
                     child.material = child.material.map(ReplaceMaterial);
+                    setMaterials(arr=> ( [...arr, ...child.material] ))                    
                 }
                 else{
                     child.material = ReplaceMaterial(child.material);
+                    setMaterials(arr=> ( [...arr, child.material] ))
                 }
+
+
+                if(child.name ==="trees"){
+                    _geos.push( <InteractiveMesh key={_geos.length } object={child}/>)
+                }else{
+                    _geos.push( <mesh  key={_geos.length } ><primitive object={child} /></mesh>)
+                }
+
             }
         })
 
         setGrids(_grids)
+        setGeos(_geos)
 
         props.setGrids(_grids.map(cellObject=>{
 
@@ -103,7 +98,7 @@ export default function TerrainMesh(props){
         materials.forEach(mat=>{
             mat.uniforms.uTime.value =uTime;
         })
-    },[timestamp , materials])
+    },[ timestamp , materials])
 
 
     useFrame((state, delta)=>{
@@ -116,12 +111,8 @@ export default function TerrainMesh(props){
 
     return <>
 
-
-<mesh> 
-            <primitive object={_fbxFile} />
-        </mesh>
-
     <group rotation={[-Math.PI / 2, 0, 0]} >
+    {geos}
     <Grid meshes={grids} onClick={props.onClick} onMouseEnter={props.onEnterNewCell} editMode={props.editMode}/>
     </group>
 
@@ -134,42 +125,31 @@ export default function TerrainMesh(props){
 
 
 
-const Grid=(props)=>{
 
-    const [meshes,setMeshes] = useState(props.meshes || []);
-    const grpRef = useRef();
 
-    useEffect(()=>{
-        setMeshes(props.meshes)
-    },[props.meshes])
 
-    const onMouseEnter = (evt,i, isHover)=>{
-        const object = evt.object;
-        if(!object.material.uniforms) return; 
-        object.material.uniforms.uMouseOver.value = isHover; 
-
-        if(isHover){
-            props.onMouseEnter(i)
-        }
+const ReplaceMaterial= _mat=>{
+    
+    var map;     
+    if(_mat.map){
+        map = _mat.map;
+        map.magFilter = NearestFilter;
+        map.minFilter = NearestFilter; 
     }
 
-    useEffect(()=>{
-        if(grpRef.current){
-            grpRef.current.visible= props.editMode;
-        }
-    },[props.editMode])
+    if(!_mat.name.includes('_mat')) return _mat;
 
 
-
-    return <group ref={grpRef}>
-    {meshes.map((item,i)=>
-        <mesh key = {i} onPointerEnter={e=>{onMouseEnter(e,i, true)}}
-                        onPointerLeave={e=>{onMouseEnter(e,i, false)}}
-                        onClick={  e=>{props.onClick(i) }}> 
-            <primitive object={item} material={GridMaterial()}/>
-        </mesh>
-    )}
-    </group>
-    
-       
+    if(_mat.name.includes('tree')){
+        _mat = LeavesMaterial();
+    }
+    else{
+        _mat = BasicMaterial();
+        _mat.uniforms.uMap.value = map;
+        _mat.uniforms.uMapRepeat.value = map.repeat; 
+    }
+   // setMaterials(arr=> ([...arr, _mat]))
+    return _mat;
 }
+
+

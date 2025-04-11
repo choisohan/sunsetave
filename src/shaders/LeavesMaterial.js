@@ -1,4 +1,4 @@
-import { Color, RawShaderMaterial, Vector2 } from 'three'
+import { Color, RawShaderMaterial, Vector2, Vector3 } from 'three'
 
 export default function LeavesMaterial() {
 
@@ -21,10 +21,20 @@ export default function LeavesMaterial() {
 
         uniform mat3 normalMatrix; // Built-in in WebGL
         varying vec3 vWorldNormal;
+        varying vec3 vPosition2;
+
+        uniform vec3 uPoint;
+
 
         void main()
         {
             vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+
+            float dist = 1./ distance(modelPosition.xyz, uPoint);
+            modelPosition.x += dist*.1;
+
+
+
             vec4 viewPosition = viewMatrix * modelPosition;
             vec4 projectedPosition = projectionMatrix * viewPosition;
             gl_Position = projectedPosition;
@@ -37,12 +47,15 @@ export default function LeavesMaterial() {
 
 
             vNormal = normalMatrix * normal;
+            vPosition2 = modelPosition.xyz; 
         }
     `,
     
     fragmentShader:`
         precision mediump float;
         varying vec3 vPosition;
+        varying vec3 vPosition2;
+
         varying vec2 vUv;
         varying vec3 vNormal;
         varying vec3 vViewDir;
@@ -57,6 +70,7 @@ export default function LeavesMaterial() {
         uniform float uNormalStrength; 
 
         uniform vec2 uMapRepeat;
+        uniform vec3 uPoint;
 
         void main(){
 
@@ -108,6 +122,8 @@ export default function LeavesMaterial() {
             //color = vec3(fresnel); 
             gl_FragColor = vec4(color,1.);
 
+
+
         }
     
     `,
@@ -120,7 +136,8 @@ export default function LeavesMaterial() {
         uNormalStrength: {value: .05 },
         uMapRepeat : {value: new Vector2(1.5,1.5 )},
         uColor:{value: new Color(0x619434)} ,
-        uWindStrength: {value: .5}
+        uWindStrength: {value: .5},
+        uPoint:{value: new Vector3()}
 
     },
     transparent:true,
