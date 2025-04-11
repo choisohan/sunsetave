@@ -11,7 +11,7 @@ export const EventTable = ({events})=>{
   
 
     useEffect(()=>{
-        if(!events) return;
+        if(!events ) return;
 
         const _currentIndex = getCurrentEventIndex( events ,timestamp ); 
         setNextEventIndex(_currentIndex+1);

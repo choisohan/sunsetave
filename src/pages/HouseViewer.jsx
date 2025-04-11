@@ -13,19 +13,23 @@ import { EventTable } from '../components/EventTable';
 
 export default function HouseViewer(props) {
   const { param } = useParams();
-  const [ property , setProperty]= useState({id: param , name :'????', timezone: Intl.DateTimeFormat().resolvedOptions().timeZone });
   const [ name , setName ] = useState('????')
   const canvasRef = useRef();  
+  const [events, setEvents]= useState();
+  const [timezone,setTimezone] = useState( Intl.DateTimeFormat().resolvedOptions().timeZone )
 
 
   const onUpdateProperty =( newProperty )=>{
   
     if(!newProperty){
-      setName( 'NOT FOUND')
-    }else if(newProperty.name){
-      setName(newProperty.name)
-      setProperty(newProperty);
+      setName( 'NOT FOUND');
+      return;
     }
+    
+    if(newProperty.name) setName(newProperty.name)
+    if(newProperty.timezone) setTimezone(newProperty.timezone);
+    if(newProperty.events) setEvents(newProperty.events);
+
   }
 
 
@@ -37,7 +41,7 @@ return (
   <Canvas camera={{ position: [0,-5,8], fov: 20}} ref={canvasRef} className="w-full h-full min-h-[500px] md:w-1/2 md:h-[100vh] " >
 
     <CameraControls target={new Vector3(0,.75,0)}/>
-    <Sky timezone={ property.timezone  } />
+    <Sky timezone={ timezone  } />
     <Pixelate />
     <House property={ { id : param  } } onUpdateProperty ={ onUpdateProperty } onClick={()=>{}} onMouseEnter={()=>{}}/>
   </Canvas>
@@ -51,7 +55,7 @@ return (
       </span>
 
       <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black' >
-        <Clock timezone={property.timezone}/>{property.timezone} </div>
+        <Clock timezone={timezone}/>{timezone} </div>
     </div>
 
 
@@ -63,7 +67,7 @@ return (
       <Buttons.RecordButton canvasRef={canvasRef}/>
     </div>
 
-    <EventTable events={property.events}/>
+    <EventTable events={events}/>
   </div>
   <h1 className='fixed top-0 left-0'><a href='/'>Sunset Ave</a></h1>
 

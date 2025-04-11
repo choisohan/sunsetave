@@ -38,8 +38,8 @@ export default function House(props){
 
 
   useEffect(()=>{
-     // props.onUpdateProperty( property );
-  },[property , props])
+     props.onUpdateProperty( property );
+  },[property , props.onUpdateProperty])
 
 
   useEffect(()=>{
