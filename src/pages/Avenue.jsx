@@ -5,12 +5,10 @@ import Sky from '../components/Sky'
 import {Pixelate} from '../shaders/CustomPostProcessing'
 import TerrainMesh from '../components/TerrainMesh'
 import HouseDetailWindow from '../components/HouseDetailWindow'
-import { AddNewHouseButton, EditModeButton, FastForwardButton , InfoButton, ReloadButton, SkipBackwardButton, SkipForwardButton} from '../components/Buttons'
+import * as Buttons from '../components/Buttons'
 import {Clock} from '../components/Clock'
-import { OrbitControls } from '@react-three/drei'
 import Ocean from '../components/Ocean'
-import { CozyButton } from '../components/Buttons'
-import { SampleCalendars } from '../calendar/SampleCalendars'
+import { OrbitControls } from '@react-three/drei'
 
 export default function Avenue() {
 
@@ -64,6 +62,7 @@ export default function Avenue() {
     }
   }
 
+  /*
   const ShuffleStreet=()=>{
 
     const count = 7; //Math.floor(Math.random() * Object.keys(SampleCalendars).length) + 1;
@@ -76,6 +75,7 @@ export default function Avenue() {
     setGrid(arr=>[...arr])
 
   }
+    */ 
 
   const onHouseUpdate = (newProperty, i ) =>{
     if(!newProperty){
@@ -97,8 +97,8 @@ export default function Avenue() {
     <Canvas camera={{position: [-20,7 ,10], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
 
     <Pixelate />
+    <OrbitControls target={[8,1,-8 ]} />
 
-    <OrbitControls target={[8,1,-8 ]}/>
       <Sky />
         <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
         {items.map( (item,i) =>
@@ -111,18 +111,17 @@ export default function Avenue() {
   
      
     </Canvas>
-   <div className='fixed z-[1] bottom-0 left-0  m-[20px]' >
+   <div className='fixed z-[1] top-0 left-0  m-1 lg:m-6' >
       <div className='bg-[#748060] text-[150%] p-[10px] border-4 border-black'><Clock /></div>
   </div>
 
-    <div className='fixed z-[1] bottom-0 right-0 m-[10px] flex gap-[5px]' >
-    <InfoButton />
+    <div className='fixed z-[1] bottom-1 right-0  flex  max-w-full gap-1 lg:gap-1 m-0 lg:m-6 ' >
+      <Buttons.InfoButton />
+      <Buttons.SkipBackwardButton /><Buttons.SkipForwardButton /> <Buttons.FastForwardButton />
+      <Buttons.EditModeButton editMode={editMode} setEditMode={setEditMode}/>
+      <Buttons.AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
+      <Buttons.ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
 
-      <SkipBackwardButton /><SkipForwardButton /> <FastForwardButton />
-      <ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
-      <AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
-      <EditModeButton editMode={editMode} setEditMode={setEditMode}/>
-      <CozyButton  className='pixelButton'  tooltip="Suffle Avenue" onClick={ShuffleStreet}><img src='/images/game_die.png' alt='shuffle'/>    </CozyButton>
     </div>
 
 

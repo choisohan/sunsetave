@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import House from './House'
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
 import { randInt } from 'three/src/math/MathUtils.js';
 import { useHouseModel, useTexture } from '../contexts/modelContext';
 import Sky from './Sky';
 import { Pixelate } from '../shaders/CustomPostProcessing';
 import { CozyButton } from './Buttons';
+import CameraControls from './CameraControls';
 
 
 export default function HouseBuilder(props) {
@@ -64,16 +64,16 @@ export default function HouseBuilder(props) {
   }
 
   return (<>
-    <div style={{display:'flex', width:'100%', maxWidth:'800px', gap:'10px'}} >
+    <div className='flex gap-2 flex-col md:flex-row' >
 
-      <Canvas style={{aspectRatio:1.725}} camera={{position: [3,1,12], fov: 10 }}>
-          <OrbitControls  target={[0,.9,0]}/>
+      <Canvas className='aspect-[4/3]	max-w-[500px]' camera={{position: [3,1,12], fov: 10 }}>
+        <CameraControls target={[0,1,0]} />
           <Sky /> 
           <Pixelate />
-          <House id={null}  onClick={()=>{}} updateTime={false}/>
+          <House property={property}  onClick={()=>{}} updateTime={false}/>
       </Canvas>
 
-      <div className='options'>
+      <div className='p-2 self-center flex flex-col items-center' id='options'>
         <OptionSelector onChange={swapGeometry} >Geometry</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('roof',d) } } >Roof</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('wallA',d) } } >Wall A</OptionSelector>
@@ -82,15 +82,13 @@ export default function HouseBuilder(props) {
         <OptionSelector onChange={ d =>{ swapMap('windowsB',d) } } >Windows B</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('door',d) } } >Door</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('shade',d) } } >Shade</OptionSelector>
-        <CozyButton onClick={generateRandom} tooltip="A random house">R</CozyButton>
+
+        <CozyButton className='self-center pixelButton scale-75' onClick={generateRandom} tooltip="A random house">
+          <img src='/images/game_die.png' alt='shuffle'/>
+        </CozyButton>
 
       </div>
-    </div>
-
-    <div>
-      Out
-    </div>
-  
+    </div>  
     </>
   )
 
@@ -98,9 +96,9 @@ export default function HouseBuilder(props) {
 
 
 const OptionSelector = props =>{
-  return <div className='optionSelector'>
-    <CozyButton onClick={()=>{props.onChange(-1)}}>←</CozyButton>
+  return <div className='flex items-center'>
+    <CozyButton className='pixelButton scale-50' onClick={()=>{props.onChange(-1)}}><img src='/images/arrow_backward.png' alt='-1' /></CozyButton>
     {props.children}
-    <CozyButton onClick={()=>{props.onChange(+1)}}>→</CozyButton>
+    <CozyButton className='pixelButton scale-50' onClick={()=>{props.onChange(+1)}}><img src='/images/arrow_forward.png' alt='+1' /></CozyButton>
     </div>
 } 

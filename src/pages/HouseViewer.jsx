@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import CameraControls from '../components/CameraControls';
 import { Pixelate } from '../shaders/CustomPostProcessing';
 import Sky from '../components/Sky';
-import { FastForwardButton, RecordButton, SkipBackwardButton, SkipForwardButton } from '../components/Buttons';
+import * as Buttons from '../components/Buttons';
 import {  Vector3} from 'three';
 import { Clock } from '../components/Clock';
 import { EventTable } from '../components/EventTable';
@@ -57,10 +57,10 @@ return (
 
     
     <div className='flex column gap-2' style={{marginTop:'10px', marginBottom:'10px'}}>
-      <SkipBackwardButton />
-      <FastForwardButton />
-      <SkipForwardButton />
-      <RecordButton canvasRef={canvasRef}/>
+      <Buttons.SkipBackwardButton />
+      <Buttons.FastForwardButton />
+      <Buttons.SkipForwardButton />
+      <Buttons.RecordButton canvasRef={canvasRef}/>
     </div>
 
     <EventTable events={property.events}/>
