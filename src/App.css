@@ -39,9 +39,8 @@ button:hover{
 
 .pixelButton{
   background-image: url('/public/images/button_middle.png');
-  background-size: cover;
-  image-rendering: pixelated;
   background-size: contain;
+  image-rendering: pixelated;
   margin: 0px 10px;
   place-self:flex-start;
   cursor: pointer;
@@ -155,4 +154,20 @@ img{
   border-width: 5px;
   border-style: solid;
   border-color: white transparent transparent transparent;
+}
+
+@media (max-width: 640px) {
+
+  .pixelButton img{
+    height: 35px;
+    width: 35px;
+    translate:-8px -2px;
+  }
+  .pixelButton:has(img){
+    width: 20px;
+  }
+  .pixelButton:has(img){
+    background-size: cover;
+  }
+
 }

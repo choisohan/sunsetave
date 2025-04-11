@@ -64,16 +64,16 @@ export default function HouseBuilder(props) {
   }
 
   return (<>
-    <div className='flex gap-2 flex-col md:flex-row' >
+    <div className='flex gap-2 flex-col md:flex-row justify-center' >
 
-      <Canvas className='aspect-[4/3]	max-w-[500px]' camera={{position: [3,1,12], fov: 10 }}>
+      <Canvas className='aspect-[4/3]	lg:aspect-[1/1] lg:max-w-[500px]' camera={{position: [3,1,12], fov: 10 }}>
         <CameraControls target={[0,1,0]} />
           <Sky /> 
           <Pixelate />
           <House property={property}  onClick={()=>{}} updateTime={false}/>
       </Canvas>
 
-      <div className='p-2 self-center flex flex-col items-center' id='options'>
+      <div className='lg:p-2 self-center flex flex-wrap lg:flex-nowrap lg:flex-col' id='options'>
         <OptionSelector onChange={swapGeometry} >Geometry</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('roof',d) } } >Roof</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('wallA',d) } } >Wall A</OptionSelector>
@@ -96,9 +96,9 @@ export default function HouseBuilder(props) {
 
 
 const OptionSelector = props =>{
-  return <div className='flex items-center'>
-    <CozyButton className='pixelButton scale-50' onClick={()=>{props.onChange(-1)}}><img src='/images/arrow_backward.png' alt='-1' /></CozyButton>
+  return <div className='choice items-center relative flex justify-between w-[180px] scale-90 lg:w-full'>
+    <CozyButton className='pixelButton scale-75 ' onClick={()=>{props.onChange(-1)}}><img src='/images/arrow_backward.png' alt='-1' /></CozyButton>
     {props.children}
-    <CozyButton className='pixelButton scale-50' onClick={()=>{props.onChange(+1)}}><img src='/images/arrow_forward.png' alt='+1' /></CozyButton>
+    <CozyButton className='pixelButton scale-75 ' onClick={()=>{props.onChange(+1)}}><img src='/images/arrow_forward.png' alt='+1' /></CozyButton>
     </div>
 } 

@@ -32,7 +32,7 @@ const Header = ({id , name , timezone} )=>{
     <h3>{name}</h3>
     </span>
 
-    <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black' >
+    <div className='bg-[#748060] px-1 m-1 w-fit border-4 border-black' >
       <Clock timezone={timezone}/>{timezone}
     </div>
   </div>

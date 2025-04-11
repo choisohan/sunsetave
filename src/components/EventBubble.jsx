@@ -6,7 +6,7 @@ import { getMeshHeight } from './UpdateHouseMesh'
 export default function EventBubble({isHovered , events , currentEventIndex , mesh }) {
 
   const audioRef = useRef();
-  const [text, setText] = useState('Hello')
+  const [text, setText] = useState()
    
   
   useEffect(()=>{
@@ -27,7 +27,7 @@ export default function EventBubble({isHovered , events , currentEventIndex , me
           }
     },[isHovered])
 
-    if(!events) return; 
+    if(!events || !text) return; 
   return (
     <Html className='bubble' zIndexRange={[0, 1]} position={[0, getMeshHeight(mesh) +.5, -0.25]} center style={{
         transform: 'translate(-50%,calc(-100% - 10px))', zIndex:1,}}>

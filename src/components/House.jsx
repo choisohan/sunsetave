@@ -21,6 +21,7 @@ export default function House(props){
   const [isHovered, setIsHovered] = useState(false); 
   const meshRef = useRef();
   const timestamp = useTimestamp();
+  const updateTime = props.updateTime || true; 
 
 
   useEffect(()=>{
@@ -52,7 +53,9 @@ export default function House(props){
   useEffect(()=>{
     if(!mesh) return;
 
-    updateUtimes(mesh.material , timestamp, property.timezone);//material , timestamp  , timezone
+    if(updateTime){
+      updateUtimes(mesh.material , timestamp, property.timezone);
+    }
 
     if(property.events){
       const _currentIndex = getCurrentEventIndex( property.events ,timestamp );  

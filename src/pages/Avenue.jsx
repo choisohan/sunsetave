@@ -112,10 +112,10 @@ export default function Avenue() {
      
     </Canvas>
    <div className='fixed z-[1] top-0 left-0  m-1 lg:m-6' >
-      <div className='bg-[#748060] text-[150%] p-[10px] border-4 border-black'><Clock /></div>
+      <div className='bg-[#748060] lg:text-[150%] px-1 py-1 lg:px-4 lg:py-2 border-4 border-black '><Clock /></div>
   </div>
 
-    <div className='fixed z-[1] bottom-1 right-0  flex  max-w-full gap-1 lg:gap-1 m-0 lg:m-6 ' >
+    <div className='fixed z-[1] bottom-1 right-0  flex  max-w-full gap-0 lg:gap-1 m-0 lg:m-6 ' >
       <Buttons.InfoButton />
       <Buttons.SkipBackwardButton /><Buttons.SkipForwardButton /> <Buttons.FastForwardButton />
       <Buttons.EditModeButton editMode={editMode} setEditMode={setEditMode}/>
