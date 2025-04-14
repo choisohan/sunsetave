@@ -9,7 +9,6 @@ import { useThree } from '@react-three/fiber';
 import { useTimestamp } from '../contexts/envContext';
 import EventBubble from './EventBubble';
 import { getMeshHeight, UpdateHouseMesh, updateUtimes} from './UpdateHouseMesh';
-
 import { Html } from '@react-three/drei';
 
 export default function House(props){
@@ -76,7 +75,8 @@ export default function House(props){
   useFrame(()=>{
     if(!meshRef.current) return;
 
-    if(isHovered){
+    const hoverable = "hoverable" in props ? props.hoverable : true; 
+    if( hoverable && isHovered){
       meshRef.current.scale.lerp( new Vector3(.9,1.2,.9),.5 )
     }
     else{
@@ -98,12 +98,21 @@ export default function House(props){
 
 
   useEffect(()=>{
-    if(isHovered && audioRef.current ){
+    const hoverable = "hoverable" in props ? props.hoverable : true; 
+
+    if(  isHovered && audioRef.current  && hoverable ){
         audioRef.current.volume = .2;
         audioRef.current.play().catch(err=>{
         })
       }
 },[isHovered])
+
+
+const onClick = e =>{
+  console.log( e )
+  props.onClick(property)
+}
+
 
   // Render
   if(! mesh   ) return; 
@@ -113,7 +122,7 @@ export default function House(props){
     rotation = {property.rotation ? [0, property.rotation.z,0] :   [0,0,0] }
                 onPointerEnter={()=>{setIsHovered(true)}}
                 onPointerOut={()=>{setIsHovered(false)}}
-                onClick={()=>{ props.onClick(property) }}>
+                onClick={onClick}>
 
         <primitive object={mesh} scale={[.75,.75,.75] } />
         <Html>

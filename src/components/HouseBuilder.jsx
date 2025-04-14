@@ -66,11 +66,10 @@ export default function HouseBuilder(props) {
   return (<>
     <div className='flex gap-2 flex-col md:flex-row justify-center' >
 
-      <Canvas className='aspect-[4/3]	lg:aspect-[1/1] lg:max-w-[500px]' camera={{position: [3,1,12], fov: 10 }}>
-        <CameraControls target={[0,1,0]} />
-          <Sky /> 
+      <Canvas className='aspect-[4/3]	lg:aspect-[1/1] lg:max-w-[500px]' camera={{position: [6,1,12], fov: 12 }}>
+        <CameraControls target={[.25,1,0]} />
           <Pixelate />
-          <House property={property}  onClick={()=>{}} updateTime={false} onUpdateProperty={()=>{}}/>
+          <House property={property}  onClick={()=>{}} updateTime={false} hoverable={false} onUpdateProperty={()=>{}}/>
       </Canvas>
 
       <div className='lg:p-2 self-center flex flex-wrap lg:flex-nowrap lg:flex-col' id='options'>
@@ -88,6 +87,8 @@ export default function HouseBuilder(props) {
         </CozyButton>
 
       </div>
+
+      
     </div>  
     </>
   )
@@ -102,3 +103,9 @@ const OptionSelector = props =>{
     <CozyButton className='pixelButton scale-75 ' onClick={()=>{props.onChange(+1)}}><img src='/images/arrow_forward.png' alt='+1' /></CozyButton>
     </div>
 } 
+
+const OptionSelector2 = props =>{
+  return <div>
+    
+  </div>
+}

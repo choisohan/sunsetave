@@ -43,7 +43,7 @@ return (
     <CameraControls target={new Vector3(0,.75,0)}/>
     <Sky timezone={ timezone  } />
     <Pixelate />
-    <House property={ { id : param  } } onUpdateProperty ={ onUpdateProperty } onClick={()=>{}} onMouseEnter={()=>{}}/>
+    <House property={ { id : param  } } onUpdateProperty ={ onUpdateProperty } hoverable={false} onClick={()=>{}} onMouseEnter={()=>{}}/>
   </Canvas>
 
   <div className="w-full md:w-1/2 p-4">
