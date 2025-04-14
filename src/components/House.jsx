@@ -8,8 +8,9 @@ import {FindCalendar} from '../calendar/FetchCalendar'
 import { useThree } from '@react-three/fiber';
 import { useTimestamp } from '../contexts/envContext';
 import EventBubble from './EventBubble';
-import { UpdateHouseMesh, updateUtimes} from './UpdateHouseMesh';
+import { getMeshHeight, UpdateHouseMesh, updateUtimes} from './UpdateHouseMesh';
 
+import { Html } from '@react-three/drei';
 
 export default function House(props){
   const { gl } = useThree(); 
@@ -22,6 +23,8 @@ export default function House(props){
   const meshRef = useRef();
   const timestamp = useTimestamp();
   const updateTime = props.updateTime || true; 
+  const audioRef = useRef();
+  const height = useRef(0);
 
   useEffect(()=>{
     if( props.property.id !== property.id ){
@@ -65,6 +68,11 @@ export default function House(props){
   },[ timestamp, property , mesh , updateTime  ])
 
 
+  useEffect(()=>{
+    height.current = getMeshHeight(meshRef.current)
+  },[mesh])
+
+
   useFrame(()=>{
     if(!meshRef.current) return;
 
@@ -88,6 +96,15 @@ export default function House(props){
     }
   },[isHovered , gl.domElement , property.id ])
 
+
+  useEffect(()=>{
+    if(isHovered && audioRef.current ){
+        audioRef.current.volume = .2;
+        audioRef.current.play().catch(err=>{
+        })
+      }
+},[isHovered])
+
   // Render
   if(! mesh   ) return; 
 
@@ -99,7 +116,14 @@ export default function House(props){
                 onClick={()=>{ props.onClick(property) }}>
 
         <primitive object={mesh} scale={[.75,.75,.75] } />
-        <EventBubble isHovered={isHovered} mesh={mesh} events={property.events ? property.events : [] } currentEventIndex={currentEventIndex} />
+        <Html>
+          <audio ref={audioRef} src="/audios/jump.wav" />
+        </Html>
+
+
+        <group position={[0,height.current +.15  ,-.5]}>
+            <EventBubble event={ property.events && currentEventIndex  ? property.events[currentEventIndex] : null } />
+        </group> 
   </mesh>
 }
 

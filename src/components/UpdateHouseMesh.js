@@ -48,11 +48,13 @@ export  const UpdateMap = (_mat , property , TextureContext ) =>{
 
 
 export const getMeshHeight = (mesh)=>{
+    if(!mesh) return 0; 
+
     const bbox = new Box3().setFromObject(mesh);
     const size = new Vector3();
     bbox.getSize(size);
 
-    return size.y * 0.65;
+    return size.y ;
 }
 
 

@@ -1,28 +1,33 @@
 import React, { useEffect , useMemo, useState ,useRef  } from 'react'
-import { CanvasTexture , BufferAttribute , Vector3  } from 'three';
+import { CanvasTexture , BufferAttribute , Vector3, NearestFilter  } from 'three';
 import { useFrame } from '@react-three/fiber';
 
+const DEFAULTPROPERTY = {
+  count: 1, 
+  speed : [.0, .0  , 0 ],
+  lifetime: 1.,
+  size: 3
+}
+
+export const EmojiParticles = ( { emoji , style } )=>{
 
 
-
-const MAX_PARTICLES = 5;
-const LIFETIME =.5 ; // frames
-
-const EmojiParticles = ({ emoji })=>{
+  const PROPERTY= {...DEFAULTPROPERTY,...style}; 
 
   const pointsRef = useRef();
-  const positions = useMemo(() => new Float32Array(MAX_PARTICLES * 3), []);
-  const alphas = useMemo(() => new Float32Array(MAX_PARTICLES), []);
-  const ages = useRef( new Array(5).fill( Infinity )) ; // Infinity = dead
+  const positions = useMemo(() => new Float32Array(PROPERTY.count * 3), []);
+  const alphas = useMemo(() => new Float32Array(PROPERTY.count), []);
+  const ages = useRef( new Array(PROPERTY.count).fill( Infinity )) ; // Infinity = dead
   const positionAttribute = useRef(null);
   const alphaAttribute = useRef(null);
-  const texture = useMemo(()=>{
-    return createEmojiTexture(emoji); 
-  })
+  const texture = useMemo(()=>{return createEmojiTexture(emoji); })
   const frameCounter = useRef(0);
   const emitIndex = useRef(0);
 
+
+
   useEffect(() => {
+
     if (pointsRef.current) {
       const geometry = pointsRef.current.geometry;
       geometry.setAttribute('position',new BufferAttribute(positions, 3));
@@ -36,36 +41,44 @@ const EmojiParticles = ({ emoji })=>{
   useFrame((state,delta) => {
     frameCounter.current++;
 
-    // Emit a new particle every 5 frames
-    if (frameCounter.current % 5 === 0) {
+    // Emit a new particle every 30 frames
+    if (frameCounter.current % 30 === 0) {
       const i = emitIndex.current;
 
       // Set initial position
-      positions[i * 3 + 0] = (Math.random() - 0.5) * 0.1;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 0.1;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.1;
+      positions[i * 3 + 0] = (Math.random() - 0.5) * 0.0;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 0.0;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.0;
 
       // Reset age
       ages.current[i] = 0;
-      alphas[i] = 1;
+      alphas[i] = 1. ;
 
-      emitIndex.current = (emitIndex.current + 1) % MAX_PARTICLES;
+      emitIndex.current = (emitIndex.current + 1) % PROPERTY.count;
     }
 
     // Update all particles
-    for (let i = 0; i < MAX_PARTICLES; i++) {
+    for (let i = 0; i < PROPERTY.count; i++) {
           // Update age
         ages.current[i] += delta;
-        const t = ages.current[i] / LIFETIME; 
+        const t = ages.current[i] / PROPERTY.lifetime; 
 
-        if (t >= 1) {
-          alphas[i] = 0;
-          continue;
-        }
+
 
         //update attribute
-        alphas[i] = 1 - t;
-        positions[ i * 3 + 1] +=  (delta *1.5    ) ; // only position Y
+        if(PROPERTY.count > 1) {
+          if (t >= 1) {
+            alphas[i] = 0;
+            continue;
+          }
+          alphas[i] = 1 - t;
+        }
+
+
+        positions[ i * 3 + 1] +=  (delta * PROPERTY.speed[0]  ) ;
+        positions[ i * 3 + 1] +=  (delta * PROPERTY.speed[1]  ) ;
+        positions[ i * 3 + 1] +=  (delta * PROPERTY.speed[2]  ) ;
+
 
     }
 
@@ -82,7 +95,7 @@ const EmojiParticles = ({ emoji })=>{
       <bufferGeometry />
       <pointsMaterial
         map={texture}
-        size={2}
+        size={PROPERTY.size}
         sizeAttenuation
         transparent
         depthWrite={false}
@@ -117,28 +130,26 @@ const EmojiParticles = ({ emoji })=>{
 }
 
 
+export function extractEmojis(str) {
+  return [...str.matchAll(/\p{Extended_Pictographic}(?:\u200D\p{Extended_Pictographic})*/gu)]
+    .map(match => match[0]);
+}
 
+export const particleStyles = {
+  "cloudy": { speed:[0,1,0], count: 5},
+}
 
-export default function EmojiEffector({text}) {
-  const [emojis, setEmojis] = useState([]);
+const emojiTypes ={
+  "cloudy" : ["🥐","🥖" ,"🎵","💤","💤" ,"♫","♪" ]
+}
 
-  function extractEmojis(str) {
-    // Regex to match emoji, including multi-codepoint ones (like ❤️ or 🇰🇷)
-    return [...str.matchAll(/([\p{Emoji_Presentation}\p{Emoji}\u200d]+)/gu)]
-      .map(match => match[0])
-      .filter(e => /\p{Emoji}/u.test(e));
-  }
-  
-    useEffect(()=>{
-      setEmojis(extractEmojis(text));
-    },[text])
-  return emojis.map((emoji, i)=><EmojiParticles key={i} emoji={emoji} />)
+export function findEmojiType(emoji) {
+  return Object.entries(emojiTypes).find(([, emojis]) => emojis.includes(emoji))?.[0] || null;
 }
 
 
 
-
-export const createEmojiTexture = (emoji, size = 32) => {
+export const createEmojiTexture = (emoji, size = 16) => {
   const canvas = document.createElement('canvas');
   canvas.width = size;
   canvas.height = size;
@@ -149,6 +160,7 @@ export const createEmojiTexture = (emoji, size = 32) => {
   ctx.textBaseline = 'middle';
   ctx.fillText(emoji, size / 2, size / 2);
   const texture = new CanvasTexture(canvas);
+  texture.magFilter = NearestFilter; 
   texture.needsUpdate = true;
   return texture;
 };

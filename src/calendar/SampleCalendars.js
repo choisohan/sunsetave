@@ -32,13 +32,13 @@ export const SampleCalendars ={
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Compose Music",
+                summary: "🎵Compose Music",
                 start: "2025-03-06T07:00:00",
                 end: "2025-03-06T09:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Music Lesson",
+                summary: "🎵Music Lesson",
                 start: "2025-03-06T09:00:00",
                 end: "2025-03-06T13:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
@@ -50,21 +50,27 @@ export const SampleCalendars ={
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Compose Music",
+                summary: "🎵Compose Music",
                 start: "2025-03-06T15:00:00",
                 end: "2025-03-06T19:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Socializing",
+                summary: "🍷Socializing",
                 start: "2025-03-06T19:00:00",
                 end: "2025-03-06T21:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Extra Composing Before bed",
+                summary: "🎵Extra Composing Before bed",
                 start: "2025-03-06T21:00:00",
                 end: "2025-03-07T00:00:00",
+                rrule: "FREQ=DAILY;INTERVAL=1" 
+            },
+            {
+                summary: "💤Sleep",
+                start: "2025-03-07T00:00:00",
+                end: "2025-03-08T06:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             }
         ]
@@ -119,7 +125,7 @@ export const SampleCalendars ={
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Social or Relax",
+                summary: "🍷Social or Relax",
                 start: "2025-03-06T17:00:00",
                 end: "2025-03-06T19:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
@@ -131,7 +137,7 @@ export const SampleCalendars ={
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Sleep",
+                summary: "💤Sleep",
                 start: "2025-03-06T22:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             }
@@ -142,13 +148,13 @@ export const SampleCalendars ={
         description:"Freud's House",
         events:[
             {
-                summary: "Breakfast and Cigar",
+                summary: "Breakfast and Cigar🚬",
                 start: "2025-03-06T07:00:00",
                 end: "2025-03-06T08:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "See Patients",
+                summary: "See Patients👨‍⚕️",
                 start: "2025-03-06T08:00:00",
                 end: "2025-03-06T12:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
@@ -166,13 +172,13 @@ export const SampleCalendars ={
                 rrule:"FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "See patient",
+                summary: "See patient👨‍⚕️",
                 start: "2025-03-06T15:00:00",
                 end: "2025-03-06T21:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Reading and Socializing",
+                summary: "📖Reading and Socializing",
                 start: "2025-03-06T21:00:00",
                 end: "2025-03-06T23:00:00",
                 rrule:"FREQ=DAILY;INTERVAL=1" 
@@ -208,7 +214,7 @@ export const SampleCalendars ={
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Writing Letter or Reading, Meeting up other artists",
+                summary: "📖Writing Letter or Reading, Meeting up other artists",
                 start: "2025-03-06T07:00:00",
                 end: "2025-03-06T21:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
@@ -228,13 +234,13 @@ export const SampleCalendars ={
         mesh:5, 
         events:[
             {
-                summary: "Morning Meditation",
-                start: "2025-03-06T06:30:00",
+                summary: "🧘Morning Meditation",
+                start: "2025-03-06T06:00:00",
                 end: "2025-03-06T07:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Strength training and stretching",
+                summary: "🤾‍♀️Strength training and stretching",
                 start: "2025-03-06T07:00:00",
                 end: "2025-03-06T08:00:00",
                 rrule:"FREQ=DAILY;INTERVAL=1" 
@@ -246,7 +252,7 @@ export const SampleCalendars ={
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Martial arts practice",
+                summary: "🥋Martial arts practice",
                 start: "2025-03-06T09:00:00",
                 end: "2025-03-06T12:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
@@ -258,13 +264,13 @@ export const SampleCalendars ={
                 rrule:"FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Read about philosophy",
+                summary: "📖Read about philosophy",
                 start: "2025-03-06T13:00:00",
                 end: "2025-03-06T15:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Evening Martial arts training",
+                summary: "🥋Evening Martial arts training",
                 start: "2025-03-06T15:00:00",
                 end: "2025-03-06T18:00:00",
                 rrule: "FREQ=DAILY;INTERVAL=1" 
@@ -336,7 +342,7 @@ export const SampleCalendars ={
                 rrule: "FREQ=DAILY;INTERVAL=1" 
             },
             {
-                summary: "Reading",
+                summary: "📖Reading",
                 start: "2025-03-06T21:00:00",
                 end: "2025-03-06T22:00:00",
                 rrule:"FREQ=DAILY;INTERVAL=1" 

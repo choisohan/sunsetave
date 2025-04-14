@@ -15,6 +15,10 @@ export default function Avenue() {
   const [items, setItems] = useState([
     {id : 'sample&&SampleCalendar' , cellNumb : 0  },
    {id : 'sample&&Mozart' , cellNumb : 1 },   
+   {id : 'sample&&BruceLee' , cellNumb : 2 },   
+   {id : 'sample&&Darwin' , cellNumb : 3 },   
+
+
   ])
 
   const [selectedItem, setSelectedItem] = useState();
