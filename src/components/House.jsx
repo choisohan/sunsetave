@@ -23,15 +23,7 @@ export default function House(props){
   const timestamp = useTimestamp();
   const updateTime = props.updateTime || true; 
 
-
   useEffect(()=>{
-    if(!currentEventIndex) return; 
-    console.log( property.events[currentEventIndex])
-
-  },[currentEventIndex])
-
-  useEffect(()=>{
-
     if( props.property.id !== property.id ){
       FindCalendar(props.property.id).then( calendar =>{
         setProperty((_property)=>({..._property, ...props.property , ...calendar  }))
@@ -45,7 +37,7 @@ export default function House(props){
 
   useEffect(()=>{
      props.onUpdateProperty( property );
-  },[property , props.onUpdateProperty])
+  },[property , props ])
 
 
   useEffect(()=>{
@@ -70,7 +62,7 @@ export default function House(props){
     }
 
 
-  },[ timestamp, property , mesh ])
+  },[ timestamp, property , mesh , updateTime  ])
 
 
   useFrame(()=>{
@@ -99,16 +91,16 @@ export default function House(props){
   // Render
   if(! mesh   ) return; 
 
-  return <mesh ref={meshRef} 
-  position ={ property.position ? [property.position.x, property.position.y, property.position.z] :   [0,0,0] }
-  rotation = {property.rotation ? [0, property.rotation.z,0] :   [0,0,0] }
-              onPointerEnter={()=>{setIsHovered(true)}}
-              onPointerOut={()=>{setIsHovered(false)}}
-              onClick={()=>{ props.onClick(property) }}>
+    return <mesh ref={meshRef} 
+    position ={ property.position ? [property.position.x, property.position.y, property.position.z] :   [0,0,0] }
+    rotation = {property.rotation ? [0, property.rotation.z,0] :   [0,0,0] }
+                onPointerEnter={()=>{setIsHovered(true)}}
+                onPointerOut={()=>{setIsHovered(false)}}
+                onClick={()=>{ props.onClick(property) }}>
 
-      <primitive object={mesh} scale={[.75,.75,.75] } />
-      <EventBubble isHovered={isHovered} mesh={mesh} events={property.events ? property.events : [] } currentEventIndex={currentEventIndex} />
-</mesh>
+        <primitive object={mesh} scale={[.75,.75,.75] } />
+        <EventBubble isHovered={isHovered} mesh={mesh} events={property.events ? property.events : [] } currentEventIndex={currentEventIndex} />
+  </mesh>
 }
 
 

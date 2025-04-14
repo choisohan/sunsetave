@@ -6,7 +6,7 @@ import { getMeshHeight } from './UpdateHouseMesh'
 export default function EventBubble({isHovered , events , currentEventIndex , mesh }) {
 
   const audioRef = useRef();
-  const [text, setText] = useState()
+  const [text, setText] = useState();
    
   
   useEffect(()=>{
