@@ -109,8 +109,13 @@ export default function House(props){
 
 
 const onClick = e =>{
-  console.log( e )
-  props.onClick(property)
+  if( property.events && props.onOpenPopup ){
+    props.onOpenPopup(property)
+  }
+  else if(props.onEdit){
+    const selectedMaterial  = e.object.material[e.face.materialIndex];
+    props.onEdit( selectedMaterial.name.replace('_mat','') , e.nativeEvent.type ==="contextmenu" ? -1: 1 );
+  }
 }
 
 
@@ -122,6 +127,7 @@ const onClick = e =>{
     rotation = {property.rotation ? [0, property.rotation.z,0] :   [0,0,0] }
                 onPointerEnter={()=>{setIsHovered(true)}}
                 onPointerOut={()=>{setIsHovered(false)}}
+                onContextMenu={onClick}
                 onClick={onClick}>
 
         <primitive object={mesh} scale={[.75,.75,.75] } />

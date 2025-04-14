@@ -89,7 +89,7 @@ export default function Avenue() {
       <Sky />
         <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
         {items.map( (item,i) =>
-        <House key={i} property ={item} onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}  onClick={_props=>{  onHouseClicked(i, _props )  }} />
+        <House key={i} property ={item} onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}  onOpenPopup={_props=>{  onHouseClicked(i, _props )  }} />
     )}
     <Ocean />
 

@@ -63,17 +63,19 @@ export default function HouseBuilder(props) {
 
   }
 
-  return (<>
-    <div className='flex gap-2 flex-col md:flex-row justify-center' >
 
-      <Canvas className='aspect-[4/3]	lg:aspect-[1/1] lg:max-w-[500px]' camera={{position: [6,1,12], fov: 12 }}>
+  return (<>
+    <div className='flex gap-2 flex-col justify-center' >
+
+      <Canvas className='aspect-[4/3]	lg:aspect-[1/1] lg:max-w-[500px] self-center' camera={{position: [6,1,12], fov: 12 }}>
         <CameraControls target={[.25,1,0]} />
           <Pixelate />
-          <House property={property}  onClick={()=>{}} updateTime={false} hoverable={false} onUpdateProperty={()=>{}}/>
+          <House property={property}  onEdit={(section, dir)=>{swapMap(section,dir)}} updateTime={false} hoverable={false} onUpdateProperty={()=>{}}/>
       </Canvas>
 
       <div className='lg:p-2 self-center flex flex-wrap lg:flex-nowrap lg:flex-col' id='options'>
         <OptionSelector onChange={swapGeometry} >Geometry</OptionSelector>
+{/*
         <OptionSelector onChange={ d =>{ swapMap('roof',d) } } >Roof</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('wallA',d) } } >Wall A</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('wallB',d) } } >Wall B</OptionSelector>
@@ -81,6 +83,8 @@ export default function HouseBuilder(props) {
         <OptionSelector onChange={ d =>{ swapMap('windowsB',d) } } >Windows B</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('door',d) } } >Door</OptionSelector>
         <OptionSelector onChange={ d =>{ swapMap('shade',d) } } >Shade</OptionSelector>
+
+*/}
 
         <CozyButton className='self-center pixelButton scale-75' onClick={generateRandom} tooltip="A random house">
           <img src='/images/game_die.png' alt='shuffle'/>
