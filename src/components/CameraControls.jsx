@@ -23,10 +23,10 @@ export default function CameraControls(props) {
         //  onEnd={onEnd}
           target={targetRef.current}
           maxDolly ={0}
-          minPolarAngle={0} 
+          minPolarAngle={-Math.PI / 2} 
           maxPolarAngle={Math.PI / 2} 
-          minAzimuthAngle={-Math.PI / 4} 
-          maxAzimuthAngle={Math.PI / 4} 
+         // minAzimuthAngle={Math.PI / 4} 
+          //maxAzimuthAngle={Math.PI / 4} 
           minDistance={0} 
           maxDistance={90}
           enablePan={true} />

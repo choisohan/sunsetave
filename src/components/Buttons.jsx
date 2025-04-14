@@ -142,10 +142,18 @@ export const RecordButton = (props)=>{
   const [isRecording , setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const chunksRef = useRef([]);  // Ref to store video chunks
-
   const downloadLink= useRef(document.createElement('a'));
+  const updateTimestamp = useUpdateTimestamp();
 
+  useEffect(() => {
+    if (!isRecording) return;
+
+    const interval = setInterval(() => {
+      updateTimestamp(x => x + 3600000 / 30);
+    }, 200); // update every 200ms
   
+    return () => clearInterval(interval);
+  }, [isRecording, updateTimestamp]);
 
 
   const StartRecording = ()=>{
@@ -220,4 +228,10 @@ export const RecordButton = (props)=>{
 
 
 
+
+export const TimeShiftButton = (props)=>{
+  return <CozyButton  className='pixelButton'  tooltip="Shift Timezone" onClick={()=>{}}>
+        <img alt='edit' src='/images/clock.png' />    
+    </CozyButton>
+}
 

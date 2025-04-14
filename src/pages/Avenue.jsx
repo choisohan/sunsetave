@@ -64,20 +64,6 @@ export default function Avenue() {
     }
   }
 
-  /*
-  const ShuffleStreet=()=>{
-
-    const count = 7; //Math.floor(Math.random() * Object.keys(SampleCalendars).length) + 1;
-    
-    const randomItems = Object.keys(SampleCalendars).sort(() => Math.random() - 0.5).slice(0, count).map(key=>({
-        id: 'sample&&'+key , cellNumb: Math.floor( Math.random() * grid.length )
-    }))
-
-    setItems(randomItems)
-    setGrid(arr=>[...arr])
-
-  }
-    */ 
 
   const onHouseUpdate = (newProperty, i ) =>{
     if(!newProperty){
@@ -122,6 +108,7 @@ export default function Avenue() {
       <div className='flex max-w-full gap-0 lg:gap-1 '>
         <Buttons.InfoButton />
         <Buttons.SkipBackwardButton /><Buttons.SkipForwardButton /> <Buttons.FastForwardButton />
+        <Buttons.TimeShiftButton />
         <Buttons.EditModeButton editMode={editMode} setEditMode={setEditMode}/>
         <Buttons.AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
         <Buttons.ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
@@ -140,4 +127,22 @@ export default function Avenue() {
 
 }
 
+
+
+
+
+  /*
+  const ShuffleStreet=()=>{
+
+    const count = 7; //Math.floor(Math.random() * Object.keys(SampleCalendars).length) + 1;
+    
+    const randomItems = Object.keys(SampleCalendars).sort(() => Math.random() - 0.5).slice(0, count).map(key=>({
+        id: 'sample&&'+key , cellNumb: Math.floor( Math.random() * grid.length )
+    }))
+
+    setItems(randomItems)
+    setGrid(arr=>[...arr])
+
+  }
+    */ 
 
