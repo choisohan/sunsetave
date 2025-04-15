@@ -7,61 +7,15 @@ import { HouseMaterial } from '../shaders/houseMaterial';
 import { useTexture } from '../contexts/modelContext';
 import { useTimestamp } from '../contexts/envContext';
 import { timestampToHourFloat } from './Clock';
-import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
 
 
 const counts = {
     "car": 10, "bus":2 , "truck": 1
 }
-export const LoadInstanceAlongPath = ({meshPath, lineGeometry}) =>{
+export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
     const _fbxFile = useLoader(FBXLoader, meshPath); 
     const [objects, setObjects] = useState([]);
     const textureContext = useTexture();
-
-    const replaceMaterial = mat =>{
-        const material = HouseMaterial();
-        material.defines.USE_INSTANCING ='';
-        material.uniforms.uMap.value = mat.map; 
-        material.uniforms.uSkyColorMap.value = textureContext['env/skyColormap'] ;
-
-        if(mat.name.includes("glass")){
-            material.uniforms.uIsWindow.value =true;
-            delete material.defines.USE_MAP;
-        }
-        material.needsUpdate = true;
-
-        return material ;
-    }
-
-    useEffect(()=>{
-        const _objects =[] ; 
-        _fbxFile.traverse( child =>{
-            if(!child.isMesh) return;
-            var material = child.material;
-            if(Array.isArray(material)){
-                material = material.map( replaceMaterial )
-            }
-            else{
-                material = replaceMaterial(material)
-            }
-
-           // if(child.name !=='car') return;
-
-
-            _objects.push(<InstanceOnPath mesh={child.geometry.clone() }
-                material = {material}
-                maxCount={counts[child.name]}
-                curve={curve}
-                key={_objects.length}
-                />
-            )
-        })
-        setObjects(_objects);
-    },[_fbxFile])
-
-
-
-
     const curve = useMemo(() => {
 
         const pos = lineGeometry.attributes.position;
@@ -74,15 +28,59 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry}) =>{
 
 
 
+    useEffect(()=>{
+        const replaceMaterial = mat =>{
+            const material = HouseMaterial();
+            material.defines.USE_INSTANCING ='';
+            material.uniforms.uMap.value = mat.map; 
+            material.uniforms.uSkyColorMap.value = textureContext['env/skyColormap'] ;
+    
+            if(mat.name.includes("glass")){
+                material.uniforms.uIsWindow.value =true;
+                delete material.defines.USE_MAP;
+            }
+            material.needsUpdate = true;
+    
+            return material ;
+        }
+        
+        const _objects =[] ; 
+        _fbxFile.traverse( child =>{
+            if(!child.isMesh) return;
+            var material = child.material;
+            if(Array.isArray(material)){
+                material = material.map( replaceMaterial )
+            }
+            else{
+                material = replaceMaterial(material)
+            }
+
+
+            _objects.push(<InstanceOnPath mesh={child.geometry.clone() }
+                material = {material}
+                maxCount={counts[child.name]}
+                curve={curve}
+                offset={offset}
+                key={_objects.length}
+                />
+            )
+        })
+        setObjects(_objects);
+    },[_fbxFile , curve , textureContext , offset  ])
+
+
+
+
+
+
     return <>{objects}</>
 }
 
-export default function InstanceOnPath({ curve , mesh, material,  maxCount = 10 ,speed=.05   }) {
+export default function InstanceOnPath({ curve , mesh, material,  maxCount = 10 ,speed=.05, offset=0.0    }) {
 
     const meshRef = useRef();
-    const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => i / maxCount));
+    const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => ((i / maxCount)+(offset*0.35))%1.  ));
     const timestamp = useTimestamp();
-
     useEffect(()=>{
 
         const tileIndex = new Float32Array(maxCount);
@@ -95,8 +93,7 @@ export default function InstanceOnPath({ curve , mesh, material,  maxCount = 10 
           'tileIndex',
           new InstancedBufferAttribute(tileIndex, 1)
         );
-        console.log( meshRef.current.geometry )
-    } ,[] )
+    } ,[maxCount] )
 
     useEffect(()=>{
         meshRef.current.material.forEach(mat=>{

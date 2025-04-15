@@ -77,7 +77,7 @@ export default function TerrainMesh(props){
                 }
             }
             else if(child.isLine){
-                _objects.push(<LoadInstanceAlongPath meshPath="/models/cars.fbx" key={_objects.length} lineGeometry={child.geometry}/>)
+                _objects.push(<LoadInstanceAlongPath meshPath="/models/cars.fbx" key={_objects.length} lineGeometry={child.geometry} offset={_objects.length/2} />)
             }
             
 
