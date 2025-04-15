@@ -104,11 +104,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
 
           
           
-          
-          if(uMouseOver){
-            diffuseMap.xyz =diffuseMap.xyz *.9 + vec3(.0, .1, .2);
-          }
-
+        
           if (diffuseMap.a < 0.5) discard; // Cutout effect
           return vec4( diffuseMap.rgb * lighting , 1. ); 
 
@@ -155,6 +151,10 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
               gl_FragColor.xyz = mix(  gl_FragColor.xyz  , reflectCol  , glassMask* reflecStr);
 
           
+
+          }
+          if(uMouseOver){
+            gl_FragColor.xyz =diffuseMap.xyz *.5 + vec3(.0, .2, .5);
           }
         
 

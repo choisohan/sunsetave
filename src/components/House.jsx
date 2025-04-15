@@ -119,6 +119,22 @@ const onClick = e =>{
 }
 
 
+const onPointerOut = (e)=>{
+  setIsHovered(false)
+  mesh.material.forEach(mat=>{
+    mat.uniforms.uMouseOver.value = false; 
+  })
+}
+
+const onPointerMove = e=>{
+  if(!e.face) return;  
+  const selectedMaterial  = e.object.material[e.face.materialIndex];
+  mesh.material.forEach(mat=>{
+    mat.uniforms.uMouseOver.value = selectedMaterial == mat ; 
+  })
+}
+
+
   // Render
   if(! mesh   ) return; 
 
@@ -126,8 +142,9 @@ const onClick = e =>{
     position ={ property.position ? [property.position.x, property.position.y, property.position.z] :   [0,0,0] }
     rotation = {property.rotation ? [0, property.rotation.z,0] :   [0,0,0] }
                 onPointerEnter={()=>{setIsHovered(true)}}
-                onPointerOut={()=>{setIsHovered(false)}}
+                onPointerOut={onPointerOut}
                 onContextMenu={onClick}
+                onPointerMove={onPointerMove}
                 onClick={onClick}>
 
         <primitive object={mesh} scale={[.75,.75,.75] } />
