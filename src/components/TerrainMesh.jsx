@@ -10,6 +10,7 @@ import { useTexture } from '../contexts/modelContext';
 import { useFrame } from '@react-three/fiber';
 import { Grid } from './Grid';
 import { InteractiveMesh } from './InteractiveMesh';
+import InstanceOnPath from './InstanceOnPath';
 
 
 
@@ -24,6 +25,7 @@ export default function TerrainMesh(props){
     const timeRef = useRef(0);
 
     const [geos, setGeos] = useState([])
+    const [objects, setObjects] = useState()
 
 
     useEffect(()=>{
@@ -45,38 +47,44 @@ export default function TerrainMesh(props){
         if( grids.length > 0 ) return; 
         const _grids= [];
         const _geos = [];
+        const _objects = [];
 
 
         _fbxFile.traverse(child =>{
-            if(!child.isMesh){
-                return;
-            }
-            if(child.parent.name === "grid"){ 
-                _grids.push(child);
-            }
-
-            else{
-                if(Array.isArray(child.material)){
-                    child.material = child.material.map(ReplaceMaterial);
-                    setMaterials(arr=> ( [...arr, ...child.material] ))                    
+            if(child.isMesh){
+                if(child.parent.name === "grid"){ 
+                    _grids.push(child);
                 }
+    
                 else{
-                    child.material = ReplaceMaterial(child.material);
-                    setMaterials(arr=> ( [...arr, child.material] ))
+                    if(Array.isArray(child.material)){
+                        child.material = child.material.map(ReplaceMaterial);
+                        setMaterials(arr=> ( [...arr, ...child.material] ))                    
+                    }
+                    else{
+                        child.material = ReplaceMaterial(child.material);
+                        setMaterials(arr=> ( [...arr, child.material] ))
+                    }
+    
+    
+                    if(child.name ==="trees"){
+                        _geos.push( <InteractiveMesh key={_geos.length } object={child}/>)
+                    }else{
+                        _geos.push( <mesh  key={_geos.length } ><primitive object={child} /></mesh>)
+                    }
+    
                 }
-
-
-                if(child.name ==="trees"){
-                    _geos.push( <InteractiveMesh key={_geos.length } object={child}/>)
-                }else{
-                    _geos.push( <mesh  key={_geos.length } ><primitive object={child} /></mesh>)
-                }
-
             }
+            else if(child.isLine){
+                _objects.push(<InstanceOnPath lineGeometry={child.geometry}/>)
+            }
+            
+
         })
 
         setGrids(_grids)
         setGeos(_geos)
+        setObjects(_objects)
 
         props.setGrids(_grids.map(cellObject=>{
 
@@ -112,7 +120,7 @@ export default function TerrainMesh(props){
     return <>
 
     <group rotation={[-Math.PI / 2, 0, 0]} >
-    {geos}
+    {geos}{objects}
     <Grid meshes={grids} onClick={props.onClick} onMouseEnter={props.onEnterNewCell} editMode={props.editMode}/>
     </group>
 
