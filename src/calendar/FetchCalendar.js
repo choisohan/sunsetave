@@ -62,8 +62,6 @@ export const FindCalendar = async(_id)=>{
     if(_id.includes('sample&&')){
       _id = _id.split('sample&&')[1];
       cal = await SampleCalendars[_id];
-      console.log( 'fetch',cal )
-
     }else{
       cal =  await fetchCalendar(_id)
     }

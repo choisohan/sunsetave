@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTimestamp, useUpdateTimestamp } from "../contexts/envContext"
 import AddNewHouseForm from "./AddNewHouseForm";
 import Info from "./Info";
+import { useUpdatePopup } from "../contexts/PopupContext";
 
 
 
@@ -116,15 +117,13 @@ export const AddNewHouseButton =(props)=>{
 }
 
 export const InfoButton = (props)=>{
-  const [opened, setOpened] = useState(false);
 
+  const setPopup= useUpdatePopup();
   return <>
-  <CozyButton  className='pixelButton'  tooltip="???" onClick={()=>{setOpened(true)}}>
+  <CozyButton  className='pixelButton'  tooltip="???" onClick={()=>{setPopup(<Info />)}}>
         <img alt='info' src='/images/house.png' />    
     </CozyButton>
-    
-    {opened ? <Info onClose={()=>{setOpened(false)}} /> :null }
-  
+      
   </>
 }
 

@@ -4,11 +4,11 @@ import { Canvas } from '@react-three/fiber'
 import Sky from '../components/Sky'
 import {Pixelate} from '../shaders/CustomPostProcessing'
 import TerrainMesh from '../components/TerrainMesh'
-import HouseDetailWindow from '../components/HouseDetailWindow'
 import * as Buttons from '../components/Buttons'
 import {Clock} from '../components/Clock'
 import Ocean from '../components/Ocean'
 import CameraControls from '../components/CameraControls'
+import { usePopup } from '../contexts/PopupContext'
 
 export default function Avenue() {
 
@@ -24,7 +24,7 @@ export default function Avenue() {
   const [selectedItem, setSelectedItem] = useState();
   const [editMode, setEditMode] = useState(false)
   const [grid, setGrid] = useState();
-  const [popup, setPopup] = useState();
+  const popupContext = usePopup()
 
 
   useEffect(()=>{
@@ -39,11 +39,10 @@ export default function Avenue() {
   },[grid, items.length ])
 
 
-  const onHouseClicked=(_i, _detailProperty)=>{
+  const onHouseClicked=(_i)=>{
+    setSelectedItem({i: _i})  ;
 
-    const thisItem = {..._detailProperty, i: _i} 
-    setSelectedItem(thisItem)  ;
-
+    /*
     if(!editMode){
       setPopup( <HouseDetailWindow property={thisItem}
         onClose={()=>{
@@ -51,6 +50,7 @@ export default function Avenue() {
           setPopup(null);
       }}/> );
     }
+      */ 
   }
 
   const onEnterNewCell= i =>{
@@ -89,8 +89,8 @@ export default function Avenue() {
       <Sky />
         <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
         {items.map( (item,i) =>
-        <House key={i} property ={item} onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}  onOpenPopup={_props=>{  onHouseClicked(i, _props )  }} />
-    )}
+          <House key={i} property ={item} detailWindowOpen={true} onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}  onClick={()=>{setSelectedItem({i: i})}} />
+        )}
     <Ocean />
 
 
@@ -119,30 +119,11 @@ export default function Avenue() {
     </div>
 
 
-    {popup}
+    {popupContext}
 
 
 
     </>)
 
 }
-
-
-
-
-
-  /*
-  const ShuffleStreet=()=>{
-
-    const count = 7; //Math.floor(Math.random() * Object.keys(SampleCalendars).length) + 1;
-    
-    const randomItems = Object.keys(SampleCalendars).sort(() => Math.random() - 0.5).slice(0, count).map(key=>({
-        id: 'sample&&'+key , cellNumb: Math.floor( Math.random() * grid.length )
-    }))
-
-    setItems(randomItems)
-    setGrid(arr=>[...arr])
-
-  }
-    */ 
 

@@ -3,11 +3,10 @@ import House from './House'
 import { Canvas } from '@react-three/fiber'
 import { randInt } from 'three/src/math/MathUtils.js';
 import { useHouseModel, useTexture } from '../contexts/modelContext';
-import Sky from './Sky';
 import { Pixelate } from '../shaders/CustomPostProcessing';
 import { CozyButton } from './Buttons';
 import CameraControls from './CameraControls';
-
+import { useThree , useFrame } from '@react-three/fiber';
 
 export default function HouseBuilder(props) {
   const [property, setProperty]= useState( { time: .5 , mesh: 1 , roof : 1, wallA:1, wallB:1, door:1, shade:1, windowsA:1, windowsB:1 });
@@ -63,36 +62,43 @@ export default function HouseBuilder(props) {
 
   }
 
+  const onPointerMove =e=>{
+    const selectedMaterial  = e.object.material[e.face.materialIndex];
+    e.object.material.forEach(mat=>{
+      mat.uniforms.uMouseOver.value = selectedMaterial == mat ; 
+    })
+  }
+
+  const onPointerOut = e =>{
+    e.object.material.forEach(mat=>{
+      mat.uniforms.uMouseOver.value = false; 
+    })
+  }
+
+
+  const onClick = e =>{
+    const selectedMaterial  = e.object.material[e.face.materialIndex];
+    swapMap( selectedMaterial.name.replace('_mat','') , e.nativeEvent.type ==="contextmenu" ? -1: 1 );
+  }
 
   return (<>
-    <div className='flex gap-2 flex-col justify-center' >
+    <div className='relative bg-blue-200 lg:max-w-[500px]' >
 
-      <Canvas className='aspect-[4/3]	lg:aspect-[1/1] lg:max-w-[500px] self-center' camera={{position: [6,1,12], fov: 12 }}>
-        <CameraControls target={[.25,1,0]} />
-          <Pixelate />
-          <House property={property}  onEdit={(section, dir)=>{swapMap(section,dir)}} updateTime={false} hoverable={false} onUpdateProperty={()=>{}}/>
-      </Canvas>
+        <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,10], fov: 12 }} > 
+            <CameraLookAt/>
+            <Pixelate />
+            <House property={property} onClick={onClick}  onPointerMove={onPointerMove} onPointerOut ={onPointerOut} updateTime={false} hoverable={false} onUpdateProperty={()=>{}}/>
+        </Canvas>
 
-      <div className='lg:p-2 self-center flex flex-wrap lg:flex-nowrap lg:flex-col' id='options'>
-        <OptionSelector onChange={swapGeometry} >Geometry</OptionSelector>
-{/*
-        <OptionSelector onChange={ d =>{ swapMap('roof',d) } } >Roof</OptionSelector>
-        <OptionSelector onChange={ d =>{ swapMap('wallA',d) } } >Wall A</OptionSelector>
-        <OptionSelector onChange={ d =>{ swapMap('wallB',d) } } >Wall B</OptionSelector>
-        <OptionSelector onChange={ d =>{ swapMap('windowsA',d) } } >Windows A</OptionSelector>
-        <OptionSelector onChange={ d =>{ swapMap('windowsB',d) } } >Windows B</OptionSelector>
-        <OptionSelector onChange={ d =>{ swapMap('door',d) } } >Door</OptionSelector>
-        <OptionSelector onChange={ d =>{ swapMap('shade',d) } } >Shade</OptionSelector>
+        <OptionSelector className='absolute bottom-0 left-0 w-full flex items-center justify-center  ' onChange={swapGeometry} >Geometry</OptionSelector>
 
-*/}
 
-        <CozyButton className='self-center pixelButton scale-75' onClick={generateRandom} tooltip="A random house">
-          <img src='/images/game_die.png' alt='shuffle'/>
-        </CozyButton>
-
-      </div>
-
-      
+        <div className='absolute bottom-0 right-0 '>
+          <CozyButton className='pixelButton scale-75' onClick={generateRandom} tooltip="A random house">
+              <img src='/images/game_die.png' alt='shuffle'/>
+          </CozyButton>   
+        </div>
+   
     </div>  
     </>
   )
@@ -101,15 +107,18 @@ export default function HouseBuilder(props) {
 
 
 const OptionSelector = props =>{
-  return <div className='choice items-center relative flex justify-between w-[180px] scale-90 lg:w-full'>
+  return <div className={'choice '+props.className} >
     <CozyButton className='pixelButton scale-75 ' onClick={()=>{props.onChange(-1)}}><img src='/images/arrow_backward.png' alt='-1' /></CozyButton>
     {props.children}
     <CozyButton className='pixelButton scale-75 ' onClick={()=>{props.onChange(+1)}}><img src='/images/arrow_forward.png' alt='+1' /></CozyButton>
     </div>
 } 
 
-const OptionSelector2 = props =>{
-  return <div>
-    
-  </div>
+function CameraLookAt() {
+  const { camera } = useThree()
+
+  useFrame(() => {
+    camera.lookAt(.35, 0.9 , 0)
+  })
+  return null
 }

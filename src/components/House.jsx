@@ -10,6 +10,8 @@ import { useTimestamp } from '../contexts/envContext';
 import EventBubble from './EventBubble';
 import { getMeshHeight, UpdateHouseMesh, updateUtimes} from './UpdateHouseMesh';
 import { Html } from '@react-three/drei';
+import { useUpdatePopup } from '../contexts/PopupContext';
+import HouseDetailWindow from './HouseDetailWindow';
 
 export default function House(props){
   const { gl } = useThree(); 
@@ -24,6 +26,7 @@ export default function House(props){
   const updateTime = props.updateTime || true; 
   const audioRef = useRef();
   const height = useRef(0);
+  const setPopup = useUpdatePopup();
 
   useEffect(()=>{
     if( props.property.id !== property.id ){
@@ -109,29 +112,28 @@ export default function House(props){
 
 
 const onClick = e =>{
-  if( property.events && props.onOpenPopup ){
-    props.onOpenPopup(property)
+  if(props.detailWindowOpen){
+    setPopup(<HouseDetailWindow property={property} />)
   }
-  else if(props.onEdit){
-    const selectedMaterial  = e.object.material[e.face.materialIndex];
-    props.onEdit( selectedMaterial.name.replace('_mat','') , e.nativeEvent.type ==="contextmenu" ? -1: 1 );
+
+  if(props.onClick){
+    props.onClick(e)
   }
+
 }
 
 
 const onPointerOut = (e)=>{
   setIsHovered(false)
-  mesh.material.forEach(mat=>{
-    mat.uniforms.uMouseOver.value = false; 
-  })
+  if(props.onPointerOut){
+    props.onPointerOut(e)
+  }
 }
 
 const onPointerMove = e=>{
-  if(!e.face) return;  
-  const selectedMaterial  = e.object.material[e.face.materialIndex];
-  mesh.material.forEach(mat=>{
-    mat.uniforms.uMouseOver.value = selectedMaterial == mat ; 
-  })
+  if(props.onPointerMove){
+    props.onPointerMove(e)
+  }
 }
 
 
