@@ -10,7 +10,7 @@ import { useTexture } from '../contexts/modelContext';
 import { useFrame } from '@react-three/fiber';
 import { Grid } from './Grid';
 import { InteractiveMesh } from './InteractiveMesh';
-import InstanceOnPath from './InstanceOnPath';
+import {LoadInstanceAlongPath} from './InstanceOnPath';
 
 
 
@@ -18,6 +18,7 @@ import InstanceOnPath from './InstanceOnPath';
 export default function TerrainMesh(props){
 
     const _fbxFile = useLoader(FBXLoader, '/models/town_A.fbx'); 
+
     const timestamp = useTimestamp();
     const [grids, setGrids] = useState([]);
     const [materials, setMaterials] = useState([]);
@@ -76,7 +77,7 @@ export default function TerrainMesh(props){
                 }
             }
             else if(child.isLine){
-                _objects.push(<InstanceOnPath lineGeometry={child.geometry}/>)
+                _objects.push(<LoadInstanceAlongPath meshPath="/models/cars.fbx" key={_objects.length} lineGeometry={child.geometry}/>)
             }
             
 

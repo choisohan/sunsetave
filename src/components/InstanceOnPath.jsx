@@ -1,10 +1,27 @@
-import React, {useRef , useMemo} from 'react'
+import React, {useRef , useMemo, useEffect , useState } from 'react'
 import { BoxGeometry , MeshBasicMaterial , CatmullRomCurve3 , Object3D , Vector3 } from 'three';
 import { useFrame } from '@react-three/fiber';
+import { useLoader } from "@react-three/fiber";
+import { FBXLoader } from "three/examples/jsm/Addons.js";
 
-export default function InstanceOnPath({lineGeometry, maxCount = 10 }) {
-    const meshRef = useRef();
-    const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => i / maxCount));
+
+export const LoadInstanceAlongPath = ({meshPath, lineGeometry}) =>{
+    const _fbxFile = useLoader(FBXLoader, meshPath); 
+    const [objects, setObjects] = useState([]);
+
+    useEffect(()=>{
+        const _objects =[] ; 
+        _fbxFile.traverse( child =>{
+            if(!child.isMesh) return;
+            console.log(child)
+            const item = <InstanceOnPath mesh={  child.geometry  } material={new MeshBasicMaterial({color:'orange'})} curve={curve} key={_objects.length}/>
+            _objects.push(item)
+        })
+        setObjects(_objects);
+    },[_fbxFile])
+
+
+
 
     const curve = useMemo(() => {
         const pos = lineGeometry.attributes.position;
@@ -15,6 +32,14 @@ export default function InstanceOnPath({lineGeometry, maxCount = 10 }) {
         return new CatmullRomCurve3(points);
       }, [lineGeometry]);
 
+
+
+    return <>{objects}</>
+}
+
+export default function InstanceOnPath({ curve , mesh, material,  maxCount = 10 }) {
+    const meshRef = useRef();
+    const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => i / maxCount));
 
 
     useFrame((_, delta) => {
@@ -39,9 +64,8 @@ export default function InstanceOnPath({lineGeometry, maxCount = 10 }) {
     meshRef.current.instanceMatrix.needsUpdate = true;
     });
 
-  return (<instancedMesh ref={meshRef} args={ [
-    new BoxGeometry(.5,.5,.5),
-    new MeshBasicMaterial({ color: 'blue' }),
-    maxCount]} />)
+    return (<instancedMesh ref={meshRef} args={ [mesh, material ,maxCount]} />)
+    
 
 }
+
