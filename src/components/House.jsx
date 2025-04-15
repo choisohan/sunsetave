@@ -6,7 +6,7 @@ import { useFrame } from '@react-three/fiber';
 import { getCurrentEventIndex  } from '../calendar/SortEvents';
 import {FindCalendar} from '../calendar/FetchCalendar'
 import { useThree } from '@react-three/fiber';
-import { useTimestamp } from '../contexts/envContext';
+import { useTimestamp, useTimezoneOverride } from '../contexts/envContext';
 import EventBubble from './EventBubble';
 import { getMeshHeight, UpdateHouseMesh, updateUtimes} from './UpdateHouseMesh';
 import { Html } from '@react-three/drei';
@@ -27,6 +27,8 @@ export default function House(props){
   const audioRef = useRef();
   const height = useRef(0);
   const setPopup = useUpdatePopup();
+  const timezoneOverride = useTimezoneOverride(); 
+
 
   useEffect(()=>{
     if( props.property.id !== property.id ){
@@ -57,7 +59,9 @@ export default function House(props){
     if(!mesh) return;
 
     if(updateTime){
-      updateUtimes(mesh.material , timestamp, property.timezone);
+
+      const tz = timezoneOverride || property.timezone;
+      updateUtimes(mesh.material , timestamp, tz);
     }
 
     if(property.events){
@@ -67,7 +71,7 @@ export default function House(props){
     }
 
 
-  },[ timestamp, property , mesh , updateTime  ])
+  },[ timestamp, property , mesh , updateTime , timezoneOverride  ])
 
 
   useEffect(()=>{

@@ -70,7 +70,7 @@ return (
 
     <EventTable events={events}/>
   </div>
-  <h1 className='fixed top-0 left-0'><a href='/'>Sunset Ave</a></h1>
+    <a href='/' className='fixed -top-0 left-1 lg:text-3xl' >Sunset Ave</a>
 
 
 </div>

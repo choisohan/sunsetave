@@ -1,17 +1,19 @@
 import React ,  { useState, useEffect }  from 'react'
 import moment from 'moment-timezone';
 import { useTimestamp , useUpdateTimestamp } from '../contexts/envContext';
-
+import { useTimezoneOverride } from '../contexts/envContext';
 
 export function Clock(props){
     const [timezone, setTimezone] = useState( props.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone )
+    const timezoneOverride = useTimezoneOverride(); 
     const timestamp = useTimestamp();
     const updateTimestamp = useUpdateTimestamp();
 
     useEffect(()=>{
       if(!props.timezone) return; 
-      setTimezone(props.timezone); 
-    },[props.timezone])
+      if(timezoneOverride)setTimezone(timezoneOverride);
+      else setTimezone(props.timezone); 
+    },[timezoneOverride , props.timezone])
     
     useEffect(() => {
 

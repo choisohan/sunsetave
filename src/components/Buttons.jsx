@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useTimestamp, useUpdateTimestamp } from "../contexts/envContext"
+import { useSetTimezoneOverride, useTimestamp, useTimezoneOverride, useUpdateTimestamp } from "../contexts/envContext"
 import AddNewHouseForm from "./AddNewHouseForm";
 import Info from "./Info";
 import { useUpdatePopup } from "../contexts/PopupContext";
@@ -32,7 +32,7 @@ export const FastForwardButton = ()=>{
     if (!isPlaying) return;
 
     const interval = setInterval(() => {
-      updateTimestamp(x => x + 3600000 / 30);
+      updateTimestamp(x => x + 3600000 / 5);
     }, 200); // update every 200ms
   
     return () => clearInterval(interval);
@@ -148,7 +148,7 @@ export const RecordButton = (props)=>{
     if (!isRecording) return;
 
     const interval = setInterval(() => {
-      updateTimestamp(x => x + 3600000 / 30);
+      updateTimestamp(x => x + 3600000 / 5);
     }, 200); // update every 200ms
   
     return () => clearInterval(interval);
@@ -228,9 +228,17 @@ export const RecordButton = (props)=>{
 
 
 
-export const TimeShiftButton = (props)=>{
-  return <CozyButton  className='pixelButton'  tooltip="Shift Timezone" onClick={()=>{}}>
-        <img alt='edit' src='/images/clock.png' />    
+export const TimeShiftButton = ()=>{
+  const timezoneOverride = useTimezoneOverride();
+  const setTimezoneOverride = useSetTimezoneOverride();
+
+  const onClick =()=>{
+    if(timezoneOverride) setTimezoneOverride();
+    else setTimezoneOverride( Intl.DateTimeFormat().resolvedOptions().timeZone);
+  }
+
+  return <CozyButton  className='pixelButton'  tooltip="Shift Timezone" onClick={onClick}>
+      <img alt='edit' src='/images/clock.png' />    
     </CozyButton>
 }
 

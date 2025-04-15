@@ -15,8 +15,8 @@ export function EnvProvider({children}){
     return (
             <UpdateTimestampContext.Provider value={setTimeSamp}>
                 <TimestampContext.Provider value={timestamp}>
-                    <TimezoneOverride.Provider value={timestamp}>
-                        <SetTimezoneOVerride.Provider value={timestamp}>
+                    <TimezoneOverride.Provider value={timezoneOverride}>
+                        <SetTimezoneOVerride.Provider value={setTimezoneOverride}>
                             {children}
                         </SetTimezoneOVerride.Provider>
                     </TimezoneOverride.Provider>
