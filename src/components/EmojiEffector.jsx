@@ -1,5 +1,5 @@
-import React, { useEffect , useMemo, useState ,useRef  } from 'react'
-import { CanvasTexture , BufferAttribute , Vector3, NearestFilter  } from 'three';
+import React, { useEffect , useMemo ,useRef  } from 'react'
+import { CanvasTexture , BufferAttribute , NearestFilter  } from 'three';
 import { useFrame } from '@react-three/fiber';
 
 const DEFAULTPROPERTY = {
@@ -15,12 +15,12 @@ export const EmojiParticles = ( { emoji , style } )=>{
   const PROPERTY= {...DEFAULTPROPERTY,...style}; 
 
   const pointsRef = useRef();
-  const positions = useMemo(() => new Float32Array(PROPERTY.count * 3), []);
-  const alphas = useMemo(() => new Float32Array(PROPERTY.count), []);
+  const positions = useMemo(() => new Float32Array(PROPERTY.count * 3), [PROPERTY.count]);
+  const alphas = useMemo(() => new Float32Array(PROPERTY.count), [PROPERTY.count]);
   const ages = useRef( new Array(PROPERTY.count).fill( Infinity )) ; // Infinity = dead
   const positionAttribute = useRef(null);
   const alphaAttribute = useRef(null);
-  const texture = useMemo(()=>{return createEmojiTexture(emoji); })
+  const texture = useMemo(()=>{return createEmojiTexture(emoji); },[emoji])
   const frameCounter = useRef(0);
   const emitIndex = useRef(0);
 
@@ -35,7 +35,7 @@ export const EmojiParticles = ( { emoji , style } )=>{
       geometry.setAttribute('alpha', new BufferAttribute(alphas, 1) );
       alphaAttribute.current = geometry.attributes.alpha;
     }
-  }, []);
+  }, [positions,alphas]);
 
   
   useFrame((state,delta) => {

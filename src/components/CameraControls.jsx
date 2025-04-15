@@ -4,11 +4,11 @@ import { Vector3 } from 'three'
 
 export default function CameraControls(props) {
 
-  const maxPanDistance = 1.5; 
   const targetRef = useRef(props.target ||  new Vector3(0,0.35,0) ); 
 
   const onEnd = (e)=>{
-
+    /*
+    const maxPanDistance = 1.5; 
     const direction = e.target.target.sub(new Vector3(0.,.0,.0));
     const length = direction.length();   
     if(length > maxPanDistance){
@@ -16,17 +16,16 @@ export default function CameraControls(props) {
       e.target.target = direction;
       e.target.update();
     }
+      */ 
   }
 
   return (
         <OrbitControls
-        //  onEnd={onEnd}
+          onEnd={onEnd}
           target={targetRef.current}
           maxDolly ={0}
           minPolarAngle={-Math.PI / 2} 
           maxPolarAngle={Math.PI / 2} 
-         // minAzimuthAngle={Math.PI / 4} 
-          //maxAzimuthAngle={Math.PI / 4} 
           minDistance={0} 
           maxDistance={90}
           enablePan={true} />
