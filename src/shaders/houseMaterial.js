@@ -20,6 +20,8 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
     varying vec3 vLocalPosition;
 
     varying vec3 vViewDir;
+    attribute float tileIndex;
+    varying float vTileIndex;
 
   
     void main()
@@ -41,6 +43,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
         vViewDir =normalize(-viewPosition.xyz);
         
         vLocalPosition= position.xyz; 
+        vTileIndex = tileIndex;
 
     }
     `,
@@ -48,7 +51,8 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
     fragmentShader: `
       precision mediump float;
       varying vec3 vPosition;
-        varying vec3 vLocalPosition;
+      varying vec3 vLocalPosition;
+      varying float vTileIndex;
 
       varying vec2 vUv;
       varying vec3 vNormal;
@@ -128,16 +132,36 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
         return str; 
       }
 
+      vec3 shiftHue(vec3 color, float shift) {
+        float angle = shift * 6.2831; // shift: 0.0–1.0 → 0–2π
+        float s = sin(angle), c = cos(angle);
+
+        mat3 hueRotation = mat3(
+          0.299 + 0.701 * c + 0.168 * s,  0.587 - 0.587 * c + 0.330 * s,  0.114 - 0.114 * c - 0.497 * s,
+          0.299 - 0.299 * c - 0.328 * s,  0.587 + 0.413 * c + 0.035 * s,  0.114 - 0.114 * c + 0.292 * s,
+          0.299 - 0.3 * c + 1.25  * s,    0.587 - 0.588 * c - 1.05  * s,  0.114 + 0.886 * c - 0.203 * s
+        );
+
+        return clamp(hueRotation * color, 0.0, 1.0);
+      }
+
 
       void main(){  
           vec4 diffuseMap =vec4(uColor,1.);
+
           #ifdef USE_MAP
            diffuseMap = texture2D( uMap , (vUv) );
           #endif
+
+          diffuseMap.xyz = shiftHue(diffuseMap.xyz, vTileIndex/3.  );
+
           gl_FragColor= phong(diffuseMap) ;
 
           if(uIsWindow){
-              float glassMask =  step(diffuseMap.x + diffuseMap.y + diffuseMap.z ,.0 );
+              float glassMask = 1.; 
+              #ifdef USE_MAP
+                glassMask =  step(diffuseMap.x + diffuseMap.y + diffuseMap.z ,.0 );
+              #endif
 
               // Add IndoorLight
               vec3 indoorLight = vec3(1., .5,.2);
@@ -160,7 +184,9 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
               reflecStr = smoothstep(.0, .5, reflecStr); 
               gl_FragColor.xyz = mix(  gl_FragColor.xyz  , reflectCol  , glassMask* reflecStr);
 
-          
+             // gl_FragColor.xyz = vec3(glassMask);
+
+
 
           }
           if(uMouseOver){
@@ -168,12 +194,14 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           }
 
 
+
+
           
 
       }
       `,
       uniforms:{
-          uColor: {value: new Color('blue') },
+          uColor: {value: new Color('orange') },
           uMap: { value: null },
           uSkyColorMap:{ value: null },
           uMouseOver: { value : false },

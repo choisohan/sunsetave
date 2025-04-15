@@ -1,28 +1,60 @@
 import React, {useRef , useMemo, useEffect , useState } from 'react'
-import {  CatmullRomCurve3 , Object3D , Vector3 } from 'three';
+import {  CatmullRomCurve3 , Object3D , Vector3 , InstancedBufferAttribute } from 'three';
 import { useFrame } from '@react-three/fiber';
 import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
 import { HouseMaterial } from '../shaders/houseMaterial';
-import BasicMaterial from '../shaders/BasicMaterial';
+import { useTexture } from '../contexts/modelContext';
+import { useTimestamp } from '../contexts/envContext';
+import { timestampToHourFloat } from './Clock';
+import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
 
 
+const counts = {
+    "car": 10, "bus":2 , "truck": 1
+}
 export const LoadInstanceAlongPath = ({meshPath, lineGeometry}) =>{
     const _fbxFile = useLoader(FBXLoader, meshPath); 
     const [objects, setObjects] = useState([]);
+    const textureContext = useTexture();
+
+    const replaceMaterial = mat =>{
+        const material = HouseMaterial();
+        material.defines.USE_INSTANCING ='';
+        material.uniforms.uMap.value = mat.map; 
+        material.uniforms.uSkyColorMap.value = textureContext['env/skyColormap'] ;
+
+        if(mat.name.includes("glass")){
+            material.uniforms.uIsWindow.value =true;
+            delete material.defines.USE_MAP;
+        }
+        material.needsUpdate = true;
+
+        return material ;
+    }
 
     useEffect(()=>{
         const _objects =[] ; 
         _fbxFile.traverse( child =>{
             if(!child.isMesh) return;
-            const material =  HouseMaterial(); 
-            material.defines.USE_INSTANCING ='';
-            delete material.defines.USE_MAP;
-           material.needsUpdate = true;
+            var material = child.material;
+            if(Array.isArray(material)){
+                material = material.map( replaceMaterial )
+            }
+            else{
+                material = replaceMaterial(material)
+            }
+
+           // if(child.name !=='car') return;
 
 
-            const item = <InstanceOnPath mesh={ child.geometry} material = {material} curve={curve} key={_objects.length}/>
-            _objects.push(item)
+            _objects.push(<InstanceOnPath mesh={child.geometry.clone() }
+                material = {material}
+                maxCount={counts[child.name]}
+                curve={curve}
+                key={_objects.length}
+                />
+            )
         })
         setObjects(_objects);
     },[_fbxFile])
@@ -31,6 +63,7 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry}) =>{
 
 
     const curve = useMemo(() => {
+
         const pos = lineGeometry.attributes.position;
         const points = [];
         for (let i = 0; i < pos.count; i++) {
@@ -44,31 +77,55 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry}) =>{
     return <>{objects}</>
 }
 
-export default function InstanceOnPath({ curve , mesh, material,  maxCount = 10 }) {
+export default function InstanceOnPath({ curve , mesh, material,  maxCount = 10 ,speed=.05   }) {
+
     const meshRef = useRef();
     const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => i / maxCount));
+    const timestamp = useTimestamp();
+
+    useEffect(()=>{
+
+        const tileIndex = new Float32Array(maxCount);
+        for (let i = 0; i < maxCount; i++) {
+            tileIndex[i] = Math.floor((Math.random())*5)/5. ;
+          }
+
+        
+        meshRef.current.geometry.setAttribute(
+          'tileIndex',
+          new InstancedBufferAttribute(tileIndex, 1)
+        );
+        console.log( meshRef.current.geometry )
+    } ,[] )
+
+    useEffect(()=>{
+        meshRef.current.material.forEach(mat=>{
+            mat.uniforms.uTime.value= timestampToHourFloat(timestamp)
+        })
+    },[timestamp])
 
 
     useFrame((_, delta) => {
-    const dummy = new Object3D();
+        const dummy = new Object3D();
 
-    progressRef.current = progressRef.current.map(p => {
-        let next = p + delta * 0.1; // speed
-        return next > 1 ? next - 1 : next; // loop
-    });
+        progressRef.current = progressRef.current.map(p => {
+            let next = p + delta * speed; 
+            return next > 1 ? next - 1 : next; // loop
+        });
 
-    progressRef.current.forEach((t, i) => {
-        const point = curve.getPointAt(t);
-        const tangent = curve.getTangentAt(t);
-        dummy.position.copy(point);
+        progressRef.current.forEach((t, i) => {
+            const point = curve.getPointAt(t);
+            const tangent = curve.getTangentAt(t);
+            dummy.position.copy(point);
 
-        // Optional: orient toward the curve direction
-        dummy.lookAt(point.clone().add(tangent));
-        dummy.updateMatrix();
-        meshRef.current.setMatrixAt(i, dummy.matrix);
-    });
+            // Optional: orient toward the curve direction
+            dummy.lookAt(point.clone().add(tangent));
+            dummy.up.set(0, 0 , 1); 
+            dummy.updateMatrix();
+            meshRef.current.setMatrixAt(i, dummy.matrix);
+        });
 
-    meshRef.current.instanceMatrix.needsUpdate = true;
+        meshRef.current.instanceMatrix.needsUpdate = true;
     });
 
     return (<instancedMesh ref={meshRef} args={ [mesh, material ,maxCount]} />)
