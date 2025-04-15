@@ -4,6 +4,8 @@ export default function BasicMaterial() {
    
     return new RawShaderMaterial({
     vertexShader:`
+
+        attribute mat4 instanceMatrix;
         uniform mat4 projectionMatrix;
         uniform mat4 viewMatrix;
         uniform mat4 modelMatrix;    
@@ -22,7 +24,11 @@ export default function BasicMaterial() {
 
         void main()
         {
-            vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+            mat4 instance = mat4(1.0); // default: identity
+            #ifdef USE_INSTANCING
+                instance = instanceMatrix;
+            #endif
+            vec4 modelPosition = modelMatrix * instance *  vec4(position, 1.0)  ;
             vec4 viewPosition = viewMatrix * modelPosition;
             vec4 projectedPosition = projectionMatrix * viewPosition;
             gl_Position = projectedPosition;
@@ -62,9 +68,10 @@ export default function BasicMaterial() {
             vec3 diffuseMap = texture2D( uMap, uv ).xyz;
 
 
-            vec3 color = diffuseMap;
-
-
+            vec3 color = vNormal;
+            #ifdef USE_MAP
+                color = diffuseMap;
+            #endif
 
             float diffuseValue = smoothstep(  1., .0 , distance(diffuseMap.xyz, vec3( 1. ))); 
             float specMask =  dot( vNormal, normalize(vec3( .25 , 1. ,  -.25 ) ));
@@ -75,7 +82,6 @@ export default function BasicMaterial() {
            
           //  color = pow ( diffuseMap , vec3(mix( 1.   , .2   ,  specMask ) ) );
             color *=  min( vec3(1.) ,cloudHighlight+vec3(.15 )  );
-
 
 
            gl_FragColor= vec4(color, 1. );
@@ -89,6 +95,9 @@ export default function BasicMaterial() {
         uSkyColorMap:{value: null },
         uTime:{value: 0.0}
 
-    }
-
+    },
+    defines: {
+      //  USE_INSTANCING: '',
+        USE_MAP:''
+    },
 })}

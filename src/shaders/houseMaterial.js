@@ -1,8 +1,9 @@
-import {  RawShaderMaterial  } from 'three';
+import {  Color, RawShaderMaterial  } from 'three';
 
 
 export const HouseMaterial = ()=>  new RawShaderMaterial({
     vertexShader: `
+    attribute mat4 instanceMatrix;
     uniform mat4 projectionMatrix;
     uniform mat4 viewMatrix;
     uniform mat4 modelMatrix;    
@@ -23,7 +24,12 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
   
     void main()
     {
-        vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+        mat4 instance = mat4(1.0); // default: identity
+        #ifdef USE_INSTANCING
+            instance = instanceMatrix;
+        #endif
+
+        vec4 modelPosition = modelMatrix * instance *  vec4(position, 1.0)  ;
         vec4 viewPosition = viewMatrix * modelPosition;
         vec4 projectedPosition = projectionMatrix * viewPosition;
         gl_Position = projectedPosition;
@@ -48,6 +54,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
       varying vec3 vNormal;
       varying vec3 vNormal2;
       varying vec3 vViewDir;
+      uniform vec3 uColor;
 
   
       uniform sampler2D uMap; 
@@ -123,7 +130,10 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
 
 
       void main(){  
-          vec4 diffuseMap = texture2D( uMap , (vUv) );
+          vec4 diffuseMap =vec4(uColor,1.);
+          #ifdef USE_MAP
+           diffuseMap = texture2D( uMap , (vUv) );
+          #endif
           gl_FragColor= phong(diffuseMap) ;
 
           if(uIsWindow){
@@ -156,11 +166,14 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           if(uMouseOver){
             gl_FragColor.xyz =diffuseMap.xyz *.5 + vec3(.0, .2, .5);
           }
-        
+
+
+          
 
       }
       `,
       uniforms:{
+          uColor: {value: new Color('blue') },
           uMap: { value: null },
           uSkyColorMap:{ value: null },
           uMouseOver: { value : false },
@@ -168,4 +181,8 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           uTime: { value : 0.5 } //24 * 60 = 1440
       },
       transparent: true, 
+      defines: {
+        //  USE_INSTANCING: '',
+          USE_MAP:''
+      },
   })

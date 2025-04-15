@@ -1,8 +1,10 @@
 import React, {useRef , useMemo, useEffect , useState } from 'react'
-import { BoxGeometry , MeshBasicMaterial , CatmullRomCurve3 , Object3D , Vector3 } from 'three';
+import {  CatmullRomCurve3 , Object3D , Vector3 } from 'three';
 import { useFrame } from '@react-three/fiber';
 import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
+import { HouseMaterial } from '../shaders/houseMaterial';
+import BasicMaterial from '../shaders/BasicMaterial';
 
 
 export const LoadInstanceAlongPath = ({meshPath, lineGeometry}) =>{
@@ -13,8 +15,13 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry}) =>{
         const _objects =[] ; 
         _fbxFile.traverse( child =>{
             if(!child.isMesh) return;
-            console.log(child)
-            const item = <InstanceOnPath mesh={  child.geometry  } material={new MeshBasicMaterial({color:'orange'})} curve={curve} key={_objects.length}/>
+            const material =  HouseMaterial(); 
+            material.defines.USE_INSTANCING ='';
+            delete material.defines.USE_MAP;
+           material.needsUpdate = true;
+
+
+            const item = <InstanceOnPath mesh={ child.geometry} material = {material} curve={curve} key={_objects.length}/>
             _objects.push(item)
         })
         setObjects(_objects);
