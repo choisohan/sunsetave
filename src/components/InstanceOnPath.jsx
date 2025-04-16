@@ -29,6 +29,7 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
 
 
     useEffect(()=>{
+        if(!textureContext) return;
         const replaceMaterial = mat =>{
             const material = HouseMaterial();
             material.defines.USE_INSTANCING ='';

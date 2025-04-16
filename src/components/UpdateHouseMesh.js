@@ -24,7 +24,7 @@ export const UpdateHouseMesh = ( modelContext ,TextureContext, property) => {
 }
 
 export  const UpdateMap = (_mat , property , TextureContext ) =>{
-
+  if(!TextureContext) return; 
   var section = _mat.name.replace('_mat','');
 
   var folderName = section;
