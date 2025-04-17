@@ -53,10 +53,9 @@ class PixelationEffect extends Effect {
 }
 
 
-const Pixelate = ()=> {
+const Pixelate = ({size = 4 })=> {
 
-  const p =4; //pixel size 
-  const [pixelSize, setPixelSize] = useState(p); 
+  const [pixelSize, setPixelSize] = useState(size); 
   const {gl } = useThree();
   gl.setClearColor('white')
     // Listen for camera zoom or FOV changes

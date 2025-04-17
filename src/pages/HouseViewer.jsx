@@ -12,7 +12,7 @@ import { Clock } from '../components/Clock';
 import { EventTable } from '../components/EventTable';
 import TerrainMesh from '../components/TerrainMesh';
 
-export default function HouseViewer(props) {
+export default function HouseViewer() {
   const { param } = useParams();
   const [ name , setName ] = useState('????')
   const canvasRef = useRef();  

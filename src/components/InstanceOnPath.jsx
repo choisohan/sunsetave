@@ -10,7 +10,7 @@ import { timestampToHourFloat } from './Clock';
 
 
 const counts = {
-    "car": 5, "bus":1 , "truck": 1
+    "car": 5, "bus":1 , "truck": 0
 }
 export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
     const _fbxFile = useLoader(FBXLoader, meshPath); 
@@ -116,10 +116,8 @@ export default function InstanceOnPath({ name,  curve , mesh, material,  maxCoun
             const point = curve.getPointAt(t);
             const tangent = curve.getTangentAt(t);
             dummy.position.copy(point);
-
-            // Optional: orient toward the curve direction
-            dummy.lookAt(point.clone().add(tangent));
             dummy.up.set(0, 0 , 1); 
+            dummy.lookAt(point.clone().add(tangent));
             dummy.updateMatrix();
             meshRef.current.setMatrixAt(i, dummy.matrix);
         });

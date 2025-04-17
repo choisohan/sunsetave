@@ -10,15 +10,14 @@ import Ocean from '../components/Ocean'
 import CameraControls from '../components/CameraControls'
 import { usePopup } from '../contexts/PopupContext'
 
-export default function Avenue() {
 
+
+
+export default function Avenue() {
   const [items, setItems] = useState([
     {id : 'sample&&paris' , cellNumb : 0  },
    {id : 'sample&&tokyo' , cellNumb : 1 },   
    {id : 'sample&&ny' , cellNumb : 2 },   
-  // {id : 'sample&&Darwin' , cellNumb : 3 },   
-
-
   ])
 
   const [selectedItem, setSelectedItem] = useState();
@@ -70,28 +69,21 @@ export default function Avenue() {
   return (
     <>
     <Canvas camera={{position: [-35,  4 ,-15], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
-    <CameraControls target={[-2 , 0 , 10 ]} />
-    <Pixelate />    
+        <CameraControls target={[-2 , 0 , 10 ]} />
+        <Pixelate size={3} />    
 
-    <Sky />
-    <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
-    {items.map( (item,i) =>
-      <House key={i} property ={item} detailWindowOpen={true} onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}  onClick={()=>{setSelectedItem({i: i})}} />
-    )}
-    <Ocean />
-
-
-
-  
-     
+        <Sky />
+        <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
+        {items.map( (item,i) =>
+          <House key={i} property ={item} detailWindowOpen={!editMode} onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}  onClick={()=>{setSelectedItem({i: i})}} />
+        )}
+        <Ocean />
     </Canvas>
 
     <div className='fixed z-[1] bottom-1 right-0  lg:m-3 gap-1 flex flex-col' >
-
       <div className='bg-[#748060] lg:text-[150%] px-1 py-1 lg:px-4 lg:py-2 border-4 border-black '>
         <Clock />
       </div>
-
       <div className='flex max-w-full gap-0 lg:gap-1 '>
         <Buttons.InfoButton />
         <Buttons.SkipBackwardButton /><Buttons.SkipForwardButton /> <Buttons.FastForwardButton />
@@ -100,16 +92,8 @@ export default function Avenue() {
         <Buttons.AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
         <Buttons.ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
       </div>
-
-
-
     </div>
-
-
     {popupContext}
-
-
-
     </>)
 
 }
