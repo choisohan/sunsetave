@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import url(styles/darkMode.css);
 @font-face {
   font-family: 'Silkscreen'; 
   src: url('../public/fonts/slkscr.ttf')  format('truetype');

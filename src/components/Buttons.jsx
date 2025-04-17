@@ -200,7 +200,7 @@ export const RecordButton = (props)=>{
 
 
   return (
-    <div>
+    <>
       {!isRecording ? (
         <CozyButton
           className={`pixelButton red  ${isRecording? 'pressed':''}`}
@@ -219,7 +219,7 @@ export const RecordButton = (props)=>{
         </CozyButton>
       )}
       
-    </div>
+    </>
   );
 
 

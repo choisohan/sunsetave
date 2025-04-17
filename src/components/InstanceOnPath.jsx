@@ -10,7 +10,7 @@ import { timestampToHourFloat } from './Clock';
 
 
 const counts = {
-    "car": 5, "bus":1 , "truck": 0
+    "car": 2, "bus":1 , "truck": 0
 }
 export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
     const _fbxFile = useLoader(FBXLoader, meshPath); 
@@ -76,7 +76,7 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
     return <>{objects}</>
 }
 
-export default function InstanceOnPath({ name,  curve , mesh, material,  maxCount = 10 ,speed=.05, offset=0.0    }) {
+export default function InstanceOnPath({ name,  curve , mesh, material,  maxCount = 10 ,speed=.03, offset=0.0    }) {
 
     const meshRef = useRef();
     const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => ((i / maxCount)+(offset*0.35))%1.  ));
