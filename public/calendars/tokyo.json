@@ -1,0 +1,65 @@
+{
+    "name": "Menkoi Ramen(めんこいラーメン)",
+    "description": "Owner : Takeshi Tanaka, Age: 45, Friendly, charismatic, easy to talk to. Laughs often, gives surprisingly profound love advice while stirring broth",
+    "timezone":  "Asia/Tokyo",
+    "events":[
+        {
+          "summary": "Morning Prep",
+          "description": "Broth, noodles, toppings. Greets fish delivery guy with gossip.",
+          "start": "2024-03-06T08:00:00",
+          "end": "2024-03-06T11:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Lunch Hours Open",
+          "description": "Serve customers, chat about life, offer love advice between bowls.",
+          "start": "2024-03-06T11:30:00",
+          "end": "2024-03-06T14:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Manga Break",
+          "description": "Quick breather with manga (usually romance or slice of life).",
+          "start": "2024-03-06T15:00:00",
+          "end": "2024-03-06T15:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Dinner Rush Open",
+          "description": "Evening regulars, more ramen, more stories, sometimes Mio helps with orders.",
+          "start": "2024-03-06T17:00:00",
+          "end": "2024-03-06T21:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Kaori Visits (Helping Out)",
+          "description": "Busy night, Kaori jumps in to help. Good vibes, mostly.",
+          "start": "2024-03-07T17:30:00",
+          "end": "2024-03-07T20:30:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=TH"
+        },
+        {
+          "summary": "Awkward Night: Kaori's Boyfriend Dines In",
+          "description": "He always orders cold ramen. Takeshi becomes very quiet. Customers whisper.",
+          "start": "2024-03-09T18:30:00",
+          "end": "2024-03-09T19:30:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SA"
+        },
+        {
+          "summary": "Sunday Walk with Mio",
+          "description": "They stroll to the local bookstore, talk about life, sometimes pick manga.",
+          "start": "2024-03-10T10:00:00",
+          "end": "2024-03-10T11:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SU"
+        },
+        {
+          "summary": ": Sunday Short Shift",
+          "description": "Only open for lunch. Takeshi hums old J-pop while cleaning up.",
+          "start": "2024-03-10T11:30:00",
+          "end": "2024-03-10T14:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SU"
+        }
+      ]
+      
+      
+}

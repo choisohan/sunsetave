@@ -1,0 +1,63 @@
+{
+    "name": "Vivian's house",
+    "description": "Senior Investigative Journalist at The Ledger (a major New York publication)",
+    "timezone": "America/New_York",
+    "events":[
+        {
+          "summary": "⬛Morning Briefing at The Ledger",
+          "description": "Editorial priorities, pitch discussions. She always arrives early, fully caffeinated.",
+          "start": "2024-03-06T09:00:00",
+          "end": "2024-03-06T10:00:00",
+          "rrule": "FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        {
+          "summary": "⬛Write & Research Time",
+          "description": "Vivian dives into data, drafts, and interviews. Zone of genius.",
+          "start": "2024-03-06T10:30:00",
+          "end": "2024-03-06T14:00:00",
+          "rrule": "FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        {
+          "summary": "⬛Coffee With Junior Reporter",
+          "description": "Mentorship time. They hang onto every word she says.",
+          "start": "2024-03-06T15:30:00",
+          "end": "2024-03-06T16:30:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=WE"
+        },
+        {
+          "summary": "⬛Dinner With Dante (On Again)",
+          "description": "He shows up late. She pays. They argue. She loves him anyway.",
+          "start": "2024-03-06T20:00:00",
+          "end": "2024-03-06T21:30:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=WE"
+        },
+        {
+          "summary": "Insomnia Hours",
+          "description": "Wide awake. Sometimes working. Sometimes just... existing.",
+          "start": "2024-03-07T02:30:00",
+          "end": "2024-03-07T04:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "⬛Panel Discussion or Protest Coverage",
+          "description": "Always booked on weekends. She speaks, she writes, she shows up.",
+          "start": "2024-03-09T11:00:00",
+          "end": "2024-03-09T13:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SA"
+        },
+        {
+          "summary": "Isolation Write",
+          "description": "She shuts the world out and writes hard stories from her apartment.",
+          "start": "2024-03-10T13:00:00",
+          "end": "2024-03-10T16:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SU"
+        },
+        {
+          "summary": "Night Breakdown",
+          "description": "Scrolls through old messages from Dante. Wonders how she got here.",
+          "start": "2024-03-10T22:00:00",
+          "end": "2024-03-10T23:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SU"
+        }
+      ]
+      }

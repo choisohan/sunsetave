@@ -13,10 +13,10 @@ import { usePopup } from '../contexts/PopupContext'
 export default function Avenue() {
 
   const [items, setItems] = useState([
-    {id : 'sample&&SampleCalendar' , cellNumb : 0  },
-   {id : 'sample&&Mozart' , cellNumb : 1 },   
-   {id : 'sample&&BruceLee' , cellNumb : 2 },   
-   {id : 'sample&&Darwin' , cellNumb : 3 },   
+    {id : 'sample&&paris' , cellNumb : 0  },
+   {id : 'sample&&tokyo' , cellNumb : 1 },   
+   {id : 'sample&&ny' , cellNumb : 2 },   
+  // {id : 'sample&&Darwin' , cellNumb : 3 },   
 
 
   ])
