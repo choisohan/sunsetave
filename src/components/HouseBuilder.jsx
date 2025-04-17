@@ -64,9 +64,7 @@ export default function HouseBuilder(props) {
 
   const generateRandom = ()=>{
     if(!modelContext || !textureContext ) return;
-
     swapGeometry(randInt(1,4));
-
     swapRandomMap('roof')
     swapRandomMap('wallA')
     swapRandomMap('wallB')
@@ -84,7 +82,7 @@ export default function HouseBuilder(props) {
   const onPointerMove =e=>{
     const selectedMaterial  = e.object.material[e.face.materialIndex];
     e.object.material.forEach(mat=>{
-      mat.uniforms.uMouseOver.value = selectedMaterial == mat ; 
+      mat.uniforms.uMouseOver.value = selectedMaterial === mat ; 
     })
   }
 
