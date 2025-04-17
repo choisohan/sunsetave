@@ -10,6 +10,7 @@ import * as Buttons from '../components/Buttons';
 import {  Vector3} from 'three';
 import { Clock } from '../components/Clock';
 import { EventTable } from '../components/EventTable';
+import TerrainMesh from '../components/TerrainMesh';
 
 export default function HouseViewer(props) {
   const { param } = useParams();
@@ -33,12 +34,12 @@ export default function HouseViewer(props) {
   }
 
 
-
-
 return (
 <div className="w-full h-screen flex flex-col md:flex-row relative overflow-hidden lg:overflow-auto" >
 
   <Canvas camera={{ position: [0,-5,8], fov: 20}} ref={canvasRef} className="w-full h-full min-h-[500px] md:w-1/2 md:h-[100vh] " >
+
+    <TerrainMesh editMode={false} setGrids={()=>{}} onEnterNewCell={()=>{}} onClick={()=>{}} />
 
     <CameraControls target={new Vector3(0,.75,0)}/>
     <Sky timezone={ timezone  } />

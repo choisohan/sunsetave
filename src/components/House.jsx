@@ -30,6 +30,7 @@ export default function House(props){
   const timezoneOverride = useTimezoneOverride(); 
 
 
+  
   useEffect(()=>{
     if( props.property.id !== property.id ){
       FindCalendar(props.property.id).then( calendar =>{
@@ -159,7 +160,7 @@ const onPointerMove = e=>{
         </Html>
 
 
-        <group position={[0,height.current +.15  ,-.5]}>
+        <group position={[0,height.current-.75  ,-.5]}>
             <EventBubble event={ property.events && currentEventIndex  ? property.events[currentEventIndex] : null } />
         </group> 
   </mesh>

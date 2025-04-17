@@ -77,7 +77,7 @@ export default function TerrainMesh(props){
                 }
             }
             else if(child.isLine){
-                _objects.push(<LoadInstanceAlongPath meshPath="/models/cars.fbx" key={_objects.length} lineGeometry={child.geometry} offset={_objects.length/2} />)
+                _objects.push(<LoadInstanceAlongPath meshPath="/models/commuters.fbx" key={_objects.length} lineGeometry={child.geometry} offset={_objects.length/2} />)
             }
             
 
@@ -150,7 +150,10 @@ const ReplaceMaterial= _mat=>{
 
 
     if(_mat.name.includes('tree')){
-        _mat = LeavesMaterial();
+        const mat =  LeavesMaterial();
+        mat.uniforms.uColor.value = _mat.color; 
+        console.log(_mat)
+        _mat = mat; 
     }
     else{
         _mat = BasicMaterial();

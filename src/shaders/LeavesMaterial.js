@@ -101,27 +101,21 @@ export default function LeavesMaterial() {
 
             if (fresnel < 0.5) discard; // Cutout effect
 
-            vec3 color = uColor * cloudHighlight ;
+            vec3 color =  pow(uColor,vec3(.35));
 
             normalMap = texture2D( uPerlinNoiseNormal, pixelatedUV).xyz * 2. -1. ;
             normalMap.xy *= uNormalStrength;
             normalMap.z = sqrt(1.0 - clamp(dot(normalMap.xy, normalMap.xy), 0.0, 1.0)); // Re-normalize Z
             worldNormal = normalize(vNormal  + normalMap) ;
 
-
             color += skyColorBottom * worldNormal.y*.15 ; 
-
 
             float highlight = dot(worldNormal, vec3( -0.5 , 1., -.1 )  );
             highlight= step(.2, highlight); 
             color += skyColorBottom*.1 * highlight; 
 
-
-
             color *= cloudHighlight;
-            //color = vec3(fresnel); 
             gl_FragColor = vec4(color,1.);
-
 
 
         }

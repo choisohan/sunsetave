@@ -9,16 +9,17 @@ import CameraControls from './CameraControls';
 import { useThree , useFrame } from '@react-three/fiber';
 
 export default function HouseBuilder(props) {
-  const [property, setProperty]= useState( { time: .5 , mesh: 1 , roof : 1, wallA:1, wallB:1, door:1, shade:1, windowsA:1, windowsB:1 });
+  const [property, setProperty]= useState( { ...props.property , time: .5  , mesh: 1});
   const modelContext = useHouseModel(); 
   const textureContext = useTexture(); 
 
   useEffect(()=>{
-    setProperty(_property=>({..._property,...props.property}))
-  },[props.property])
+    generateRandom();
+  },[modelContext, textureContext])
 
 
   const swapGeometry=(changeNumb)=>{
+
     const maxNumb = Object.keys(modelContext).length-1; 
     var newNumb = property.mesh + changeNumb; 
     if(newNumb>maxNumb){ newNumb = 1}
@@ -27,38 +28,53 @@ export default function HouseBuilder(props) {
   }
 
   const swapMap = ( selectedSection, changeNumb)=>{
-    const currentInt = property[selectedSection] ; 
-    var nextIndex = currentInt + changeNumb;
-
-
     var folderName = selectedSection;
-    if( folderName[folderName.length-1] === "B"){
-      folderName= folderName.replace('B','A');
+
+     const lastLetter = folderName[folderName.length-1];
+    if( lastLetter.toUpperCase() === lastLetter ){
+      folderName= folderName.replace(lastLetter, "");
     }
 
-    const mapOptions = Object.keys(textureContext).filter(key=> key.includes(folderName) ).map(name=> parseInt(name.split('/')[1]));
-    if(!mapOptions[nextIndex-1]){
-      nextIndex = 1; 
-    }
+    const optionNames = Object.keys(textureContext).filter(key=> key.includes(folderName) ).map(name=> name.split('/')[1]);
+    var currentInt = optionNames.indexOf(property[selectedSection]);
+    if(!currentInt) currentInt = 0; 
+    var nextIndex = currentInt + changeNumb;
 
     setProperty(_property =>{
       const copy = {..._property};
-      copy[selectedSection] = nextIndex ;
+      copy[selectedSection] = optionNames[nextIndex] ;
       return copy; 
     })
+  }
+
+  const swapRandomMap = (selectedSection)=>{
+    var folderName = selectedSection;
+    const lastLetter = folderName[folderName.length-1];
+   if( lastLetter.toUpperCase() === lastLetter ){
+     folderName= folderName.replace(lastLetter, "");
+   }
+   const optionNames = Object.keys(textureContext).filter(key=> key.includes(folderName) ).map(name=> name.split('/')[1]);
+   const randomIndex = Math.floor(Math.random()*(optionNames.length-1));
+   setProperty(_property =>{
+    const copy = {..._property};
+    copy[selectedSection] = optionNames[randomIndex] ;
+    return copy; 
+  })
 
   }
 
   const generateRandom = ()=>{
-    
-    swapGeometry(randInt(1,7));
-    swapMap('roof',randInt(0,5));
-    swapMap('wallA',randInt(0,5));
-    swapMap('wallB',randInt(0,5));
-    swapMap('windowsA',randInt(0,5));
-    swapMap('windowsB',randInt(0,5));
-    swapMap('shade',randInt(0,3));
-    swapMap('door',randInt(0,3));
+    if(!modelContext || !textureContext ) return;
+
+    swapGeometry(randInt(1,4));
+
+    swapRandomMap('roof')
+    swapRandomMap('wallA')
+    swapRandomMap('wallB')
+    swapRandomMap('windowsA')
+    swapRandomMap('windowsB')
+    swapRandomMap('shade')
+    swapRandomMap('door')
 
   }
 
@@ -84,7 +100,7 @@ export default function HouseBuilder(props) {
   return (<>
     <div className='relative bg-blue-200 lg:max-w-[500px]' >
 
-        <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,10], fov: 12 }} > 
+        <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,11], fov: 12 }} > 
             <CameraLookAt/>
             <Pixelate />
             <House property={property} onClick={onClick}  onPointerMove={onPointerMove} onPointerOut ={onPointerOut} updateTime={false} hoverable={false} onUpdateProperty={()=>{}}/>

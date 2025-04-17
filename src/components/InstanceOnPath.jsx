@@ -56,9 +56,9 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
                 material = replaceMaterial(material)
             }
 
-
-            _objects.push(<InstanceOnPath mesh={child.geometry.clone() }
+            _objects.push(<InstanceOnPath mesh={child.geometry.clone()}
                 material = {material}
+                name ={child.name}
                 maxCount={counts[child.name]}
                 curve={curve}
                 offset={offset}
@@ -77,24 +77,25 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
     return <>{objects}</>
 }
 
-export default function InstanceOnPath({ curve , mesh, material,  maxCount = 10 ,speed=.05, offset=0.0    }) {
+export default function InstanceOnPath({ name,  curve , mesh, material,  maxCount = 10 ,speed=.05, offset=0.0    }) {
 
     const meshRef = useRef();
     const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => ((i / maxCount)+(offset*0.35))%1.  ));
     const timestamp = useTimestamp();
+
     useEffect(()=>{
-
-        const tileIndex = new Float32Array(maxCount);
-        for (let i = 0; i < maxCount; i++) {
-            tileIndex[i] = Math.floor((Math.random())*5)/5. ;
-          }
-
-        
-        meshRef.current.geometry.setAttribute(
-          'tileIndex',
-          new InstancedBufferAttribute(tileIndex, 1)
-        );
-    } ,[maxCount] )
+        if(name === "car"){
+            const tileIndex = new Float32Array(maxCount);
+            for (let i = 0; i < maxCount; i++) {
+                tileIndex[i] = Math.floor( (Math.random())*5) /5. ;
+              }
+    
+            meshRef.current.geometry.setAttribute(
+              'tileIndex',
+              new InstancedBufferAttribute(tileIndex, 1)
+            );
+        }
+    } ,[maxCount , name ] )
 
     useEffect(()=>{
         meshRef.current.material.forEach(mat=>{

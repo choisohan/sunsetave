@@ -51,7 +51,6 @@ const useFBXModels = ()=>{
             child.position.x = 0;
             child.position.y = 0;
             child.position.z = 0;      
-
             
             if(Array.isArray(child.material)){
                 child.material = child.material.map(m=>swapMaterialToHouse(m))

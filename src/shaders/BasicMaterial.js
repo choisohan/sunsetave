@@ -66,7 +66,7 @@ export default function BasicMaterial() {
 
             vec2 uv = fract(vUv * uMapRepeat); 
             vec3 diffuseMap = texture2D( uMap, uv ).xyz;
-
+            diffuseMap = pow(diffuseMap, vec3(.7)); 
 
             vec3 color = vNormal;
             #ifdef USE_MAP
@@ -80,9 +80,7 @@ export default function BasicMaterial() {
             specMask= smoothstep(.5, 1.  ,specMask); 
 
            
-          //  color = pow ( diffuseMap , vec3(mix( 1.   , .2   ,  specMask ) ) );
-            color *=  min( vec3(1.) ,cloudHighlight+vec3(.15 )  );
-
+           color *=  min( vec3(1.) , cloudHighlight+vec3(.15 )  );
 
            gl_FragColor= vec4(color, 1. );
 

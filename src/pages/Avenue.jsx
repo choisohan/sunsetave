@@ -82,15 +82,15 @@ export default function Avenue() {
 
   return (
     <>
-    <Canvas camera={{position: [-35, 8 ,15], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
-    <CameraControls target={[0 ,2,-5 ]} />
+    <Canvas camera={{position: [-35,  4 ,-15], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
+    <CameraControls target={[-2 , 0 , 10 ]} />
     <Pixelate />    
 
-      <Sky />
-        <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
-        {items.map( (item,i) =>
-          <House key={i} property ={item} detailWindowOpen={true} onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}  onClick={()=>{setSelectedItem({i: i})}} />
-        )}
+    <Sky />
+    <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
+    {items.map( (item,i) =>
+      <House key={i} property ={item} detailWindowOpen={true} onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}  onClick={()=>{setSelectedItem({i: i})}} />
+    )}
     <Ocean />
 
 

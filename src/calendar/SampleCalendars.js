@@ -17,13 +17,6 @@ export const SampleCalendars ={
         name:"Mozart",
         timezone:"Europe/Vienna",
         description:"Mozart's House",
-        wallB:5,
-        wallA:6,
-        windowsB:4,
-        door:3,
-        shade:3,
-        roof:3,
-        mesh:3, 
         events: [
             {
                 summary: "Breakfast",
@@ -80,13 +73,6 @@ export const SampleCalendars ={
         name:"Darwin",
         timezone:"Europe/London",
         description:"Darwin's House",
-        wallB:5,
-        wallA:6,
-        windowsB:4,
-        door:3,
-        shade:3,
-        roof:3,
-        mesh:3, 
         events: [
             {
                 summary: "Short Walk after waking up",
@@ -225,13 +211,6 @@ export const SampleCalendars ={
         name:'Bruce Lee',
         timezone:"Asia/Hong_Kong",
         description:"Bruce's House",
-        wallB:4,
-        wallA:5,
-        windowsB:4,
-        door:2,
-        shade:2,
-        roof:2,
-        mesh:5, 
         events:[
             {
                 summary: "🧘Morning Meditation",
@@ -290,13 +269,6 @@ export const SampleCalendars ={
         ]},
     "Einstein":{
         name:"Einstein",
-        wallB:2,
-        wallA:3,
-        windowsB:2,
-        door:2,
-        shade:3,
-        roof:3,
-        mesh:2, 
         timezone: "America/New_York",
         events:[
             {
