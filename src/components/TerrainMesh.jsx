@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
-import {  useTimestamp  } from '../contexts/envContext';
+import {  useTimestamp, useTimezoneOverride  } from '../contexts/envContext';
 import BasicMaterial from '../shaders/BasicMaterial';
 import { timestampToHourFloat } from './Clock';
 import { Euler, NearestFilter, Quaternion, Vector3 } from 'three';
@@ -19,6 +19,7 @@ export default function TerrainMesh(props){
 
     const _fbxFile = useLoader(FBXLoader, '/models/town_A.fbx'); 
 
+    const timezoneOverride = useTimezoneOverride(); 
     const timestamp = useTimestamp();
     const [grids, setGrids] = useState([]);
     const [materials, setMaterials] = useState([]);
@@ -103,11 +104,12 @@ export default function TerrainMesh(props){
     },[_fbxFile  , grids.length  ,props ])
 
     useEffect(()=>{
-        const uTime =  timestampToHourFloat(timestamp , null ); 
+        const tz = timezoneOverride || Intl.DateTimeFormat().resolvedOptions().timeZone; 
+        const uTime =  timestampToHourFloat(timestamp , tz ); 
         materials.forEach(mat=>{
             mat.uniforms.uTime.value =uTime;
         })
-    },[ timestamp , materials])
+    },[ timestamp , materials , timezoneOverride ])
 
 
     useFrame((state, delta)=>{

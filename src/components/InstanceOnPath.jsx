@@ -5,7 +5,7 @@ import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
 import { HouseMaterial } from '../shaders/houseMaterial';
 import { useTexture } from '../contexts/modelContext';
-import { useTimestamp } from '../contexts/envContext';
+import { useTimestamp, useTimezoneOverride } from '../contexts/envContext';
 import { timestampToHourFloat } from './Clock';
 
 
@@ -17,7 +17,6 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
     const [objects, setObjects] = useState([]);
     const textureContext = useTexture();
     const curve = useMemo(() => {
-
         const pos = lineGeometry.attributes.position;
         const points = [];
         for (let i = 0; i < pos.count; i++) {
@@ -82,6 +81,7 @@ export default function InstanceOnPath({ name,  curve , mesh, material,  maxCoun
     const meshRef = useRef();
     const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => ((i / maxCount)+(offset*0.35))%1.  ));
     const timestamp = useTimestamp();
+    const timezoneOverride = useTimezoneOverride(); 
 
     useEffect(()=>{
         if(name === "car"){
@@ -98,10 +98,11 @@ export default function InstanceOnPath({ name,  curve , mesh, material,  maxCoun
     } ,[maxCount , name ] )
 
     useEffect(()=>{
+        const tz = timezoneOverride || Intl.DateTimeFormat().resolvedOptions().timeZone; 
         meshRef.current.material.forEach(mat=>{
-            mat.uniforms.uTime.value= timestampToHourFloat(timestamp)
+            mat.uniforms.uTime.value= timestampToHourFloat(timestamp, tz )
         })
-    },[timestamp])
+    },[timestamp, timezoneOverride ])
 
 
     useFrame((_, delta) => {

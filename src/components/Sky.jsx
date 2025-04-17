@@ -1,25 +1,21 @@
 import React, { useEffect, useRef } from 'react'
 import { SkyMaterial } from '../shaders/SkyMaterial'
-import { useState } from 'react';
-import { useTimestamp } from '../contexts/envContext';
+import { useTimestamp , useTimezoneOverride } from '../contexts/envContext';
 import { timestampToHourFloat } from './Clock';
 import { useTexture } from '../contexts/modelContext';
-
 
 export default function Sky(props) {
     const timestamp = useTimestamp();
     const textureContext = useTexture();
     const matRef = useRef(SkyMaterial()); 
-    const [timezone, setTimezone] = useState( props.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone);
+    const timezoneOverride = useTimezoneOverride(); 
 
+    
     useEffect(()=>{
-      setTimezone(props.timezone);
-    },[props])
-
-    useEffect(()=>{
-      matRef.current.uniforms.uTime.value = timestampToHourFloat( timestamp , timezone );
+      const tz = timezoneOverride || props.timezone  || Intl.DateTimeFormat().resolvedOptions().timeZone; 
+      matRef.current.uniforms.uTime.value = timestampToHourFloat( timestamp , tz );
       matRef.current.uniforms.uTimestamp.value =  (Math.floor(timestamp/100000)%1000)/1000;
-    },[ timezone, timestamp])
+    },[ timezoneOverride , timestamp])
 
 
     useEffect(()=>{
