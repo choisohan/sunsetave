@@ -39,19 +39,6 @@ export default function Avenue() {
   },[grid, items.length ])
 
 
-  const onHouseClicked=(_i)=>{
-    setSelectedItem({i: _i})  ;
-
-    /*
-    if(!editMode){
-      setPopup( <HouseDetailWindow property={thisItem}
-        onClose={()=>{
-          setSelectedItem(null);
-          setPopup(null);
-      }}/> );
-    }
-      */ 
-  }
 
   const onEnterNewCell= i =>{
     if(editMode && selectedItem){

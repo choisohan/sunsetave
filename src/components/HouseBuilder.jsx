@@ -5,17 +5,14 @@ import { randInt } from 'three/src/math/MathUtils.js';
 import { useHouseModel, useTexture } from '../contexts/modelContext';
 import { Pixelate } from '../shaders/CustomPostProcessing';
 import { CozyButton } from './Buttons';
-import CameraControls from './CameraControls';
 import { useThree , useFrame } from '@react-three/fiber';
 
 export default function HouseBuilder(props) {
-  const [property, setProperty]= useState( { ...props.property , time: .5  , mesh: 1});
+  const [property, setProperty]= useState( { ...props.property , time: .5  });
   const modelContext = useHouseModel(); 
   const textureContext = useTexture(); 
 
-  useEffect(()=>{
-    generateRandom();
-  },[modelContext, textureContext])
+
 
 
   const swapGeometry=(changeNumb)=>{
@@ -45,6 +42,8 @@ export default function HouseBuilder(props) {
       copy[selectedSection] = optionNames[nextIndex] ;
       return copy; 
     })
+
+
   }
 
   const swapRandomMap = (selectedSection)=>{
@@ -78,6 +77,10 @@ export default function HouseBuilder(props) {
 
   }
 
+  useEffect(()=>{
+    generateRandom();
+  },[modelContext, textureContext])
+
   const onPointerMove =e=>{
     const selectedMaterial  = e.object.material[e.face.materialIndex];
     e.object.material.forEach(mat=>{
@@ -97,6 +100,7 @@ export default function HouseBuilder(props) {
     swapMap( selectedMaterial.name.replace('_mat','') , e.nativeEvent.type ==="contextmenu" ? -1: 1 );
   }
 
+  if(!property) return; 
   return (<>
     <div className='relative bg-blue-200 lg:max-w-[500px]' >
 
@@ -104,6 +108,11 @@ export default function HouseBuilder(props) {
             <CameraLookAt/>
             <Pixelate />
             <House property={property} onClick={onClick}  onPointerMove={onPointerMove} onPointerOut ={onPointerOut} updateTime={false} hoverable={false} onUpdateProperty={()=>{}}/>
+            <mesh>
+              <boxGeometry args={[10,0,10]} />
+          </mesh>
+     
+       
         </Canvas>
 
         <OptionSelector className='absolute bottom-0 left-0 w-full flex items-center justify-center  ' onChange={swapGeometry} >Geometry</OptionSelector>
@@ -114,7 +123,9 @@ export default function HouseBuilder(props) {
               <img src='/images/game_die.png' alt='shuffle'/>
           </CozyButton>   
         </div>
-   
+
+
+
     </div>  
     </>
   )

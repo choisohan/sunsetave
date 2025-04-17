@@ -10,7 +10,7 @@ import { timestampToHourFloat } from './Clock';
 
 
 const counts = {
-    "car": 10, "bus":2 , "truck": 1
+    "car": 5, "bus":1 , "truck": 1
 }
 export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
     const _fbxFile = useLoader(FBXLoader, meshPath); 

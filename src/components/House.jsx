@@ -23,7 +23,7 @@ export default function House(props){
   const [isHovered, setIsHovered] = useState(false); 
   const meshRef = useRef();
   const timestamp = useTimestamp();
-  const updateTime = props.updateTime || true; 
+  const updateTime = "updateTime" in props?  props.updateTime  : true; 
   const audioRef = useRef();
   const height = useRef(0);
   const setPopup = useUpdatePopup();
@@ -60,7 +60,6 @@ export default function House(props){
     if(!mesh) return;
 
     if(updateTime){
-
       const tz = timezoneOverride || property.timezone;
       updateUtimes(mesh.material , timestamp, tz);
     }
