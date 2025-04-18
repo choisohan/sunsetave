@@ -16,9 +16,9 @@ export default function HouseBuilder(props) {
 
 
   const swapGeometry=(changeNumb)=>{
-
+    const currentNumb = ('mesh' in property) ? property.mesh : 0 ; 
     const maxNumb = Object.keys(modelContext).length-1; 
-    var newNumb = property.mesh + changeNumb; 
+    var newNumb = currentNumb + changeNumb; 
     if(newNumb>maxNumb){ newNumb = 1}
     if(newNumb < 1){ newNumb = maxNumb}
     setProperty(x=>({...x, mesh: newNumb }))
@@ -27,9 +27,10 @@ export default function HouseBuilder(props) {
   const swapMap = ( selectedSection, changeNumb)=>{
     var folderName = selectedSection;
 
-     const lastLetter = folderName[folderName.length-1];
+     const lastLetter = (selectedSection[selectedSection.length-1]);
+
     if( parseInt(lastLetter) ){
-      folderName = folderName.replace(lastLetter, "");
+      folderName = folderName.replace( lastLetter , "" );
     }
 
     const optionNames = Object.keys(textureContext).filter(key=> key.includes(folderName) ).map(name=> name.split('/')[1]);
@@ -65,18 +66,19 @@ export default function HouseBuilder(props) {
   const generateRandom = ()=>{
     if(!modelContext || !textureContext ) return;
     swapGeometry(randInt(1,4));
-    swapRandomMap('roof')
-    swapRandomMap('wallA')
-    swapRandomMap('wallB')
-    swapRandomMap('windowsA')
-    swapRandomMap('windowsB')
-    swapRandomMap('shade')
-    swapRandomMap('door')
+    swapRandomMap('R')
+
+    swapRandomMap('P1')
+    swapRandomMap('P2')
+    swapRandomMap('W1')
+    swapRandomMap('W2')
+    swapRandomMap('S')
+    swapRandomMap('D')
 
   }
 
   useEffect(()=>{
-    generateRandom();
+    //generateRandom();
   },[modelContext, textureContext])
 
   const onPointerMove =e=>{

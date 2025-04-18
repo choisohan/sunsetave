@@ -87,7 +87,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
     }
 
   
-      vec4 phong(vec4 diffuseMap) {
+      vec4 phong(vec4 diffuseMap , vec3 lightColor , vec3 shadedColor) {
           float time = fract(uTime);
           float angle =  (time-.5)  *PI *2. ;
 
@@ -107,9 +107,11 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
           dotResult = smoothstep(   0.  , 1. , dotResult + dayTime);
 
         
-          vec3 lightColor = mix( vec3(1.25,0.65,0.4) ,vec3(1.12) , smoothstep(0.5,1. , dayTime) );
-          
-          vec3 shadedColor = mix( vec3(0.,0., .0), vec3(0.5,0.6, .75) , dayTime ) ;
+          //lightColor = mix( vec3(1.25,0.65,0.4) ,vec3(1.12) , smoothstep(0.5,1. , dayTime) );
+          lightColor = smoothstep(vec3(.0), vec3(1.), pow(lightColor,vec3(.5)));
+          shadedColor = smoothstep(vec3(.0), vec3(1.), pow(shadedColor,vec3(.5)));
+
+          //vec3 shadedColor = mix( vec3(0.,0., .0), vec3(0.5,0.6, .75) , dayTime ) ;
 
           vec3 lighting =mix(  shadedColor , lightColor , dotResult);
 
@@ -144,12 +146,16 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
             light = step( 3.,  diffuseMap.r + diffuseMap.g +diffuseMap.b) ;
           #endif
 
-         // diffuseMap.xyz = shiftHue(diffuseMap.xyz, vTileIndex/3.  );
-
-          gl_FragColor= phong(diffuseMap) ;
+          vec3 skyColorBottom = texture2D( uSkyColorMap, vec2( 0.0/5. +.1,fract(uTime)) ).xyz;
+          vec3 skyColorMiddle = texture2D( uSkyColorMap, vec2( 1.0/5.+.1 , fract(uTime)) ).xyz;
+          vec3 skyColorTop = texture2D( uSkyColorMap, vec2( 2.0/5. +.1, fract(uTime) ) ).xyz;
+          vec3 cloudShadow = texture2D( uSkyColorMap, vec2( 3.0/5. +.1, fract(uTime) ) ).xyz;
+          vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
+          gl_FragColor= phong(diffuseMap , skyColorBottom , skyColorMiddle ) ;
 
           if(uIsWindow){
               float glassMask = 1.; 
+
               #ifdef USE_MAP
                 glassMask =  step(diffuseMap.x + diffuseMap.y + diffuseMap.z , .0 );
               #endif
@@ -164,22 +170,11 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
 
               //Add Reflection
               float reflectionMask = step(.25, Fresnel()) + DiagonalLine(.5) * 20. ;
-              vec3 skyColorBottom = texture2D( uSkyColorMap, vec2( 0.0/5. +.1,fract(uTime)) ).xyz;
-              vec3 skyColorMiddle = texture2D( uSkyColorMap, vec2( 1.0/5.+.1 , fract(uTime)) ).xyz;
-              vec3 skyColorTop = texture2D( uSkyColorMap, vec2( 2.0/5. +.1, fract(uTime) ) ).xyz;
-              vec3 cloudShadow = texture2D( uSkyColorMap, vec2( 3.0/5. +.1, fract(uTime) ) ).xyz;
-              vec3 cloudHighlight = texture2D( uSkyColorMap, vec2( 4.0/5. +.1, fract(uTime) ) ).xyz;
 
               vec3 reflectCol = mix( skyColorMiddle, skyColorBottom , reflectionMask); 
               float reflecStr = GetStrengthByTime(12, 6);
               reflecStr = smoothstep(.0, .5, reflecStr); 
               gl_FragColor.xyz = mix(  gl_FragColor.xyz  , reflectCol  , glassMask* reflecStr);
-
-             // gl_FragColor.xyz = vec3(glassMask);
-
-
-
-
           }
           if(uMouseOver){
             gl_FragColor.xyz =diffuseMap.xyz *.5 + vec3(.0, .2, .5);

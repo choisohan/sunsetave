@@ -13,9 +13,9 @@ export const UpdateHouseMesh = ( modelContext ,TextureContext, property) => {
         var newMat =  mat.clone();
         UpdateMap( newMat , property , TextureContext )
         return newMat; 
-        })
+      })
     }
-    return newMesh    
+    return newMesh;
 }
 
 export  const UpdateMap = (_mat , property , TextureContext ) =>{
@@ -24,26 +24,34 @@ export  const UpdateMap = (_mat , property , TextureContext ) =>{
   var section = _mat.name.replace('_mat','');
 
   var folderName = section;
+
   const lastLetter = folderName[folderName.length-1];
   if( parseInt(lastLetter) ){
     folderName= folderName.replace(lastLetter, "");
   }
 
-  var texturefullName; 
-
   var item = property[section];
-  if(!item){
-    const optionNames = Object.keys(TextureContext).filter(key=> key.includes(folderName) ).map(name=> name.split('/')[1]);
-    item = optionNames[Math.floor( optionNames.length * Math.random() )];
+  var texturefullName = folderName + '/'+ item;
+
+  if(!TextureContext[texturefullName]){
+    const optionNames = Object.keys(TextureContext).filter(key=>
+      key.slice(0, folderName.length  ).toUpperCase() === folderName.toUpperCase() 
+    ).map(name=> name.split('/')[1]);
+
+    item = optionNames[Math.floor( optionNames.length * Math.random()  )];
+
   }
 
-
+  property[section] = item; 
   texturefullName = folderName + '/'+ item
+
   _mat.uniforms.uMap.value =TextureContext[texturefullName];
 
   if( TextureContext['env/skyColormap']){
     _mat.uniforms.uSkyColorMap.value = TextureContext['env/skyColormap'];
   }
+
+  return property; 
 }
 
 

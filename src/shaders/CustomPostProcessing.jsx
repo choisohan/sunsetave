@@ -3,8 +3,8 @@ import {  EffectComposer } from '@react-three/postprocessing';
 import {  Effect,  } from 'postprocessing';
 import { useState, useEffect } from 'react';
 import {   Uniform } from 'three';
-
-
+import { BloomEffect } from 'postprocessing';
+import { NoBlending } from 'three';
 class PixelationEffect extends Effect {
   constructor({ pixelSize =10 , resolution = [window.innerWidth, window.innerHeight] } = {}) {
     // Define the shader code for pixelation
@@ -71,10 +71,10 @@ const Pixelate = ({size = 4 })=> {
 
   return <EffectComposer>
 <primitive object={new PixelationEffect({pixelSize: pixelSize})} />
- 
+<primitive object={new BloomEffect({luminanceThreshold : .5 , intensity:.075  , blendFunction : NoBlending })} />
+
 {/*
 
-<primitive object={new BloomEffect({luminanceThreshold : .5 , intensity:.075  , blendFunction : NoBlending })} />
 // Todos: I omit this buecause this bloom effects cause "CANNOT READ PROPERTIES OF NULL(READING 'ALPHA')...
 */}
 

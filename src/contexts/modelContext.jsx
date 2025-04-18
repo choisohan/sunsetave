@@ -35,7 +35,7 @@ const useTextures =  () => {
 
 const swapMaterialToHouse = (_currentMat)=>{
     const houseMaterial = HouseMaterial();
-    if( _currentMat.name.toLowerCase().includes('windows') || _currentMat.name.toLowerCase().includes('door')){
+    if(["W1","W2","D"].includes( _currentMat.name.replace('_mat','') )  ){
         houseMaterial.uniforms.uIsWindow.value = true;
     }
     houseMaterial.name = _currentMat.name;
@@ -71,6 +71,9 @@ export function ModelProvider({children}){
     const modelFile = useFBXModels(); 
     const textures = useTextures();
 
+    useEffect(()=>{
+        console.log( textures)
+    },[textures])
 	return (
         <HouseTextureContext.Provider value={textures}>
             <HouseModelContext.Provider value={modelFile}>

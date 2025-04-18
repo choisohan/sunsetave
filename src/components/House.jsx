@@ -50,7 +50,7 @@ export default function House(props){
 
   useEffect(()=>{
     if ( modelContext && TextureContext ) {
-      setMesh( UpdateHouseMesh(modelContext , TextureContext, property))
+      setMesh(  UpdateHouseMesh(modelContext , TextureContext, property) )
     }
   },[ modelContext , TextureContext , property ])
 
