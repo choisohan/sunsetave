@@ -25,7 +25,7 @@ export  const UpdateMap = (_mat , property , TextureContext ) =>{
 
   var folderName = section;
   const lastLetter = folderName[folderName.length-1];
-  if( lastLetter.toUpperCase() === lastLetter ){
+  if( parseInt(lastLetter) ){
     folderName= folderName.replace(lastLetter, "");
   }
 

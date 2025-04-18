@@ -28,8 +28,8 @@ export default function HouseBuilder(props) {
     var folderName = selectedSection;
 
      const lastLetter = folderName[folderName.length-1];
-    if( lastLetter.toUpperCase() === lastLetter ){
-      folderName= folderName.replace(lastLetter, "");
+    if( parseInt(lastLetter) ){
+      folderName = folderName.replace(lastLetter, "");
     }
 
     const optionNames = Object.keys(textureContext).filter(key=> key.includes(folderName) ).map(name=> name.split('/')[1]);
@@ -49,8 +49,8 @@ export default function HouseBuilder(props) {
   const swapRandomMap = (selectedSection)=>{
     var folderName = selectedSection;
     const lastLetter = folderName[folderName.length-1];
-   if( lastLetter.toUpperCase() === lastLetter ){
-     folderName= folderName.replace(lastLetter, "");
+    if( parseInt(lastLetter) ){
+      folderName= folderName.replace(lastLetter, "");
    }
    const optionNames = Object.keys(textureContext).filter(key=> key.includes(folderName) ).map(name=> name.split('/')[1]);
    const randomIndex = Math.floor(Math.random()*(optionNames.length-1));
