@@ -71,7 +71,7 @@ export const OceanMaterial = () => {
 
             float zDepth = vViewDir.z ; 
             zDepth= smoothstep(5.0,20., zDepth);
-            color = mix( skyColorMiddle , skyColorTop, zDepth ) ; //Fill base color
+            color = mix( skyColorBottom , skyColorMiddle, zDepth ) ; //Fill base color
 
 
 

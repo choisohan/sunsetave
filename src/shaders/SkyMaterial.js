@@ -27,7 +27,7 @@ export const SkyMaterial =  (  )=>{
             vUv = uv;
             vNormal = normalize( normal ); 
 
-            vPosition = gl_Position.xyz; 
+            vPosition = modelPosition.xyz; 
             vViewDir =normalize(-viewPosition.xyz);
 
         }
@@ -50,22 +50,17 @@ export const SkyMaterial =  (  )=>{
         uniform float uSkyHeight; 
 
 
-        float SkyRamp(float _uSkyHeight, float _blend ){
-            return 1.-  smoothstep(_uSkyHeight - _blend,  _uSkyHeight  , distance(.5, vUv.y) * 2. );
 
-        }
+        float CloudScale(float skyRamp){
+            float ramp = smoothstep( 1.0, 0. ,  (skyRamp * 4. ) - .1  ); 
 
-        float CloudScale(){
             vec2 offset;
             offset.x -=  uTimestamp;
-
             vec2 uv =  fract( (vUv ) + offset );
             float noise =  texture2D( uPerlinNoiseMap, uv).x;
             noise = sin(noise + uTimestamp ); 
-            float ramp = SkyRamp( uSkyHeight+.2  , .3);
             float result  = ramp- noise ; 
             result = smoothstep(-.5,.5 ,  result );
-           // result = 1.; 
             return  result;
         }
 
@@ -89,6 +84,7 @@ export const SkyMaterial =  (  )=>{
 
 
         void main(){ 
+
             // 1. Vertically Ramp Sky
             vec3 skyColorBottom = texture2D( uSkyColorMap, vec2( 0.0/5. +.1,fract(uTime)) ).xyz;
             vec3 skyColorMiddle = texture2D( uSkyColorMap, vec2( 1.0/5.+.1 , fract(uTime)) ).xyz;
@@ -98,19 +94,27 @@ export const SkyMaterial =  (  )=>{
 
 
             vec3 color;
-            float skyRamp = SkyRamp( uSkyHeight , .3 ) ; 
-            color = mix(skyColorBottom, skyColorMiddle , skyRamp ) ; 
-            color = mix( color , skyColorTop , smoothstep(.1 , 1. , vUv.y) ) ;   
+
+            // Base Color
+            float skyRamp = step(.45,vUv.y) * distance(.45, vUv.y);
+
+            float bottomMask =smoothstep(0.0,1. ,(skyRamp * 10. )-.1 ); 
+            color = mix( skyColorBottom, skyColorMiddle , bottomMask ) ; 
+
+
+            float topMask =smoothstep(0.0,1. ,(skyRamp * 10. )-.25 ); 
+            color = mix( color, skyColorTop , topMask ) ; 
 
 
             vec2 clouds1 = Clouds( .0 ,.0);
+
             vec2 clouds2 = Clouds( .73 , .33 );
 
             vec2 cloudsMixed = mix(clouds1, clouds2, (clouds2.y) );
             cloudsMixed.x =  step( .25, cloudsMixed.x ) *.5 +  smoothstep( .0, .6, cloudsMixed.x )*1.5;
            // cloudsMixed.x -=  step( .2, -cloudsMixed.x )*.25; // shaded
 
-            cloudsMixed.y *=  CloudScale() ;
+            cloudsMixed.y *=  CloudScale(skyRamp) ;
             cloudsMixed.y = step( .5, cloudsMixed.y ); // cloudAlpha
 
 
