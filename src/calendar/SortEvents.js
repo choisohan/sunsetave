@@ -70,15 +70,37 @@ export const SortCalendarData = async (_calendar)=>{
         }
     ))
 
+    
+    var foundJson = ExtractJsonFromString(_calendar.description)
 
-    return {..._calendar, events: await Promise.all(promises).then( () =>{
+    return {..._calendar,...foundJson, events: await Promise.all(promises).then( () =>{
         arr = arr.sort((a, b) =>  a.startMoment.diff(b.startMoment));
-
         return(arr);
     })}
 }
 
 
+const ExtractJsonFromString = (string)=>{
+    const match = string.match(/{.*}/s); // /s lets dot match newlines
+
+    if (!match) return; 
+    var jsonStr = match[0];
+    var jsonObject = parseShorthandObject(jsonStr);
+    return jsonObject; 
+    
+
+}
+
+
+const parseShorthandObject = (str) => {
+    const trimmed = str.trim().replace(/^{|}$/g, ""); // remove { and }
+    const entries = trimmed.split(",").map(pair => {
+      const [key, value] = pair.split(":");
+      return [key.trim(), value.trim()];
+    });
+  
+    return Object.fromEntries(entries);
+  };
 
 
 

@@ -1,6 +1,6 @@
 {
     "name": "Boulangerie du Soleil Levain",
-    "description": "owner :Jean-Claude Baguette , Grumpy, proud, traditional, secretly sentimental (only toward his chihuahua: Bijou)",
+    "description": "owner :Jean-Claude Baguette , Grumpy, proud, traditional, secretly sentimental (only toward his chihuahua: Bijou) {D:A1,W:RW,w:W30,P:BR,p:RR,mesh:1}",
     "timezone":  "Europe/Paris",
     "events": [
         {

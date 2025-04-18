@@ -41,7 +41,6 @@ export default function HouseViewer() {
     
     const timestamp = new Date().valueOf(); 
     const hourFloat = timestampToHourFloat(timestamp, timezoneOverride );
-    console.log(timezoneOverride, hourFloat)
     if(hourFloat< 7/24 || hourFloat> 19/24){
       setDarkMode(true)
     }

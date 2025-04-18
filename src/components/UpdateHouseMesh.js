@@ -23,7 +23,7 @@ export  const UpdateMap = (_mat , property , TextureContext ) =>{
 
   var section = _mat.name.replace('_mat','');
 
-  var folderName = section;
+  var folderName = section.toUpperCase();
 
   const lastLetter = folderName[folderName.length-1];
   if( parseInt(lastLetter) ){

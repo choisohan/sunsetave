@@ -154,7 +154,6 @@ const ReplaceMaterial= _mat=>{
     if(_mat.name.includes('tree')){
         const mat =  LeavesMaterial();
         mat.uniforms.uColor.value = _mat.color; 
-        console.log(_mat)
         _mat = mat; 
     }
     else{

@@ -1,6 +1,6 @@
 {
     "name": "Menkoi Ramen(めんこいラーメン)",
-    "description": "Owner : Takeshi Tanaka, Age: 45, Friendly, charismatic, easy to talk to. Laughs often, gives surprisingly profound love advice while stirring broth",
+    "description": "Owner : Takeshi Tanaka, Age: 45, Friendly, charismatic, easy to talk to. Laughs often, gives surprisingly profound love advice while stirring broth {D:A1,W:F4W,w:FRB,P:BR,p:PerlinNoise,mesh:2}",
     "timezone":  "Asia/Tokyo",
     "events":[
         {
