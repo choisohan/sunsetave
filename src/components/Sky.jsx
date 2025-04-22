@@ -13,9 +13,12 @@ export default function Sky(props) {
     
     useEffect(()=>{
       const tz = timezoneOverride || props.timezone  || Intl.DateTimeFormat().resolvedOptions().timeZone; 
-      matRef.current.uniforms.uTime.value = timestampToHourFloat( timestamp , tz );
-      matRef.current.uniforms.uTimestamp.value =  (Math.floor(timestamp/100000)%1000)/1000;
-    },[ timezoneOverride , timestamp])
+
+      var _timestamp = timestamp;
+      if(props.timeDiff) _timestamp += props.timeDiff; 
+      matRef.current.uniforms.uTime.value = timestampToHourFloat( _timestamp , tz );
+      matRef.current.uniforms.uTimestamp.value =  (Math.floor(_timestamp/100000)%1000)/1000;
+    },[ timezoneOverride , timestamp,props.timeDiff ])
 
 
     useEffect(()=>{

@@ -92,6 +92,7 @@ export default function TerrainMesh(props){
         setGeos(_geos)
         setObjects(_objects)
 
+        if(!props.setGrids) return; 
         props.setGrids(_grids.map(cellObject=>{
 
             const newPosition = new Vector3();
@@ -109,11 +110,14 @@ export default function TerrainMesh(props){
 
     useEffect(()=>{
         const tz = timezoneOverride || Intl.DateTimeFormat().resolvedOptions().timeZone; 
-        const uTime =  timestampToHourFloat(timestamp , tz ); 
+        var _timestamp = timestamp;
+        if(props.timeDiff) _timestamp += props.timeDiff;
+        
+        const uTime =  timestampToHourFloat(_timestamp , tz ); 
         materials.forEach(mat=>{
             mat.uniforms.uTime.value =uTime;
         })
-    },[ timestamp , materials , timezoneOverride ])
+    },[ timestamp , materials , timezoneOverride , props.timeDiff ])
 
 
     useFrame((state, delta)=>{
@@ -128,7 +132,11 @@ export default function TerrainMesh(props){
 
     <group rotation={[-Math.PI / 2, 0, 0]} >
     {geos}{objects}
-    <Grid meshes={grids} onClick={props.onClick} onMouseEnter={props.onEnterNewCell} editMode={props.editMode}/>
+    <Grid meshes={grids}
+            onClick={ (x)=>{if(props.onClick) props.onClick(x)}}
+            onMouseEnter={x=>{
+                if(props.onEnterNewCell)props.onEnterNewCell(x)}}
+            editMode={props.editMode}/>
     </group>
 
  </>

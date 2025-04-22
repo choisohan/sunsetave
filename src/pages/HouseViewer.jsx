@@ -12,7 +12,7 @@ import { Clock, timestampToHourFloat } from '../components/Clock';
 import { EventTable } from '../components/EventTable';
 import TerrainMesh from '../components/TerrainMesh';
 import { useSetTimezoneOverride, useTimezoneOverride } from '../contexts/envContext';
-
+import moment from 'moment-timezone';
 
 export default function HouseViewer(props) {
   const divRef = useRef();
@@ -20,11 +20,11 @@ export default function HouseViewer(props) {
   const [ name , setName ] = useState('????')
   const canvasRef = useRef();  
   const [events, setEvents]= useState();
-  const setTimezoneOverride = useSetTimezoneOverride();
+  //const setTimezoneOverride = useSetTimezoneOverride();
   const timezoneOverride = useTimezoneOverride(); 
   const [darkMode, setDarkMode] = useState(false);
   const [isMobile , setIsMobile] = useState(false);
-  const [target , setTarget] = useState(new Vector3(0,0.5,0));
+  const [timeDiff, setTimeDiff] = useState(0)
 
   const onUpdateProperty =( newProperty )=>{
   
@@ -33,8 +33,15 @@ export default function HouseViewer(props) {
       return;
     }
     if(newProperty.name) setName(newProperty.name)
-    if(newProperty.timezone) setTimezoneOverride(newProperty.timezone);
     if(newProperty.events) setEvents(newProperty.events);
+        //if(newProperty.timezone) setTimezoneOverride(newProperty.timezone);
+
+    if(newProperty.timezone){
+      const diff = moment.tz( "2025-04-16 12:00" , newProperty.timezone ).diff(moment("2025-04-16 12:00"))
+      console.log( newProperty.timezone , diff )
+      setTimeDiff(diff);
+    }
+
   }
 
 
@@ -63,14 +70,6 @@ export default function HouseViewer(props) {
 
       setIsMobile(_isMobile)
 
-      /*
-      if(_isMobile){
-        const height = divRef.current.getBoundingClientRect().height;
-        console.log( width / height  )
-        setTarget(new Vector3(0,  width / height , 0)); 
-      }
-        */
-
     }
 
 
@@ -86,11 +85,11 @@ return (
                 ref={divRef} >
 
   <Canvas className="w-full h-full "  camera={{ position: [0,-5,8], fov: 20}} ref={canvasRef}>
-    <TerrainMesh editMode={false} setGrids={()=>{}} onEnterNewCell={()=>{}} onClick={()=>{}} />
-    <CameraControls target={target}/>
-    <Sky/>
+    <TerrainMesh editMode={false} timeDiff={timeDiff} />
+    <CameraControls target={new Vector3(0,0.5,0)}/>
+    <Sky timeDiff={timeDiff}/>
     <Pixelate />
-    <House property={ { id :props.id|| param  } } onUpdateProperty ={ onUpdateProperty } hoverable={false} onClick={()=>{}} onMouseEnter={()=>{}}/>
+    <House property={ { id :props.id|| param  } } onUpdateProperty ={ onUpdateProperty } hoverable={false} />
   </Canvas>
 
 
