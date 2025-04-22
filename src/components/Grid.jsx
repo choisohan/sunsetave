@@ -12,6 +12,7 @@ export const Grid=(props)=>{
     },[props.meshes])
 
     const onMouseEnter = (evt,i, isHover)=>{
+       // console.log( i)
         const object = evt.object;
         if(!object.material.uniforms) return; 
         object.material.uniforms.uMouseOver.value = isHover; 

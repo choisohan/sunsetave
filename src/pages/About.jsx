@@ -1,24 +1,36 @@
 import React from 'react'
 import HouseBuilder from '../components/HouseBuilder'
 import '../styles/about.css'
+import HouseViewer from './HouseViewer'
+import { Canvas } from '@react-three/fiber'
+
+
 export default function About() {
+
   return (
     <div className='about'>
-        <h1>Sunset Ave.</h1>
+        <img src='/images/houseButton.png' className='w-[100px]' />
+        <h1 className='font-bold'>Sunset Ave.</h1>
         <div>
-        <h2>Turn your Calendar into House/Shop.</h2>
-        <h3>New iCal Renderer that you've never ever seen.</h3>
+        <h2>Turn your calendar into a house</h2>
+        <h2 className='font-bold'>iCal Renderer</h2>
         </div>
+<div className='w-[300px] h-[600px] '>
+<HouseViewer className='' id='sample&&paris'/>
+
+</div>
+
 
 
         <br /><br /><br /><br />
         <div>
         <h3>Ready to create your own? </h3>
         <h3>No Need to sign up.</h3>
+        
         </div>
 
 
-        <h2>House Builder</h2>
+        <h3 className='font-bold scale-[150%]' >House Builder</h3>
         <HouseBuilder />
 
         <div>
@@ -29,3 +41,5 @@ export default function About() {
     </div>
   )
 }
+
+

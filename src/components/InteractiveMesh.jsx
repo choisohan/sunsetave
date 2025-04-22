@@ -11,7 +11,7 @@ export const InteractiveMesh =({object})=>{
     }
 
     const playAudio = ()=>{
-        audioRef.current.volume = .15;
+        audioRef.current.volume = .025;
         audioRef.current.play().catch(err=>{})
     }
 

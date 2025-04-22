@@ -2,7 +2,7 @@ import ICAL from "ical.js";
 import {SortCalendarData} from  './SortEvents'
 
 const SampleCalendars ={};
-["paris","tokyo", "ny"].forEach( city =>
+["paris","tokyo", "ny","hoian"].forEach( city =>
   fetch(`/calendars/${city}.json`)
   .then(res => res.json())
   .then( data=>{

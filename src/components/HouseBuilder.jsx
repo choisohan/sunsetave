@@ -97,7 +97,7 @@ export default function HouseBuilder(props) {
         <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,11], fov: 12 }} > 
             <CameraLookAt/>
             <Pixelate />
-            <House property={property} onClick={onClick}  onPointerMove={onPointerMove} onPointerOut ={onPointerOut} updateTime={false} hoverable={false} onUpdateProperty={()=>{}}/>
+            <House property={property} onClick={onClick}  onPointerMove={onPointerMove} onPointerOut ={onPointerOut} updateTime={false} hoverable={false}/>
             <mesh>
               <boxGeometry args={[10,0,10]} />
           </mesh>

@@ -56,7 +56,7 @@ export default function AddNewHouseForm(props) {
 <>
       <Canvas camera={{position: [-0, 0 ,10], fov: 15 }} style={{width:'200px', height: '200px' }} >
         <Pixelate />
-        <House property={ property } onUpdateProperty ={()=>{}} onClick={()=>{}} onMouseEnter={()=>{}} />
+        <House property={ property }  onClick={()=>{}} onMouseEnter={()=>{}} />
       </Canvas>
         <CozyButton className='pixelButton' onClick={()=>{props.onAddNew(property)}} ><div>Add to My Avenue</div></CozyButton>
 

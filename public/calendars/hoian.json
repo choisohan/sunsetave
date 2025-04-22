@@ -1,0 +1,56 @@
+{
+    "name": "Mùa Nắng Café (Season of Sun)",
+    "description": "Tourists flock for their famous coconut coffee and cold-pressed citrus espresso.",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "events":[
+        {
+          "summary": "Cafe Prep - Mùa Nắng",
+          "description": "Linh opens the shutters, Bao preps the beans, Thao & Minh arrive with sleepy hellos.",
+          "start": "2024-03-06T07:30:00",
+          "end": "2024-03-06T08:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Morning Coffee Rush",
+          "description": "Tourists grabbing coconut coffee before tours. Lots of smiles and takeout cups.",
+          "start": "2024-03-06T08:30:00",
+          "end": "2024-03-06T11:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Barista Class for Tourists",
+          "description": "Linh or Bao teaches guests how to brew Vietnamese coffee. Photos, laughs, souvenir aprons.",
+          "start": "2024-03-06T11:30:00",
+          "end": "2024-03-06T12:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Lunch Lull",
+          "description": "Quiet time. Bao experiments with new syrups. Thao sketches. Minh DJs the playlist.",
+          "start": "2024-03-06T13:00:00",
+          "end": "2024-03-06T14:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Afternoon Chill & Photo Ops",
+          "description": "The café fills again. Golden hour glow, iced citrus coffee flowing.",
+          "start": "2024-03-06T15:00:00",
+          "end": "2024-03-06T17:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Evening Wind-down",
+          "description": "Fans slow, music softer. Locals drop by. Bao closes the grinder with care.",
+          "start": "2024-03-06T17:30:00",
+          "end": "2024-03-06T18:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Weekend Coconut Night",
+          "description": "Extra batch of coconut cream, Linh offers secret iced coconut shot. Popular with backpackers.",
+          "start": "2024-03-09T19:00:00",
+          "end": "2024-03-09T21:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SA"
+        }
+      ]
+      }

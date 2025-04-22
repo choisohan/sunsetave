@@ -15,9 +15,12 @@ import { usePopup } from '../contexts/PopupContext'
 
 export default function Avenue() {
   const [items, setItems] = useState([
+
     {id : 'sample&&paris' , cellNumb : 0  },
    {id : 'sample&&tokyo' , cellNumb : 1 },   
-   {id : 'sample&&ny' , cellNumb : 2 },   
+   {id : 'sample&&ny' , cellNumb : 2 },
+   {id : 'sample&&hoian' , cellNumb : 3},
+
   ])
 
   const [selectedItem, setSelectedItem] = useState();
@@ -32,7 +35,7 @@ export default function Avenue() {
       return _items.map( _item =>{
         const cellNumb = _item.cellNumb;
         const transform = grid[cellNumb];
-       return {..._item, ...transform};
+        return {..._item, ...transform};
       })
     })
   },[grid, items.length ])
@@ -68,8 +71,8 @@ export default function Avenue() {
 
   return (
     <>
-    <Canvas camera={{position: [-35,  4 ,-15], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
-        <CameraControls target={[-2 , 0 , 10 ]} />
+    <Canvas camera={{position: [-35,  25 ,-15], fov: 20}} style={{width:'100vw', height:'100vh'}}  >
+        <CameraControls target={[-7  , 0 , 5 ]} />
         <Pixelate size={3} />    
 
         <Sky />
