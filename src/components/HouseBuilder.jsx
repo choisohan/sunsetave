@@ -66,10 +66,11 @@ export default function HouseBuilder(props) {
     swapRandomMap('D')
 
   }
-
+/*
   useEffect(()=>{
     generateRandom();
-  },[modelContext, textureContext])
+  },[modelContext, textureContext ])
+  */
 
   const onPointerMove =e=>{
     const selectedMaterial  = e.object.material[e.face.materialIndex];

@@ -2,14 +2,13 @@ import React from 'react'
 import HouseBuilder from '../components/HouseBuilder'
 import '../styles/about.css'
 import HouseViewer from './HouseViewer'
-import { Canvas } from '@react-three/fiber'
 
 
 export default function About() {
 
   return (
     <div className='about'>
-        <img src='/images/houseButton.png' className='w-[100px]' />
+        <img src='/images/houseButton.png' className='w-[100px]' alt='sunave' />
         <h1 className='font-bold'>Sunset Ave.</h1>
         <div>
         <h2>Turn your calendar into a house</h2>
