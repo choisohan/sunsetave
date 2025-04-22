@@ -24,7 +24,7 @@ function App() {
                   <Route path="/about" element={<About /> } />
                   <Route path="/dev" element={<Lookdev /> } />
                   <Route path="/builder" element={<HouseBuilder /> } />\
-                  <Route path="/:param" element={<HouseViewer /> } />
+                  <Route path="/:param" element={<HouseViewer className='!h-screen !w-screen'/> } />
               </Routes>
             </Router>
         </ModelProvider>

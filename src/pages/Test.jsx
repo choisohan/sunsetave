@@ -1,27 +1,16 @@
-import React, { useEffect }  from 'react'
-import Sky from '../components/Sky'
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import HouseViewer from "./HouseViewer";
+
+
 export default function Test() {
 
-  useEffect(()=>{
 
+  return <div className="h-screen w-screen bg-yellow-200">
 
-  })
+<div className="h-[600px] w-[400px] flex">
+<HouseViewer className='w-[300px] h-[600px] ' id='sample&&paris'/>
+<HouseViewer className='w-[300px] h-[600px] ' id='sample&&ny'/>
 
-  return (<>
-  <Canvas style={{width:'100vw', height:'100vh' }} >
+</div>
+  </div>
 
-  <mesh>
-    <boxGeometry args={[1,1,1]} />
-  </mesh>
-  <OrbitControls />
- 
-  <Sky />
-  </Canvas>
-  
-  
-  </>
-
-  )
 }

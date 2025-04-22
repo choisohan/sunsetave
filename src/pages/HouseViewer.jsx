@@ -14,7 +14,8 @@ import TerrainMesh from '../components/TerrainMesh';
 import { useSetTimezoneOverride, useTimezoneOverride } from '../contexts/envContext';
 
 
-export default function HouseViewer() {
+export default function HouseViewer(props) {
+  const divRef = useRef();
   const { param } = useParams();
   const [ name , setName ] = useState('????')
   const canvasRef = useRef();  
@@ -23,6 +24,7 @@ export default function HouseViewer() {
   const timezoneOverride = useTimezoneOverride(); 
   const [darkMode, setDarkMode] = useState(false);
   const [isMobile , setIsMobile] = useState(false);
+  const [target , setTarget] = useState(new Vector3(0,0.5,0));
 
   const onUpdateProperty =( newProperty )=>{
   
@@ -48,45 +50,76 @@ export default function HouseViewer() {
   },[timezoneOverride])
 
   useEffect(() => {
-    const isSmallScreen = window.matchMedia("(max-width: 768px)").matches;
-    setIsMobile(isSmallScreen);
-  }, []);
+    var _isMobile = false; 
+
+    if (divRef.current) {
+      const width = divRef.current.getBoundingClientRect().width;
+      if( width < 768 ){
+        _isMobile = true; 
+      }
+      else{
+        _isMobile =window.matchMedia("(max-width: 768px)").matches;
+      }
+
+      setIsMobile(_isMobile)
+
+      /*
+      if(_isMobile){
+        const height = divRef.current.getBoundingClientRect().height;
+        console.log( width / height  )
+        setTarget(new Vector3(0,  width / height , 0)); 
+      }
+        */
+
+    }
+
+
+
+
+  }, [divRef.current ]);
+
+
 
 
 return (
-<div className={`w-full h-screen flex flex-col md:flex-row relative overflow-hidden lg:overflow-auto ${ darkMode ? "darkMode" : ""}`} >
+<div className={`houseViewer ${ darkMode ? "darkMode" : ""} ${isMobile ? "small" :"" } ${props.className}`}
+                ref={divRef} >
 
-  <Canvas camera={{ position: [0,-5,8], fov: 20}} ref={canvasRef} className="w-full h-full min-h-[500px] md:w-1/2 md:h-[100vh] " >
+  <Canvas className="w-full h-full "  camera={{ position: [0,-5,8], fov: 20}} ref={canvasRef}>
     <TerrainMesh editMode={false} setGrids={()=>{}} onEnterNewCell={()=>{}} onClick={()=>{}} />
-    <CameraControls target={new Vector3( 0 , isMobile ? .25 :  .75  ,0)}/>
+    <CameraControls target={target}/>
     <Sky/>
     <Pixelate />
-    <House property={ { id : param  } } onUpdateProperty ={ onUpdateProperty } hoverable={false} onClick={()=>{}} onMouseEnter={()=>{}}/>
+    <House property={ { id :props.id|| param  } } onUpdateProperty ={ onUpdateProperty } hoverable={false} onClick={()=>{}} onMouseEnter={()=>{}}/>
   </Canvas>
 
-  <div className="w-full h-screen md:w-1/2 absolute bottom-0 md:static lg:overflow-hidden h-screen flex flex-col justify-end">
 
-    <div className='text-right'>
+
+
+  <div className="houseInfo" >
+    <div className='text-left title'>
       <span className='inline-flex '>
         <img src='/images/userProfile.png' className='w-[35px] h-[35px] lg:w-[70px] lg:h-[70px]' alt='profile'/>
-        <span className='[line-break:anywhere] text-3xl md:text-7xl	'>{ name }</span>
+       <a href={`/`+ props.id|| param  }>
+        <span className='[line-break:anywhere]'>{ name }</span>
+       </a>
       </span>
-      <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black justify-self-end' >
-        <Clock timezone={timezoneOverride}/>{timezoneOverride} </div>
+    </div>
+    <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black justify-self-end' >
+        <Clock timezone={timezoneOverride}/>{timezoneOverride}
     </div>
 
 
-    <div className='flex column lg:gap-1 lg:p-2 w-full  '>
+    <div className='flex column lg:gap-1 lg:p-2 w-full hideOnSmall '>
       <Buttons.SkipBackwardButton />
       <Buttons.FastForwardButton />
       <Buttons.SkipForwardButton />
       <Buttons.RecordButton canvasRef={canvasRef}/>
       <Buttons.ReloadButton />
     </div>
-
     <EventTable events={events}/>
+
   </div>
-    <a href='/' className='fixed -top-0 left-1 lg:text-3xl ' >Sunset Ave</a>
 
 
 </div>

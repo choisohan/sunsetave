@@ -14,11 +14,12 @@ export default function About() {
         <h2>Turn your calendar into a house</h2>
         <h2 className='font-bold'>iCal Renderer</h2>
         </div>
-<div className='w-[300px] h-[600px] '>
-<HouseViewer className='' id='sample&&paris'/>
 
+
+<div>
+<HouseViewer className='w-[300px] h-[600px] ' id='sample&&paris'/>
+<HouseViewer className='w-[300px] h-[600px] ' id='sample&&tokyo'/>
 </div>
-
 
 
         <br /><br /><br /><br />

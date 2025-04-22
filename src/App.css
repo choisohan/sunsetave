@@ -230,3 +230,37 @@ canvas{
   gap:20px;
   flex-direction: column;
 }
+
+/*
+ w-full h-full max-h-screen flex  relative overflow-hidden lg:overflow-auto
+ `w-full max-h-screen md:static lg:overflow-hidden flex flex-col `
+*/
+.houseViewer{
+  width:100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+}
+.houseViewer.small{
+  flex-direction: column;
+}
+.houseInfo{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.small .houseInfo{
+  position: absolute;
+  bottom: 0px;
+  height: auto;
+  
+}
+.small  .hideOnSmall{
+  display: none;
+}
+.small img{
+  width: 30px;
+  height: 30px;
+}
