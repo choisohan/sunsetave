@@ -106,7 +106,7 @@ return (
       </span>
     </div>
     <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black justify-self-end' >
-        <Clock timezone={timezoneOverride}/>{timezoneOverride}
+        <Clock timezone={timezoneOverride}/> {timezoneOverride}
     </div>
 
 

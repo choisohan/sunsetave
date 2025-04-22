@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useLoader } from "@react-three/fiber";
-import { FBXLoader } from "three/examples/jsm/Addons.js";
+import { FBXLoader, SkeletonUtils } from "three/examples/jsm/Addons.js";
 import {  useTimestamp, useTimezoneOverride  } from '../contexts/envContext';
 import BasicMaterial from '../shaders/BasicMaterial';
 import { timestampToHourFloat } from './Clock';
@@ -30,6 +30,7 @@ export default function TerrainMesh(props){
     const [objects, setObjects] = useState()
 
 
+
     useEffect(()=>{
         if(!textureContext)return;
 
@@ -52,9 +53,12 @@ export default function TerrainMesh(props){
         const _objects = [];
 
 
-        _fbxFile.traverse(child =>{
-            if(child.isMesh){
-                if(child.parent.name === "grid"){ 
+        _fbxFile.traverse(_child =>{
+            const child = SkeletonUtils.clone(_child);
+
+            if(_child.isMesh){
+
+                if(_child.parent.name === "grid"){ 
                     _grids.push(child);
                 }
     
@@ -77,7 +81,7 @@ export default function TerrainMesh(props){
     
                 }
             }
-            else if(child.isLine){
+            else if(_child.isLine){
                 _objects.push(<LoadInstanceAlongPath meshPath="/models/commuters.fbx" key={_objects.length} lineGeometry={child.geometry} offset={_objects.length/2} />)
             }
             
