@@ -165,8 +165,8 @@ const CodeOutput = ({property}) =>{
     },500)
   }
 
-  return <div className='min-h-[200px] w-full' >
-    <div>{code}</div>
+  return <div className='min-h-[200px] w-[300px]' >
+    <div className ='[line-break:anywhere]'>{code}</div>
     {copying? "Copied!" : <CozyButton className='pixelButton' onClick={CopyCode}>Copy</CozyButton> }
   </div>
 }

@@ -12,21 +12,25 @@ import { Clock, timestampToHourFloat } from '../components/Clock';
 import { EventTable } from '../components/EventTable';
 import TerrainMesh from '../components/TerrainMesh';
 import moment from 'moment-timezone';
+import { useTimestamp } from '../contexts/envContext';
 
 export default function HouseViewer(props) {
   const divRef = useRef();
   const { param } = useParams();
   const [ name , setName ] = useState('????')
+  const [timezone, setTimezone] = useState();
+
   const canvasRef = useRef();  
   const [events, setEvents]= useState();
-  //const setTimezoneOverride = useSetTimezoneOverride();
   const [darkMode, setDarkMode] = useState(false);
   const [isMobile , setIsMobile] = useState(false);
   const [timeDiff, setTimeDiff] = useState(0);
   const [cameraPosition, setCameraPosition] = useState( );
   const [cameraTarget, setCameraTarget] = useState( );
-  const [property, setProperty] = useState({ id :props.id|| param  });
+  const [transform , setTransform ] = useState({}); 
+  const timestamp = useTimestamp();
 
+  
   const onUpdateProperty =( newProperty )=>{
   
     if(!newProperty){
@@ -39,10 +43,19 @@ export default function HouseViewer(props) {
     if(newProperty.timezone){
       const diff = moment.tz( "2025-04-16 12:00" , newProperty.timezone ).diff(moment("2025-04-16 12:00"))
       setTimeDiff(diff);
-      setProperty(_prop=>({..._prop, timezone: newProperty.timezone}))
+      setTimezone( newProperty.timezone);
     }
 
   }
+
+  useEffect(()=>{
+    if(!timestamp || !timezone )return; 
+    const tf = timestampToHourFloat(timestamp, timezone);
+    setDarkMode( !(tf < 7/24 || tf > 19/24))
+
+
+  },[timestamp, timezone])
+
 
   useEffect(() => {
     var _isMobile = false; 
@@ -61,28 +74,26 @@ export default function HouseViewer(props) {
     }
 
 
-
-
-  }, [divRef.current ]);
+  }, [ ]);
 
 
   const getGrids =(grids)=>{
     const i  =  Math.floor ( Math.random() * grids.length ) ;
-    const transform = grids[i];
-    setProperty(_prop=>({..._prop, ...transform}))
+    const _transform = grids[i];
+    setTransform(_transform);
 
     const dummy = new Object3D();
-    dummy.position.copy( transform.position);
+    dummy.position.copy( _transform.position);
     
-    dummy.rotation.set( transform.rotation.x, transform.rotation.y, transform.rotation.z); 
+    dummy.rotation.set( _transform.rotation.x, _transform.rotation.y, _transform.rotation.z); 
     const forward = new Vector3(0,-1, 0); // forward in local space
     forward.applyQuaternion(dummy.quaternion); // convert to world space
-    const camPos = forward.clone().multiplyScalar(15).add(transform.position).add(new Vector3(0,4,0))
+    const camPos = forward.clone().multiplyScalar(15).add(_transform.position).add(new Vector3(0,4,0))
 
     
     setCameraPosition(camPos)
 
-    const camTarget = transform.position.clone().add(new Vector3(0,.5,0));
+    const camTarget = _transform.position.clone().add(new Vector3(0,.5,0));
     setCameraTarget(camTarget)
     
 
@@ -95,11 +106,11 @@ return (
 
   <Canvas className="w-full h-full "  camera={{fov: 20}} ref={canvasRef}>
     <TerrainMesh editMode={false} timeDiff={timeDiff} setGrids={getGrids}/>
-    <CameraControls position={cameraPosition} target={cameraTarget}/>
+    <CameraControls position={cameraPosition} target={cameraTarget} enableZoom={false}/>
 
     <Sky timeDiff={timeDiff}/>
     <Pixelate />
-    <House property={ property } onUpdateProperty ={ onUpdateProperty } hoverable={false} />
+    <House id={props.id|| param}  transform={transform} onUpdateProperty ={ onUpdateProperty } hoverable={false} />
   </Canvas>
 
 
@@ -115,14 +126,14 @@ return (
       </span>
     </div>
     <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black justify-self-end' >
-        <Clock /> {property.timezone}
+        <Clock /> {timezone}
     </div>
 
 
     <div className='flex column lg:gap-1 lg:p-2 w-full hideOnSmall '>
       <Buttons.SkipBackwardButton />
-      <Buttons.FastForwardButton />
       <Buttons.SkipForwardButton />
+      <Buttons.FastForwardButton />
       <Buttons.RecordButton canvasRef={canvasRef}/>
       <Buttons.ReloadButton />
     </div>

@@ -28,33 +28,22 @@ export default function House(props){
   const height = useRef(0);
   const setPopup = useUpdatePopup();
   const timezoneOverride = useTimezoneOverride(); 
-
+  const [position,setPosition] = useState();
+  const [rotation, setRotation] = useState();
 
   
   useEffect(()=>{
-    console.log( props.property )
-    if( props.property.id !== property.id ){
-      FindCalendar(props.property.id).then( calendar =>{
-        setProperty((_property)=>({..._property, ...props.property , ...calendar  }))
+    if( props.id !== property.id ){
+      FindCalendar(props.id).then( calendar =>{
+        const updatedProperty = { ...property, ...calendar , id: props.id };
+        setProperty(updatedProperty)
+        if( props.onUpdateProperty)props.onUpdateProperty( updatedProperty )
       }).catch(err =>{
         console.log( '🔴'+err)
       })
     }
-    else{
-      setProperty(_property =>({..._property, ...props.property   }))
-    }
+  },[  props.id   ])
 
-
-  },[  props.property ])
-
-/*
-  useEffect(()=>{
-    //TODO: fix loop
-    if( props.onUpdateProperty){
-        props.onUpdateProperty( property );
-    }
-  },[property , props ])
-*/
 
   useEffect(()=>{
     if ( modelContext && TextureContext ) {
@@ -120,7 +109,7 @@ export default function House(props){
         audioRef.current.play().catch(err=>{
         })
       }
-},[isHovered])
+},[isHovered ])
 
 
 const onClick = e =>{
@@ -149,17 +138,19 @@ const onPointerMove = e=>{
 }
 
 useEffect(()=>{
-  if( !property.position ) return; 
-  console.log( property.position.x, property.position.y, property.position.z )
-},[property.position])
+  if( props.transform  && props.transform.position && props.transform.rotation  ){
+    setPosition([props.transform.position.x,props.transform.position.y ,props.transform.position.z])
+    setRotation([0,props.transform.rotation.z,0])
+  }
+
+},[props.transform ])
 
 
   // Render
   if(! mesh   ) return; 
 
     return <mesh ref={meshRef} 
-    position ={ property.position ? [property.position.x, property.position.y, property.position.z] :   [0,0,0] }
-    rotation = {property.rotation ? [0, property.rotation.z,0] :   [0,0,0] }
+    position ={ position} rotation = {rotation}
                 onPointerEnter={()=>{setIsHovered(true)}}
                 onPointerOut={onPointerOut}
                 onContextMenu={onClick}

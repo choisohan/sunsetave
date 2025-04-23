@@ -2,24 +2,38 @@ import React from 'react'
 import HouseBuilder from '../components/HouseBuilder'
 import '../styles/about.css'
 import HouseViewer from './HouseViewer'
-
+import * as Buttons from '../components/Buttons'
 
 export default function About() {
 
   return (
     <div className='about'>
-        <img src='/images/houseButton.png' className='w-[100px]' alt='sunave' />
-        <h1 className='font-bold'>Sunset Ave.</h1>
-        <div>
-        <h2>Turn your calendar into a house</h2>
-        <h2 className='font-bold'>iCal Renderer</h2>
-        </div>
-
-
-<div>
-<HouseViewer className='w-[300px] h-[600px] ' id='sample&&paris'/>
-<HouseViewer className='w-[300px] h-[600px] ' id='sample&&tokyo'/>
+<div className="flex items-center gap-2">
+  <a href='/'><img src="/images/houseButton.png" className="w-[100px]" alt="sunave" /></a>
+  <h1 className="font-bold">Sunset Ave.</h1>
 </div>
+
+
+
+<div className="flex">
+<HouseViewer className='w-[300px] !h-[600px] ' id='sample&&paris'/>
+<HouseViewer className='w-[300px] !h-[600px] ' id='sample&&ny'/>
+<HouseViewer className='w-[300px] !h-[600px] ' id='sample&&hoian'/>
+<HouseViewer className='w-[300px] !h-[600px] ' id='sample&&tokyo'/>
+</div>
+<div className='flex column lg:gap-1 lg:p-2 w-full hideOnSmall place-content-center '>
+  <Buttons.SkipBackwardButton />
+  <Buttons.SkipForwardButton />
+  <Buttons.FastForwardButton />
+
+</div>
+
+
+<div className='leading-tight'>
+    <h2>Turn your calendar </h2>
+    <h2>into a interactive 3D house</h2>
+</div>
+
 
 
         <br /><br /><br /><br />

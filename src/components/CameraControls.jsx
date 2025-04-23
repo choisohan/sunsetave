@@ -1,6 +1,5 @@
-import React, {useEffect, useRef , useState } from 'react'
+import React, {useEffect , useState } from 'react'
 import { OrbitControls } from '@react-three/drei'
-import { Vector3 } from 'three'
 import { useThree } from '@react-three/fiber';
 
 export default function CameraControls(props) {
@@ -42,12 +41,14 @@ export default function CameraControls(props) {
         <OrbitControls
           onEnd={onEnd}
           target={target}
-        //  maxDolly ={0}
-         // minPolarAngle={-Math.PI / 2} 
-         // maxPolarAngle={Math.PI / 2} 
-        //  minDistance={0} 
-        //  maxDistance={90}
-          enablePan={true} />
+          maxDolly ={0}
+          minPolarAngle={-Math.PI / 2} 
+          maxPolarAngle={Math.PI / 2} 
+          minDistance={0} 
+          maxDistance={90}
+          enablePan={'enablePan' in props ? props.enablePan : true}
+          enableZoom={'enableZoom' in props ? props.enableZoom : true}
+          />
     
   )
 }

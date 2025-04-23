@@ -12,6 +12,7 @@ export const CozyButton = (props)=>{
   const audioRef = useRef();
 
   const onEnter=()=>{
+    if(!audioRef.current) return; 
     audioRef.current.volume = .2;
     audioRef.current.play().catch(err=>{})
   }
