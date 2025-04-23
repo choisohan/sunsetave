@@ -9,7 +9,8 @@ export default function Test() {
 <div className="h-[600px] w-[400px] flex">
 <HouseViewer className='w-[300px] h-[600px] ' id='sample&&paris'/>
 <HouseViewer className='w-[300px] h-[600px] ' id='sample&&ny'/>
-
+<HouseViewer className='w-[300px] h-[600px] ' id='sample&&hoian'/>
+<HouseViewer className='w-[300px] h-[600px] ' id='sample&&tokyo'/>
 </div>
   </div>
 

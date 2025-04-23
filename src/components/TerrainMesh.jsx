@@ -59,7 +59,7 @@ export default function TerrainMesh(props){
             if(_child.isMesh){
 
                 if(_child.parent.name === "grid"){ 
-                    _grids.push(child);
+                    _grids.push(_child);
                 }
     
                 else{

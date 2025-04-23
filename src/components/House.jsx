@@ -32,10 +32,8 @@ export default function House(props){
 
   
   useEffect(()=>{
-    console.log( props.property.id , property.id  )
-
+    console.log( props.property )
     if( props.property.id !== property.id ){
-      console.log( 'search...' )
       FindCalendar(props.property.id).then( calendar =>{
         setProperty((_property)=>({..._property, ...props.property , ...calendar  }))
       }).catch(err =>{
@@ -45,15 +43,18 @@ export default function House(props){
     else{
       setProperty(_property =>({..._property, ...props.property   }))
     }
-  },[  props.property  , property.id ])
 
 
+  },[  props.property ])
+
+/*
   useEffect(()=>{
+    //TODO: fix loop
     if( props.onUpdateProperty){
         props.onUpdateProperty( property );
     }
   },[property , props ])
-
+*/
 
   useEffect(()=>{
     if ( modelContext && TextureContext ) {
@@ -146,6 +147,11 @@ const onPointerMove = e=>{
     props.onPointerMove(e)
   }
 }
+
+useEffect(()=>{
+  if( !property.position ) return; 
+  console.log( property.position.x, property.position.y, property.position.z )
+},[property.position])
 
 
   // Render

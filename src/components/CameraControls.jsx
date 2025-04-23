@@ -1,10 +1,12 @@
-import React, {useRef } from 'react'
+import React, {useEffect, useRef , useState } from 'react'
 import { OrbitControls } from '@react-three/drei'
 import { Vector3 } from 'three'
+import { useThree } from '@react-three/fiber';
 
 export default function CameraControls(props) {
 
-  const targetRef = useRef(props.target ||  new Vector3(0,0.35,0) ); 
+  const { camera } = useThree();
+  const [target, setTarget] = useState();
 
   const onEnd = (e)=>{
     /*
@@ -19,15 +21,32 @@ export default function CameraControls(props) {
       */ 
   }
 
+  useEffect(()=>{
+
+    if(props.position){
+      camera.position.set(props.position.x,props.position.y, props.position.z );
+
+    }
+    if(props.target){
+      setTarget([props.target.x,props.target.y,props.target.z]);
+    }
+
+    //camera.updateProjectionMatrix(); // optional but good to call
+
+  },[ camera, props.position , props.target  ])
+
+
+
+
   return (
         <OrbitControls
           onEnd={onEnd}
-          target={targetRef.current}
-          maxDolly ={0}
-          minPolarAngle={-Math.PI / 2} 
-          maxPolarAngle={Math.PI / 2} 
-          minDistance={0} 
-          maxDistance={90}
+          target={target}
+        //  maxDolly ={0}
+         // minPolarAngle={-Math.PI / 2} 
+         // maxPolarAngle={Math.PI / 2} 
+        //  minDistance={0} 
+        //  maxDistance={90}
           enablePan={true} />
     
   )

@@ -7,11 +7,10 @@ import CameraControls from '../components/CameraControls';
 import { Pixelate } from '../shaders/CustomPostProcessing';
 import Sky from '../components/Sky';
 import * as Buttons from '../components/Buttons';
-import {  Vector3} from 'three';
+import {  Vector3 , Object3D } from 'three';
 import { Clock, timestampToHourFloat } from '../components/Clock';
 import { EventTable } from '../components/EventTable';
 import TerrainMesh from '../components/TerrainMesh';
-import { useSetTimezoneOverride, useTimezoneOverride } from '../contexts/envContext';
 import moment from 'moment-timezone';
 
 export default function HouseViewer(props) {
@@ -21,10 +20,12 @@ export default function HouseViewer(props) {
   const canvasRef = useRef();  
   const [events, setEvents]= useState();
   //const setTimezoneOverride = useSetTimezoneOverride();
-  const timezoneOverride = useTimezoneOverride(); 
   const [darkMode, setDarkMode] = useState(false);
   const [isMobile , setIsMobile] = useState(false);
-  const [timeDiff, setTimeDiff] = useState(0)
+  const [timeDiff, setTimeDiff] = useState(0);
+  const [cameraPosition, setCameraPosition] = useState( );
+  const [cameraTarget, setCameraTarget] = useState( );
+  const [property, setProperty] = useState({ id :props.id|| param  });
 
   const onUpdateProperty =( newProperty )=>{
   
@@ -34,27 +35,14 @@ export default function HouseViewer(props) {
     }
     if(newProperty.name) setName(newProperty.name)
     if(newProperty.events) setEvents(newProperty.events);
-        //if(newProperty.timezone) setTimezoneOverride(newProperty.timezone);
 
     if(newProperty.timezone){
       const diff = moment.tz( "2025-04-16 12:00" , newProperty.timezone ).diff(moment("2025-04-16 12:00"))
-      console.log( newProperty.timezone , diff )
       setTimeDiff(diff);
+      setProperty(_prop=>({..._prop, timezone: newProperty.timezone}))
     }
 
   }
-
-
-  useEffect(()=>{
-    if(!timezoneOverride) return; 
-    
-    const timestamp = new Date().valueOf(); 
-    const hourFloat = timestampToHourFloat(timestamp, timezoneOverride );
-    if(hourFloat< 7/24 || hourFloat> 19/24){
-      setDarkMode(true)
-    }
-
-  },[timezoneOverride])
 
   useEffect(() => {
     var _isMobile = false; 
@@ -78,18 +66,40 @@ export default function HouseViewer(props) {
   }, [divRef.current ]);
 
 
+  const getGrids =(grids)=>{
+    const i  =  Math.floor ( Math.random() * grids.length ) ;
+    const transform = grids[i];
+    setProperty(_prop=>({..._prop, ...transform}))
+
+    const dummy = new Object3D();
+    dummy.position.copy( transform.position);
+    
+    dummy.rotation.set( transform.rotation.x, transform.rotation.y, transform.rotation.z); 
+    const forward = new Vector3(0,-1, 0); // forward in local space
+    forward.applyQuaternion(dummy.quaternion); // convert to world space
+    const camPos = forward.clone().multiplyScalar(15).add(transform.position).add(new Vector3(0,4,0))
+
+    
+    setCameraPosition(camPos)
+
+    const camTarget = transform.position.clone().add(new Vector3(0,.5,0));
+    setCameraTarget(camTarget)
+    
+
+  }
 
 
 return (
 <div className={`houseViewer ${ darkMode ? "darkMode" : ""} ${isMobile ? "small" :"" } ${props.className}`}
                 ref={divRef} >
 
-  <Canvas className="w-full h-full "  camera={{ position: [0,-5,8], fov: 20}} ref={canvasRef}>
-    <TerrainMesh editMode={false} timeDiff={timeDiff} />
-    <CameraControls target={new Vector3(0,0.5,0)}/>
+  <Canvas className="w-full h-full "  camera={{fov: 20}} ref={canvasRef}>
+    <TerrainMesh editMode={false} timeDiff={timeDiff} setGrids={getGrids}/>
+    <CameraControls position={cameraPosition} target={cameraTarget}/>
+
     <Sky timeDiff={timeDiff}/>
     <Pixelate />
-    <House property={ { id :props.id|| param  } } onUpdateProperty ={ onUpdateProperty } hoverable={false} />
+    <House property={ property } onUpdateProperty ={ onUpdateProperty } hoverable={false} />
   </Canvas>
 
 
@@ -105,7 +115,7 @@ return (
       </span>
     </div>
     <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black justify-self-end' >
-        <Clock timezone={timezoneOverride}/> {timezoneOverride}
+        <Clock /> {property.timezone}
     </div>
 
 
