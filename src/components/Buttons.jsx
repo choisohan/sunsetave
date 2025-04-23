@@ -119,13 +119,12 @@ export const AddNewHouseButton =(props)=>{
 
 export const InfoButton = (props)=>{
 
-  const setPopup= useUpdatePopup();
-  return <>
-  <CozyButton  className='pixelButton'  tooltip="???" onClick={()=>{setPopup(<Info />)}}>
+  return <a href='/about'>
+<CozyButton  className='pixelButton'  tooltip="About" >
         <img alt='info' src='/images/house.png' />    
-    </CozyButton>
+  </CozyButton>
+</a>
       
-  </>
 }
 
 

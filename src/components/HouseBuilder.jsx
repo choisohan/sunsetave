@@ -7,6 +7,8 @@ import { Pixelate } from '../shaders/CustomPostProcessing';
 import { CozyButton } from './Buttons';
 import { useThree , useFrame } from '@react-three/fiber';
 
+
+
 export default function HouseBuilder(props) {
   const [property, setProperty]= useState( { ...props.property } );
   const modelContext = useHouseModel(); 
@@ -69,6 +71,10 @@ export default function HouseBuilder(props) {
     generateRandom();
   },[modelContext, textureContext ])
   
+  useEffect(()=>{
+    if(!property) return;
+    if(props.onUpdateProperty) props.onUpdateProperty(property);
+  },[property])
 
   const onPointerMove =e=>{
     const selectedMaterial  = e.object.material[e.face.materialIndex];
@@ -83,19 +89,29 @@ export default function HouseBuilder(props) {
     })
   }
 
+  const itsValidHouse = ()=>{
+    console.log( property )
+      if(props.onValidHouse)props.onValidHouse();
+  }
+
 
   const onClick = e =>{
     const selectedMaterial  = e.object.material[e.face.materialIndex];
     swapMap( selectedMaterial.name.replace('_mat','') , e.nativeEvent.type ==="contextmenu" ? -1: 1 );
   }
 
-  return <>
-    <div className='relative max-w-[800px]' >
+  return <div className={'relative max-w-[800px] ' +props.className} >
 
-        <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,11], fov: 12 }} > 
+        <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,12], fov: 12 }} > 
             <CameraLookAt/>
             <Pixelate />
-            <House id={props.id} design={property} timeout={props.timeout} onClick={onClick}  onPointerMove={onPointerMove} onPointerOut ={onPointerOut} updateTime={false} hoverable={false}/>
+            <House id={props.id} design={property} timeout={props.timeout} onClick={onClick}
+                  onPointerMove={onPointerMove}
+                  onPointerOut ={onPointerOut}
+                  updateTime={false} hoverable={false}
+                  onUpdateProperty={itsValidHouse}
+                  
+                  />
             <mesh>
               <boxGeometry args={[10,0,10]} />
           </mesh>
@@ -112,9 +128,6 @@ export default function HouseBuilder(props) {
           </CozyButton>   
         </div>
     </div>  
-    <CodeOutput property={property} />
-
-    </>
   
 
 }
@@ -138,12 +151,13 @@ function CameraLookAt() {
 }
 
 
-const CodeOutput = ({property}) =>{
+export const HouseCodeOutput = ({property}) =>{
 
   const [code, setCode] = useState('');
   const [copying, setCopying] =useState(false);
 
   useEffect(()=>{
+    if(!property) return; 
     const sections = ["D","W","w","P","p","mesh"]
     var string = '';
     sections.forEach(section=>{
@@ -163,7 +177,8 @@ const CodeOutput = ({property}) =>{
     },500)
   }
 
-  return <div className='w-[400px]' >
+  if(!property) return;
+  return <div className=' flex ' >
     <div className ='[line-break:anywhere] bg-gray-100 p-2'>{code}</div>
     {copying? "Copied!" : <CozyButton className='pixelButton' onClick={CopyCode}>Copy</CozyButton> }
   </div>

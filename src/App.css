@@ -14,14 +14,21 @@
   src: url('../public/fonts/712_serif.ttf')  format('truetype');
 }
 
+@font-face {
+  font-family: 'UnifontEX'; 
+  src: url('../public/fonts/Unifontexmono-2vrqo.ttf')  format('truetype');
+}
+
+
 
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Silkscreen', '712Serif', monospace;  
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
-
+  font-family : auto;
+  font-family:'Silkscreen', 'UnifontEX';  
+  font-weight: bolder;
 }
 
 
@@ -151,6 +158,7 @@ img{
   border: none;
   padding: 2px 5px;
   max-width: 550px;
+  position: relative !important;
 }
 .bubble::after {
   content: "";
@@ -246,6 +254,7 @@ canvas{
 }
 .houseInfo{
   width: 100%;
+  max-width: 500px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -263,4 +272,25 @@ canvas{
 .small img{
   width: 30px;
   height: 30px;
+}
+
+
+#about-page{
+  margin: 50px;
+  text-align: center;
+  place-items:center;
+  display: flex;
+  flex-direction: column;
+  gap:25px;
+  margin-bottom: 300px;
+}
+
+/*
+
+#about-page h1{
+  font-family:  monospace
+}
+  */
+#about-page h2, #about-page h3,#about-page h4 {
+    font-family : Georgia, 'Times New Roman', Times, serif !important;
 }
