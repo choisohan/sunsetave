@@ -14,7 +14,10 @@ export default function About() {
 </div>
 
 
-
+<div className='leading-tight'>
+    <h2>Turn your calendar </h2>
+    <h2>into an interactive 3D house</h2>
+</div>
 <div className="flex">
 <HouseViewer className='w-[300px] !h-[600px] ' id='sample&&paris'/>
 <HouseViewer className='w-[300px] !h-[600px] ' id='sample&&ny'/>
@@ -29,10 +32,7 @@ export default function About() {
 </div>
 
 
-<div className='leading-tight'>
-    <h2>Turn your calendar </h2>
-    <h2>into a interactive 3D house</h2>
-</div>
+
 
 
 

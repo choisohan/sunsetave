@@ -108,7 +108,7 @@ export const HouseMaterial = ()=>  new RawShaderMaterial({
 
         
           //lightColor = mix( vec3(1.25,0.65,0.4) ,vec3(1.12) , smoothstep(0.5,1. , dayTime) );
-          lightColor = smoothstep(vec3(.0), vec3(1.), pow(lightColor,vec3(.5)));
+          lightColor = smoothstep(vec3(.0), vec3(1.), pow(lightColor,vec3(.1)));
           shadedColor = smoothstep(vec3(.0), vec3(1.), pow(shadedColor,vec3(.5)));
 
           //vec3 shadedColor = mix( vec3(0.,0., .0), vec3(0.5,0.6, .75) , dayTime ) ;

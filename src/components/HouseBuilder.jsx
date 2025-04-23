@@ -8,7 +8,7 @@ import { CozyButton } from './Buttons';
 import { useThree , useFrame } from '@react-three/fiber';
 
 export default function HouseBuilder(props) {
-  const [property, setProperty]= useState( { ...props.property , time: .5  });
+  const [property, setProperty]= useState( { ...props.property } );
   const modelContext = useHouseModel(); 
   const textureContext = useTexture(); 
 
@@ -91,14 +91,13 @@ export default function HouseBuilder(props) {
     swapMap( selectedMaterial.name.replace('_mat','') , e.nativeEvent.type ==="contextmenu" ? -1: 1 );
   }
 
-  if(!property) return; 
-  return (<>
+  return <>
     <div className='relative lg:max-w-[500px]' >
 
         <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,11], fov: 12 }} > 
             <CameraLookAt/>
             <Pixelate />
-            <House property={property} onClick={onClick}  onPointerMove={onPointerMove} onPointerOut ={onPointerOut} updateTime={false} hoverable={false}/>
+            <House design={property} onClick={onClick}  onPointerMove={onPointerMove} onPointerOut ={onPointerOut} updateTime={false} hoverable={false}/>
             <mesh>
               <boxGeometry args={[10,0,10]} />
           </mesh>
@@ -118,7 +117,7 @@ export default function HouseBuilder(props) {
     <CodeOutput property={property} />
 
     </>
-  )
+  
 
 }
 

@@ -31,7 +31,12 @@ export default function House(props){
   const [position,setPosition] = useState();
   const [rotation, setRotation] = useState();
 
-  
+  useEffect(()=>{
+   // console.log( props.design )
+   setProperty(x=>({...x, ...props.design }))
+  },[props.design] )
+
+
   useEffect(()=>{
     if( props.id !== property.id ){
       FindCalendar(props.id).then( calendar =>{
