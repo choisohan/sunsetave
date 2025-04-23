@@ -1,0 +1,99 @@
+{
+    "name": "👨‍👩‍👧‍👦Rangiata Family",
+    "description": "The Rangiata family lives in coastal New Zealand, balancing tradition and teenage chaos. Dad’s a proud Māori carpenter, Mum’s a steady schoolteacher, and their two sons are busy chasing love, skateboards, and comics.",
+    "timezone": "Pacific/Auckland",
+    "events" :[
+        {
+          "summary": "Tama's Morning Carving Ritual",
+          "description": "Tama is in the shed behind the house carving while sipping instant coffee. He hums old waiata under his breath.",
+          "start": "2024-03-06T06:00:00",
+          "end": "2024-03-06T07:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Hine Leaves for School",
+          "description": "Hine grabs her keys, kisses everyone goodbye, and leaves with her teaching tote flopping open again.",
+          "start": "2024-03-06T07:45:00",
+          "end": "2024-03-06T07:50:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        {
+          "summary": "Nikau and Manaaki Leave for School (Bus)",
+          "description": "The boys bolt out the front door, still arguing over whose turn it is to feed the dog. Nikau forgets his lunchbox. Again.",
+          "start": "2024-03-06T08:15:00",
+          "end": "2024-03-06T08:20:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        {
+          "summary": "House is Quiet",
+          "description": "The house rests. Tama's carving tools are cleaned and laid out. A quiet breeze moves through the open kitchen window.",
+          "start": "2024-03-06T08:30:00",
+          "end": "2024-03-06T15:20:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        {
+          "summary": "Boys Return from School",
+          "description": "Backpacks hit the floor. Nikau heads straight to his room and slams the door. Manaaki drops his bag and yells, 'Uncle Tui, are you here?!'",
+          "start": "2024-03-06T15:30:00",
+          "end": "2024-03-06T15:40:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        {
+          "summary": "Hine Returns Home",
+          "description": "Hine walks in with a grocery bag and a sigh. The boys pretend they don’t hear her ask how their day was.",
+          "start": "2024-03-06T16:00:00",
+          "end": "2024-03-06T16:10:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        {
+          "summary": "Manaaki & Uncle Tui Read Comics in the Living Room",
+          "description": "Uncle Tui shows up with a plastic bag of old comics. Manaaki sprawls on the rug, giggling. Hine pretends not to see.",
+          "start": "2024-03-06T16:15:00",
+          "end": "2024-03-06T17:15:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Tama Preps Dinner, Rants About TikTok",
+          "description": "Tama chops onions like they offended him. Complains about 'that rapper boy with the pink hair' on Nikau’s shirt.",
+          "start": "2024-03-06T17:30:00",
+          "end": "2024-03-06T18:15:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Family Dinner",
+          "description": "Everyone eats around the small table. Hine tries to bring up Nikau’s grades. Nikau stabs his broccoli silently.",
+          "start": "2024-03-06T18:30:00",
+          "end": "2024-03-06T19:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Evening Time – Split Worlds",
+          "description": "Nikau FaceTimes Ari from bed. Manaaki draws comics inspired by Uncle Tui’s stash. Hine folds laundry while watching quiz shows. Tama oils his carvings.",
+          "start": "2024-03-06T19:30:00",
+          "end": "2024-03-06T21:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Lights Out (Mostly)",
+          "description": "Hine turns in early with a hot pack. Tama reads by lamp. Manaaki sneaks chocolate from the pantry. Nikau scrolls on his phone till 1am.",
+          "start": "2024-03-06T21:30:00",
+          "end": "2024-03-06T23:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Weekend Sleep-In + Noise",
+          "description": "Tama makes loud breakfast at 7am. Everyone else is still asleep. Eventually the boys drag out of bed like zombies and start arguing about cereal brands.",
+          "start": "2024-03-09T07:00:00",
+          "end": "2024-03-09T09:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SA,SU"
+        },
+        {
+          "summary": "Sunday Family Chores & Chaos",
+          "description": "Tama yells for help fixing a drawer. Hine cleans the fridge. Nikau escapes to the shed. Manaaki ends up vacuuming half a sock.",
+          "start": "2024-03-10T10:00:00",
+          "end": "2024-03-10T12:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SU"
+        }
+      ]
+      
+}

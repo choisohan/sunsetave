@@ -1,0 +1,71 @@
+{
+    "name": "👵Lalla's house",
+    "description": "Legendary fabric dye artisan in the Fes medina. Three sons, but only Amir stayed.",
+    "timezone": "Africa/Casablanca",
+    "events" :[
+        {
+          "summary": "Morning Dye Chant & Omen Reading",
+          "description": "Lalla Dounia hums old Berber chants over the vats. The saffron dye boils over — a bad sign. She crushes rose petals harder than usual.",
+          "start": "2024-03-06T06:00:00",
+          "end": "2024-03-06T07:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Amir Arrives Late (Again)",
+          "description": "Amir says traffic. Dounia sees red threads tangled in his scarf — not theirs. She eyes him. He avoids it. The apprentices watch, wide-eyed.",
+          "start": "2024-03-06T07:30:00",
+          "end": "2024-03-06T08:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Layla's Secret Visit (Behind the Vat Room)",
+          "description": "Layla sneaks in through the alley. She and Amir whisper behind the indigo vat. A spilled pomegranate dye marks the floor like blood. Dounia senses something. The cat hisses.",
+          "start": "2024-03-06T08:30:00",
+          "end": "2024-03-06T09:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Tourist Demo Interrupted",
+          "description": "A group of Spanish tourists ask too many questions. One tries to stir the vat and gets dye on his shirt. Dounia smiles sweetly — but the vat boils higher.",
+          "start": "2024-03-06T10:00:00",
+          "end": "2024-03-06T11:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Haj Youssef's Fabrics Appear",
+          "description": "Someone hangs new crimson cloth across the alley. It looks… exactly like Dounia’s recipe. She gasps. Betrayal or coincidence? Amir clenches his jaw.",
+          "start": "2024-03-06T11:30:00",
+          "end": "2024-03-06T12:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Henna Reading with Suspicion",
+          "description": "Dounia reads henna patterns for a bride-to-be. The symbols twist strangely. 'There’s a woman close to you... hiding a great truth,' she says. Layla walks past the window.",
+          "start": "2024-03-06T15:00:00",
+          "end": "2024-03-06T16:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Evening Market Confrontation",
+          "description": "Dounia and Youssef lock eyes over baskets of dried hibiscus. He smirks. She drops her oranges. ‘We’re not done,’ she says, picking them up slowly.",
+          "start": "2024-03-06T18:00:00",
+          "end": "2024-03-06T18:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Saturday: Amir’s Confession Attempt",
+          "description": "He tries to tell his mother everything. But Haj Youssef shows up unannounced, pretending to buy dyed silk. Tension thickens. Layla watches from the doorway, hand on stomach.",
+          "start": "2024-03-09T14:00:00",
+          "end": "2024-03-09T15:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SA"
+        },
+        {
+          "summary": "Sunday: Indigo Storm",
+          "description": "The dye vats overflow. Fabrics stain unpredictably. Dounia screams at the sky: 'Even the colours are lying to me now!' A bird lands on her shoulder. She takes it as a sign.",
+          "start": "2024-03-10T16:00:00",
+          "end": "2024-03-10T17:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SU"
+        }
+      ]
+      
+}

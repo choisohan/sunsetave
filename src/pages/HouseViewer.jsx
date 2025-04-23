@@ -51,7 +51,7 @@ export default function HouseViewer(props) {
   useEffect(()=>{
     if(!timestamp || !timezone )return; 
     const tf = timestampToHourFloat(timestamp, timezone);
-    setDarkMode( !(tf < 7/24 || tf > 19/24))
+    setDarkMode( (tf < 7/24 || tf > 19/24))
 
 
   },[timestamp, timezone])
@@ -119,13 +119,13 @@ return (
   <div className="houseInfo" >
     <div className='text-left title'>
       <span className='inline-flex '>
-        <img src='/images/userProfile.png' className='w-[35px] h-[35px] lg:w-[70px] lg:h-[70px]' alt='profile'/>
+        <img src='/images/userProfile.png' className='hidden w-[35px] h-[35px] lg:w-[70px] lg:h-[70px]' alt='profile'/>
        <a href={`/`+ props.id|| param  }>
-        <span className='[line-break:anywhere]'>{ name }</span>
+        <span className='whitespace-nowrap text-2xl'>{ name }</span>
        </a>
       </span>
     </div>
-    <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black justify-self-end' >
+    <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black justify-self-end text-sm' >
         <Clock /> {timezone}
     </div>
 

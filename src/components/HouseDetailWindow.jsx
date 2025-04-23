@@ -27,9 +27,10 @@ const Header = ({id , name , timezone} )=>{
     return <div className='w-full h-auto'>
     <span style={{display:'ruby'}} >
     <a href={`/${id}`}>
-      <img src='/images/userProfile.png' className='w-[50px]' alt='profile'/>
+      <img src='/images/userProfile.png' className='hidden w-[50px]' alt='profile'/>
+      <h3>{name}</h3>
+
     </a>
-    <h3>{name}</h3>
     </span>
 
     <div className='bg-[#748060] px-1 m-1 w-fit border-4 border-black' >

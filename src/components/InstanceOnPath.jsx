@@ -113,17 +113,26 @@ export default function InstanceOnPath({ name,  curve , mesh, material,  maxCoun
             return next > 1 ? next - 1 : next; // loop
         });
 
+
         progressRef.current.forEach((t, i) => {
-            const point = curve.getPointAt(t);
-            const tangent = curve.getTangentAt(t);
-            dummy.position.copy(point);
-            dummy.up.set(0, 0 , 1); 
-            dummy.lookAt(point.clone().add(tangent));
-            dummy.updateMatrix();
-            meshRef.current.setMatrixAt(i, dummy.matrix);
+            try{
+                const point = curve.getPointAt(t); // todo : watch out this
+                const tangent = curve.getTangentAt(t);
+                dummy.position.copy(point);
+                dummy.up.set(0, 0 , 1); 
+                dummy.lookAt(point.clone().add(tangent));
+                dummy.updateMatrix();
+                meshRef.current.setMatrixAt(i, dummy.matrix);
+
+            }catch(err){
+                console.log( err)
+
+            }
+
         });
 
         meshRef.current.instanceMatrix.needsUpdate = true;
+
     });
 
     return (<instancedMesh ref={meshRef} args={ [mesh, material ,maxCount]} />)

@@ -1,0 +1,63 @@
+{
+    "name": "👗Wild Pickle",
+    "description": "Thrift Store & Local Chaos Depot in Vancouver,Canada. Open daily 10AM–8PM",
+    "timezone": "America/Vancouver",
+    "events" :[
+        {
+          "summary": "Morning Ritual: Mug Wall Rearranging",
+          "description": "Maz spends 20 minutes color-sorting mugs that no one buys. Claims it's 'feng shui for capitalist ghosts.'",
+          "start": "2024-03-06T10:00:00",
+          "end": "2024-03-06T10:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Mystery Donation Sorting",
+          "description": "Unlabeled garbage bags show up. Today: 17 clown wigs, a taxidermy frog orchestra, and a signed VHS of Titanic (in Korean).",
+          "start": "2024-03-06T11:00:00",
+          "end": "2024-03-06T12:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Afternoon Tarot over Typewriter",
+          "description": "Clementine Calamity reads tarot for a customer using an old Smith-Corona. 'Death card. But like... in a cute way.'",
+          "start": "2024-03-06T14:00:00",
+          "end": "2024-03-06T15:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Vintage Furniture Argument",
+          "description": "Two hipsters debate whether a mustard yellow recliner is 'hideous or ironic-chic'. Nobody buys it. Again.",
+          "start": "2024-03-06T17:00:00",
+          "end": "2024-03-06T17:30:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Weird Toy Hour",
+          "description": "Kids and adults alike fiddle with ancient board games and a Furby that *shouldn’t* be talking. It is. Nobody questions it anymore.",
+          "start": "2024-03-06T18:00:00",
+          "end": "2024-03-06T19:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Saturday Drag & Price Tag Show",
+          "description": "Clementine Calamity hosts a pricing & lipsync combo set. Crowd of tourists and regulars go wild when she finds a sequined blazer mid-performance.",
+          "start": "2024-03-09T16:00:00",
+          "end": "2024-03-09T18:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SA"
+        },
+        {
+          "summary": "Sunday Rush of Softboys & Mushroom Girls",
+          "description": "The brunch crowd floods in for ironic windbreakers and used poetry books. Maz hides behind the potted plant with a cinnamon bun.",
+          "start": "2024-03-10T13:00:00",
+          "end": "2024-03-10T16:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=SU"
+        },
+        {
+          "summary": "Late-Night Secret Swap",
+          "description": "At closing, someone trades a cursed porcelain doll for a copy of 'Twilight'. Maz names the doll Florence. She’s now in the display window.",
+          "start": "2024-03-06T19:30:00",
+          "end": "2024-03-06T20:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        }
+      ]
+      }
