@@ -32,14 +32,15 @@ export default function House(props){
   const [rotation, setRotation] = useState();
 
   useEffect(()=>{
-   // console.log( props.design )
    setProperty(x=>({...x, ...props.design }))
   },[props.design] )
 
 
   useEffect(()=>{
-    if( props.id !== property.id ){
+    if( props.id  && props.id !== property.id ){
+      setMesh()
       FindCalendar(props.id).then( calendar =>{
+        console.log(calendar)
         const updatedProperty = { ...property, ...calendar , id: props.id };
         setProperty(updatedProperty)
         if( props.onUpdateProperty)props.onUpdateProperty( updatedProperty )
@@ -70,6 +71,7 @@ export default function House(props){
       const _currentIndex = getCurrentEventIndex( property.events ,timestamp );  
       const _currentEvent = property.events[_currentIndex];
       if( new moment(timestamp).isBetween(_currentEvent.startMoment, _currentEvent.endMoment ) ) setCurrentEventIndex(_currentIndex);  
+      if( props.timeout === 'infinite') setCurrentEventIndex(_currentIndex)
     }
 
 
@@ -152,8 +154,6 @@ useEffect(()=>{
 
 
   // Render
-  if(! mesh   ) return; 
-
     return <mesh ref={meshRef} 
     position ={ position} rotation = {rotation}
                 onPointerEnter={()=>{setIsHovered(true)}}
@@ -162,17 +162,25 @@ useEffect(()=>{
                 onPointerMove={onPointerMove}
                 onClick={onClick}>
 
-        <primitive object={mesh} scale={[.75,.75,.75] } />
-        <Html>
-          <audio ref={audioRef} src="/audios/jump.wav" />
-        </Html>
 
 
-        <group position={[0,height.current-.75  ,-.5]}>
-            <EventBubble event={ property.events && currentEventIndex  ? property.events[currentEventIndex] : null } />
-        </group> 
+      {mesh ? <>
+            
+            <primitive object={mesh} scale={[.75,.75,.75] } />
+                    <Html>
+                      <audio ref={audioRef} src="/audios/jump.wav" />
+                    </Html>
+            
+            
+            <group position={[0,height.current-.75  ,-.5]}>
+                <EventBubble calName={property.name } event={ property.events && currentEventIndex  ? property.events[currentEventIndex] : null } timeout={props.timeout}/>
+            </group> 
+
+          </> : <Html>Loading</Html>}
   </mesh>
-}
+  }
+
+
 
 
 

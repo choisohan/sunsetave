@@ -147,10 +147,10 @@ img{
 }
 
 .bubble{
-  background-color: white;
+  background-color: rgb(235, 235, 235) ;
   border: none;
-  outline:none;
   padding: 2px 5px;
+  max-width: 550px;
 }
 .bubble::after {
   content: "";
@@ -160,7 +160,7 @@ img{
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: white transparent transparent transparent;
+  border-color: rgb(235, 235, 235) transparent transparent transparent;
 }
 
 @media (max-width: 640px) {

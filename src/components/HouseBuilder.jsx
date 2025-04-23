@@ -13,8 +13,6 @@ export default function HouseBuilder(props) {
   const textureContext = useTexture(); 
 
 
-
-
   const swapGeometry=(changeNumb)=>{
     const currentNumb = ('mesh' in property) ? parseInt(property.mesh) : 0 ; 
     const maxNumb = Object.keys(modelContext).length-1; 
@@ -57,20 +55,20 @@ export default function HouseBuilder(props) {
     if(!modelContext || !textureContext ) return;
     swapGeometry(randInt(1,4));
     swapRandomMap('R')
-
     swapRandomMap('P')
     swapRandomMap('p')
     swapRandomMap('W')
     swapRandomMap('w')
     swapRandomMap('S')
     swapRandomMap('D')
-
   }
-/*
+
+
+
   useEffect(()=>{
     generateRandom();
   },[modelContext, textureContext ])
-  */
+  
 
   const onPointerMove =e=>{
     const selectedMaterial  = e.object.material[e.face.materialIndex];
@@ -92,12 +90,12 @@ export default function HouseBuilder(props) {
   }
 
   return <>
-    <div className='relative lg:max-w-[500px]' >
+    <div className='relative max-w-[800px]' >
 
         <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,11], fov: 12 }} > 
             <CameraLookAt/>
             <Pixelate />
-            <House design={property} onClick={onClick}  onPointerMove={onPointerMove} onPointerOut ={onPointerOut} updateTime={false} hoverable={false}/>
+            <House id={props.id} design={property} timeout={props.timeout} onClick={onClick}  onPointerMove={onPointerMove} onPointerOut ={onPointerOut} updateTime={false} hoverable={false}/>
             <mesh>
               <boxGeometry args={[10,0,10]} />
           </mesh>
@@ -159,13 +157,14 @@ const CodeOutput = ({property}) =>{
   const CopyCode =()=>{
     setCopying(true);
     navigator.clipboard.writeText(code);
+  
     setTimeout(()=>{
       setCopying(false)
     },500)
   }
 
-  return <div className='min-h-[200px] w-[300px]' >
-    <div className ='[line-break:anywhere]'>{code}</div>
+  return <div className='w-[400px]' >
+    <div className ='[line-break:anywhere] bg-gray-100 p-2'>{code}</div>
     {copying? "Copied!" : <CozyButton className='pixelButton' onClick={CopyCode}>Copy</CozyButton> }
   </div>
 }
