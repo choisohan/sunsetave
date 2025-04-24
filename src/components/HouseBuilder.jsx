@@ -20,10 +20,10 @@ export default function HouseBuilder(props) {
 
   const swapGeometry=(changeNumb)=>{
     const currentNumb = ('mesh' in design) ? parseInt(design.mesh) : 0 ; 
-    const maxNumb = Object.keys(modelContext).length-1; 
+    const maxNumb = Object.keys(modelContext).length ; 
     var newNumb = currentNumb + changeNumb; 
     if(newNumb>maxNumb){ newNumb = 1}
-    if(newNumb < 1){ newNumb = maxNumb}
+    if(newNumb < 1){ newNumb = maxNumb }
     setDesign(x=>({...x, mesh: newNumb }))
   }
 

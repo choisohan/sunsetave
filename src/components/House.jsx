@@ -171,8 +171,12 @@ useEffect(()=>{
                     </Html>
             
             
-            <group position={[0,height.current-.75  ,-.5]}>
-                <EventBubble calName={property.name } event={ property.events && currentEventIndex  ? property.events[currentEventIndex] : null } timeout={props.timeout}/>
+            <group position={[ 0 , height.current-.75  , -.5 ]}>
+                <EventBubble calName={property.name }
+                            event={ property.events && currentEventIndex  ? property.events[currentEventIndex] : null }
+                            timeout={props.timeout}
+                            isHovered={isHovered}
+                            />
             </group> 
 
           </> : <Html>Loading</Html>}

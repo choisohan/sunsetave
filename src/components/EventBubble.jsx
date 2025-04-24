@@ -4,32 +4,48 @@ import { EmojiParticles, extractEmojis , findEmojiType, particleStyles  } from '
 import { Html } from '@react-three/drei';
 
 
-export default function EventBubble({ calName, event , timeout = 2800 }) {
+export default function EventBubble({ calName, event , isHovered, timeout = 2800 }) {
 
-   const [objects, setObjects ] = useState();
-  
+    const [emojis, setEmojis ] = useState();
+    const [bubbles, setBubbles] = useState();
+
   useEffect(()=>{
     if(!event) return; 
     const emojis = extractEmojis(event.summary);
 
-    const _objects=[];
-    
+    const _bubbles=[];
+    const _emojis=[];
+
     emojis.forEach(emj =>{
       const emojiType = findEmojiType(emj)
       var style = {}
       if(emojiType){
         style = particleStyles[emojiType];
       }
-      _objects.push(<EmojiParticles key={_objects.length} emoji={emj} style={style}/>)
+      _emojis.push(<EmojiParticles key={_emojis.length} emoji={emj} style={style}/>)
 
     })
 
-    _objects.push(<PlaneObject text={timeout === 'infinite'? calName :  event.summary} timeout={timeout} />)
-    setObjects(_objects);
-
+    _bubbles.push(<PlaneObject text={ timeout === 'infinite'? calName :  event.summary} timeout={timeout} />)
+    setBubbles(_bubbles);
+    setEmojis(_emojis)
+    
   },[ event ])
 
-  return objects; 
+  return <>
+  
+  {emojis}
+
+
+  <Html className='flex min-w-[120px]' zIndexRange={[0, 1]} center style={{
+    transform: 'translate(-50%,calc(-100% - 10px))', zIndex:1,}}>
+
+        {!isHovered ? bubbles:
+          <span className="bubble">{calName} {event ? "("+event.summary+")" : null }</span>
+        }
+
+  </Html>
+  </>; 
 
 }
 
@@ -43,8 +59,6 @@ function PlaneObject({text, timeout}){
     }
   },[])
 
-  return <Html className={`bubble ${hidden ? 'hidden':''}`} zIndexRange={[0, 1]} center style={{
-    transform: 'translate(-50%,calc(-100% - 10px))', zIndex:1,}}>
-        <span>{ text }</span>
-</Html>
+  return <span className={`bubble ${hidden ? '':''}`}>{ text }</span>
+
 }
