@@ -25,9 +25,10 @@ const SAMPLES = [
 
 export default function Avenue() {
   const [items, setItems] = useState(SAMPLES)
-  const [editMode, setEditMode] = useState(false)
+  const [editMode, setEditMode] = useState(true)
   const [grid, setGrid] = useState();
-  const selected = useRef();
+  const [ selected , setSelected] = useState();
+  const canvasRef = useRef ();
 
   console.log('reload')
 
@@ -45,14 +46,15 @@ export default function Avenue() {
 
 
   const onEnterNewCell= i =>{
-    if(editMode && selected.current ){
-      const transform = grid[i];
 
+    if( editMode && selected ){
+      const transform = grid[i];
       setItems(_arr =>{
-        _arr[selected.current] = {..._arr[selected.current],  cellNumb : i , ...transform  }
-        return _arr; 
+        const copied = [..._arr];
+        copied[selected] = {...copied[selected],  cellNumb : i , ...transform  }
+        return copied; 
       })
-      selected.current = i; 
+
     }
   }
 
@@ -67,7 +69,7 @@ export default function Avenue() {
 
   const AddNewHouse = (newProperty)=>{
     setItems(_arr=> [..._arr, newProperty])
-    selected.current= items.length ; 
+    setSelected( items.length )
     setEditMode(true)
   }
 
@@ -80,11 +82,12 @@ export default function Avenue() {
         <Pixelate size={3} />    
 
         <Sky />
-        <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{ selected.current = null; }} />
+        <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell}   onClick={()=>{setSelected() }} />
         {items.map( (item,i) =>
-          <House key={i} id={item.id} transform={{ position : item.position, rotation: item.rotation }}detailWindowOpen={!editMode}
+          <House key={i} id={item.id} transform={{ position : item.position, rotation: item.rotation }}
+                detailWindowOpen={!editMode}
                 onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}
-                onClick={()=>{selected.current= i }} />
+                onClick={()=>{setSelected(i) }} />
         )}
         <Ocean />
     </Canvas>
@@ -97,6 +100,8 @@ export default function Avenue() {
         <Buttons.InfoButton />
         <Buttons.SkipBackwardButton /><Buttons.SkipForwardButton /> <Buttons.FastForwardButton />
         <Buttons.TimeShiftButton />
+        <Buttons.RecordButton canvasRef={canvasRef} />
+
         <Buttons.EditModeButton editMode={editMode} setEditMode={setEditMode}/>
         <Buttons.AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
         <Buttons.ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}

@@ -11,8 +11,6 @@ const SampleCalendars ={};
 )
 
 
-//http://localhost:3000/8c063daee6e0ebb0eac75293727a2b85d9024b26c96fd2ad4f9a7489bbf835a1
-
 export const fetchCalendar = async (icalUrl) => {
 
     const serverURL = 'https://unruly-calm-sorrel.glitch.me'

@@ -26,7 +26,7 @@ export default function EventBubble({ calName, event , isHovered, timeout = 2800
 
     })
 
-    _bubbles.push(<PlaneObject text={ timeout === 'infinite'? calName :  event.summary} timeout={timeout} />)
+    _bubbles.push(<PlaneObject key={_bubbles.length} text={ timeout === 'infinite'? calName :  event.summary} timeout={timeout} />)
     setBubbles(_bubbles);
     setEmojis(_emojis)
     

@@ -145,11 +145,15 @@ const onPointerMove = e=>{
 
 useEffect(()=>{
   if( props.transform  && props.transform.position && props.transform.rotation  ){
+
+
     setPosition([props.transform.position.x,props.transform.position.y ,props.transform.position.z])
     setRotation([0,props.transform.rotation.z,0])
   }
 
 },[props.transform ])
+
+
 
 
   // Render

@@ -15,20 +15,33 @@ export default function AddNewHouseForm(props) {
 
 
     const Search = ()=>{
-      const icalURL = icalInput.current.value;
       const currentIds =  props.currentIds|| [] ;
-      if(currentIds.includes(icalURL)){
-        setMsg("This house exists in your avenue already.")
+
+      const icalURL = icalInput.current.value;
+      const match = icalURL.match(/ical\/(.*?)%40group/);
+
+
+
+      if(match){
+        const iCalID  = match[1];
+        if(currentIds.includes(iCalID)){
+          setMsg("This house exists in your avenue already.")
+        }
+        else{
+          FindCalendar(iCalID).then( calendar =>{
+            const newProperty = {...property, ...props.property , ...calendar, id: iCalID   }; 
+            newProperty.position = new Vector3(0,-1,0);
+            setProperty(newProperty);
+          }).catch(err =>{
+            setMsg("Invalid Ical ID. Check it again.");
+          })
+        }
+
+
+      }else{
+        setMsg("Invalid Ical ID. Check it again.");
       }
-      else{
-        FindCalendar(icalURL).then( calendar =>{
-          const newProperty = {...property, ...props.property , ...calendar, id: icalURL   }; 
-          newProperty.position = new Vector3(0,-1,0);
-          setProperty(newProperty);
-        }).catch(err =>{
-          setMsg("Invalid Ical ID. Check it again.");
-        })
-      }
+
     }
 
   return (

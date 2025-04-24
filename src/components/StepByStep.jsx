@@ -13,9 +13,7 @@ export default function StepByStep() {
 
 
   const onClick = ()=>{
-    const url = 'https://calendar.google.com/calendar/ical/8c063daee6e0ebb0eac75293727a2b85d9024b26c96fd2ad4f9a7489bbf835a1%40group.calendar.google.com/public/basic.ics'
-    //https://calendar.google.com/calendar/ical/${icalUrl}%40group.calendar.google.com/public/basic.ics
-
+    const url = icalInput.current.value;
     const match = url.match(/ical\/(.*?)%40/);
     const calendarId = match ? match[1] : null;
     if(calendarId){
@@ -32,7 +30,7 @@ export default function StepByStep() {
     <div className='text-2xl	leading-loose	'>
       1. Go to Google Calendar and click setting<br />
       2. Make it public and save <br />
-      3  Copy Ical URL and paste here<br />
+      3  Copy and paste "PUBLIC ADDRESS IN ICAL FORMAT"<br />
     </div>
 
     <div className="mb-20 flex w-full max-w-[650px] place-self-center">
