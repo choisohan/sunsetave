@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react'
+import React, {  useEffect, useRef, useState } from 'react'
 import House from '../components/House'
 import { Canvas } from '@react-three/fiber'
 import Sky from '../components/Sky'
@@ -12,26 +12,24 @@ import { usePopup } from '../contexts/PopupContext'
 import { Vector3 } from 'three'
 
 
+const SAMPLES = [
+  {id : 'sample&&paris' , cellNumb : 0  },
+  {id : 'sample&&tokyo' , cellNumb : 1 },   
+  {id : 'sample&&ny' , cellNumb : 2 },
+  {id : 'sample&&hoian' , cellNumb : 3},
+  {id : 'sample&&fes' , cellNumb : 4},
+  {id : 'sample&&van' , cellNumb : 5},
+  {id : 'sample&&nz' , cellNumb : 6},
+  {id : 'sample&&bs' , cellNumb : 7},
+]
 
 
 export default function Avenue() {
-  const [items, setItems] = useState([
-
-    {id : 'sample&&paris' , cellNumb : 0  },
-   {id : 'sample&&tokyo' , cellNumb : 1 },   
-   {id : 'sample&&ny' , cellNumb : 2 },
-   {id : 'sample&&hoian' , cellNumb : 3},
-   {id : 'sample&&fes' , cellNumb : 4},
-   {id : 'sample&&van' , cellNumb : 5},
-   {id : 'sample&&nz' , cellNumb : 6},
-   {id : 'sample&&bs' , cellNumb : 7},
-
-  ])
-
-  const [selectedItem, setSelectedItem] = useState();
+  const [items, setItems] = useState(SAMPLES)
   const [editMode, setEditMode] = useState(false)
   const [grid, setGrid] = useState();
-  const popupContext = usePopup()
+ // const popupContext = usePopup()
+  const selected = useRef();
 
 
   useEffect(()=>{
@@ -48,14 +46,14 @@ export default function Avenue() {
 
 
   const onEnterNewCell= i =>{
-    if(editMode && selectedItem){
+    if(editMode && selected.current ){
       const transform = grid[i];
 
       setItems(_arr =>{
-        _arr[selectedItem.i] = {..._arr[selectedItem.i],  cellNumb : i , ...transform  }
+        _arr[selected.current] = {..._arr[selected.current],  cellNumb : i , ...transform  }
         return _arr; 
       })
-      setSelectedItem( item=>({...item, cellNumb : i ,...transform }))
+      selected.current = i; 
     }
   }
 
@@ -70,7 +68,7 @@ export default function Avenue() {
 
   const AddNewHouse = (newProperty)=>{
     setItems(_arr=> [..._arr, newProperty])
-    setSelectedItem({...newProperty , i : items.length });
+    selected.current= items.length ; 
     setEditMode(true)
   }
 
@@ -83,9 +81,11 @@ export default function Avenue() {
         <Pixelate size={3} />    
 
         <Sky />
-        <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{setSelectedItem()}} />
+        <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell} onClick={()=>{ selected.current = null; }} />
         {items.map( (item,i) =>
-          <House key={i} id={item.id} transform={{ position : item.position, rotation: item.rotation }}detailWindowOpen={!editMode} onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}  onClick={()=>{setSelectedItem({i: i})}} />
+          <House key={i} id={item.id} transform={{ position : item.position, rotation: item.rotation }}detailWindowOpen={!editMode}
+                onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}
+                onClick={()=>{selected.current= i }} />
         )}
         <Ocean />
     </Canvas>
@@ -103,7 +103,6 @@ export default function Avenue() {
         <Buttons.ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
       </div>
     </div>
-    {popupContext}
     </>)
 
 }

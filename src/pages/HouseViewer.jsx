@@ -29,6 +29,7 @@ export default function HouseViewer(props) {
   const [cameraTarget, setCameraTarget] = useState( );
   const [transform , setTransform ] = useState({}); 
   const timestamp = useTimestamp();
+  const [description, setDescription] = useState('')
 
   
   const onUpdateProperty =( newProperty )=>{
@@ -38,6 +39,8 @@ export default function HouseViewer(props) {
       return;
     }
     if(newProperty.name) setName(newProperty.name)
+    if(newProperty.description) setDescription(newProperty.description)
+
     if(newProperty.events) setEvents(newProperty.events);
 
     if(newProperty.timezone){
@@ -116,15 +119,17 @@ return (
 
 
 
-  <div className="houseInfo" >
+  <div className="houseInfo p-3" >
     <div className='text-left title'>
       <span className='inline-flex '>
         <img src='/images/userProfile.png' className='hidden w-[35px] h-[35px] lg:w-[70px] lg:h-[70px]' alt='profile'/>
        <a href={`/`+ props.id|| param  }>
-        <span className='whitespace-nowrap text-2xl'>{ name }</span>
+        <span className='whitespace-nowrap text-4xl'>{ name }</span>
        </a>
       </span>
     </div>
+    <span>{ description }</span>
+
     <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black justify-self-end text-sm' >
         <Clock /> {timezone}
     </div>

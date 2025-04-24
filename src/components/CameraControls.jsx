@@ -21,7 +21,7 @@ export default function CameraControls(props) {
   }
 
   useEffect(()=>{
-
+    console.log('?')
     if(props.position){
       camera.position.set(props.position.x,props.position.y, props.position.z );
 
@@ -32,11 +32,10 @@ export default function CameraControls(props) {
 
     //camera.updateProjectionMatrix(); // optional but good to call
 
-  },[ camera, props.position , props.target  ])
+  },[  props.position , props.target  ])
 
 
-
-
+  
   return (
         <OrbitControls
           onEnd={onEnd}

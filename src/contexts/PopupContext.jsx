@@ -8,6 +8,10 @@ const UpdatePopupContext = React.createContext();
 export function PopupProvider({children}){
     const [ Popup,setPopup] = useState();
 
+
+    useEffect(()=>{
+        console.log( 'pop' , Popup)
+    },[Popup])
     return (
             <UpdatePopupContext.Provider value={setPopup}>
                 <PopupContext.Provider value={Popup}>

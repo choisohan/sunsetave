@@ -13,7 +13,7 @@ export default function HouseDetailWindow(props) {
   if(!props.property) return null; 
   return (
     <PopupWindow isOpened={true} setIsOpened={()=>{props.onClose()}} >
-      <Header id={props.property.id} name={props.property.name} timezone={props.property.timezone}/>
+      <Header id={props.property.id} name={props.property.name} description={props.property.description} timezone={props.property.timezone}/>
       <CurrentEvent event={props.property.events[currentIndex.current]}/>
       <NextEvent event={props.property.events[currentIndex.current+1]}/>
     </PopupWindow>
@@ -23,14 +23,17 @@ export default function HouseDetailWindow(props) {
 }
 
 
-const Header = ({id , name , timezone} )=>{
-    return <div className='w-full h-auto'>
-    <span style={{display:'ruby'}} >
+const Header = ({id , name , timezone , description } )=>{
+    return <div className='w-full h-auto '>
+    <span>
+
     <a href={`/${id}`}>
       <img src='/images/userProfile.png' className='hidden w-[50px]' alt='profile'/>
       <h3>{name}</h3>
-
     </a>
+    
+    <span>{description}</span>
+
     </span>
 
     <div className='bg-[#748060] px-1 m-1 w-fit border-4 border-black' >
