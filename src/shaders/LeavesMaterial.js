@@ -60,13 +60,13 @@ export default function LeavesMaterial() {
         varying vec3 vNormal;
         varying vec3 vViewDir;
 
+        uniform sampler2D uMap; 
         uniform sampler2D uSkyColorMap; 
         uniform sampler2D uPerlinNoiseNormal; 
 
         uniform float uTime; 
         uniform float uFrame; 
 
-        uniform vec3 uColor; 
         uniform float uNormalStrength; 
 
         uniform vec2 uMapRepeat;
@@ -100,8 +100,9 @@ export default function LeavesMaterial() {
 
 
             if (fresnel < 0.5) discard; // Cutout effect
-
-            vec3 color =  pow(uColor,vec3(.35));
+            
+            vec3 diffuseMap = texture2D( uMap,vUv ).xyz;
+            vec3 color =  pow(diffuseMap ,vec3(.75));
 
             normalMap = texture2D( uPerlinNoiseNormal, pixelatedUV).xyz * 2. -1. ;
             normalMap.xy *= uNormalStrength;
@@ -129,7 +130,6 @@ export default function LeavesMaterial() {
         uFrame:{value: 0.},
         uNormalStrength: {value: .05 },
         uMapRepeat : {value: new Vector2(1.5,1.5 )},
-        uColor:{value: new Color(0x619434)} ,
         uWindStrength: {value: .5},
         uPoint:{value: new Vector3()}
 
