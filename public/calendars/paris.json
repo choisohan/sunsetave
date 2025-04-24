@@ -18,7 +18,7 @@
           "rrule": "FREQ=DAILY;INTERVAL=1"
         },
         {
-          "summary": "Lunch + Nap (Upstairs)",
+          "summary": "Lunch + Nap",
           "description": "Simple meal followed by a short nap.",
           "start": "2024-03-06T12:30:00",
           "end": "2024-03-06T14:00:00",
@@ -67,7 +67,7 @@
           "rrule": "FREQ=WEEKLY;BYDAY=SU"
         },
         {
-          "summary": "Sit in Park with Bijou",
+          "summary": "🐶Sit in Park with Bijou",
           "description": "Feeds pigeons and listens to Charles Aznavour on a crackling radio.",
           "start": "2024-03-10T16:00:00",
           "end": "2024-03-10T17:00:00",

@@ -1,0 +1,64 @@
+{
+    "name": "📷Studio jangmyeon",
+    "description": "Old-fashioned black-and-white portrait studio in Busan. Quiet, nostalgic, a bit rough around the edges.",
+    "timezone": "Asia/Seoul",
+    "events" :[
+        {
+          "summary": "Instant Ramen Breakfast",
+          "description": "Starts the day with a cup of instant ramen at his desk, steam fogging up the old window. Kitties 'Yeong-sook' and 'Byung-chul' circle his feet for scraps.",
+          "start": "2024-03-06T08:30:00",
+          "end": "2024-03-06T09:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Open the Studio",
+          "description": "Pulls up the rattling metal shutter and flips the wooden '열림' sign. Sweeps the front step while sipping leftover coffee.",
+          "start": "2024-03-06T09:00:00",
+          "end": "2024-03-06T09:15:00",
+          "rrule": "FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR,SA"
+        },
+        {
+          "summary": "Old Lady Brings Banchan",
+          "description": "Mrs. Park from the hanbok store next door stops by with side dishes. He bows politely and gives her a new photo print of her late husband.",
+          "start": "2024-03-06T11:30:00",
+          "end": "2024-03-06T11:45:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=TU,TH"
+        },
+        {
+          "summary": "🐱Feed the Street Cats",
+          "description": "Leaves tuna cans by the back door and calls softly for 'Yeong-sook' and 'Byung-chul.' Sometimes they bring a friend.",
+          "start": "2024-03-06T18:00:00",
+          "end": "2024-03-06T18:15:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Industrial Area Photo Walk",
+          "description": "Camera slung over his shoulder, he walks through the silent warehouses and rusted fences. Captures shadowy alleys and forgotten signs.",
+          "start": "2024-03-06T19:00:00",
+          "end": "2024-03-06T20:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=FR"
+        },
+        {
+          "summary": "Close Studio Early for Commercial Gig",
+          "description": "Tapes a handwritten note on the door: '촬영 외부 일정으로 닫습니다.' Changes into clean clothes and grabs his gear bag.",
+          "start": "2024-03-06T14:00:00",
+          "end": "2024-03-06T20:00:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=WE"
+        },
+        {
+          "summary": "Old Friends Show Up Uninvited",
+          "description": "Two guys in track suits knock and push their way in, reeking of soju. They brought a plastic bag with dried squid and convenience store snacks, already half-drunk. They slap his back too hard, call him 'artist-nim,' and sit on his work table without asking. He makes them instant coffee but doesn’t sit down.",
+          "start": "2024-03-06T19:00:00",
+          "end": "2024-03-06T20:00:00",
+          "rrule": "FREQ=WEEKLY;INTERVAL=3;BYDAY=WE"
+        },
+        {
+          "summary": "💤",
+          "description": "Turns off the lights, leaves one lamp glowing above a black-and-white portrait of a little girl. Folds into his futon beside a shelf of old negatives.",
+          "start": "2024-03-06T00:30:00",
+          "end": "2024-03-06T08:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        }
+      ]
+      
+      }

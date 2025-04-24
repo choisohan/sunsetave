@@ -24,6 +24,8 @@ export default function Avenue() {
    {id : 'sample&&fes' , cellNumb : 4},
    {id : 'sample&&van' , cellNumb : 5},
    {id : 'sample&&nz' , cellNumb : 6},
+   {id : 'sample&&bs' , cellNumb : 7},
+
   ])
 
   const [selectedItem, setSelectedItem] = useState();

@@ -18,17 +18,10 @@
           "rrule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
         },
         {
-          "summary": "Nikau and Manaaki Leave for School (Bus)",
+          "summary": "Nikau and Manaaki Leave for School🚌",
           "description": "The boys bolt out the front door, still arguing over whose turn it is to feed the dog. Nikau forgets his lunchbox. Again.",
           "start": "2024-03-06T08:15:00",
           "end": "2024-03-06T08:20:00",
-          "rrule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
-        },
-        {
-          "summary": "House is Quiet",
-          "description": "The house rests. Tama's carving tools are cleaned and laid out. A quiet breeze moves through the open kitchen window.",
-          "start": "2024-03-06T08:30:00",
-          "end": "2024-03-06T15:20:00",
           "rrule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
         },
         {
@@ -60,7 +53,7 @@
           "rrule": "FREQ=DAILY;INTERVAL=1"
         },
         {
-          "summary": "Family Dinner",
+          "summary": "😋Family Dinner",
           "description": "Everyone eats around the small table. Hine tries to bring up Nikau’s grades. Nikau stabs his broccoli silently.",
           "start": "2024-03-06T18:30:00",
           "end": "2024-03-06T19:00:00",
@@ -88,7 +81,7 @@
           "rrule": "FREQ=WEEKLY;BYDAY=SA,SU"
         },
         {
-          "summary": "Sunday Family Chores & Chaos",
+          "summary": "⚡Family Chores & Chaos",
           "description": "Tama yells for help fixing a drawer. Hine cleans the fridge. Nikau escapes to the shed. Manaaki ends up vacuuming half a sock.",
           "start": "2024-03-10T10:00:00",
           "end": "2024-03-10T12:00:00",
