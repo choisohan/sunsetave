@@ -8,7 +8,6 @@ import * as Buttons from '../components/Buttons'
 import {Clock} from '../components/Clock'
 import Ocean from '../components/Ocean'
 import CameraControls from '../components/CameraControls'
-import { usePopup } from '../contexts/PopupContext'
 import { Vector3 } from 'three'
 
 
@@ -28,9 +27,9 @@ export default function Avenue() {
   const [items, setItems] = useState(SAMPLES)
   const [editMode, setEditMode] = useState(false)
   const [grid, setGrid] = useState();
- // const popupContext = usePopup()
   const selected = useRef();
 
+  console.log('reload')
 
   useEffect(()=>{
     if(!grid) return;

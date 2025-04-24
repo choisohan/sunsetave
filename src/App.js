@@ -8,8 +8,8 @@ import HouseViewer from './pages/HouseViewer';
 import Test from './pages/Test';
 import About from './pages/About';
 import Lookdev from './pages/Lookdev';
-import HouseBuilder from './components/HouseBuilder';
-import { useEffect } from 'react';
+import HouseBuilder, { HouseCodeOutput } from './components/HouseBuilder';
+import { useEffect, useState } from 'react';
 
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
                   <Route path="/test" element={<Test /> } />
                   <Route path="/about" element={<About /> } />
                   <Route path="/dev" element={<Lookdev /> } />
-                  <Route path="/builder" element={<HouseBuilder /> } />\
+                  <Route path="/builder" element={<Builder />} />
                   <Route path="/:param" element={<HouseViewer className='!h-screen !w-screen'/> } />
               </Routes>
         </Body>
@@ -44,6 +44,12 @@ const Body = ({children})=>{
   {popupContext}
   </>
 }
+
+const Builder = ()=>{
+  const [property,setProperty] = useState();
+  return <div>
+    <HouseBuilder onUpdateProperty={setProperty} /><HouseCodeOutput property={property}/>
+  </div>}
 
 
 export default App;

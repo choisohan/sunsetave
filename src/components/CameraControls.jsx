@@ -21,7 +21,6 @@ export default function CameraControls(props) {
   }
 
   useEffect(()=>{
-    console.log('?')
     if(props.position){
       camera.position.set(props.position.x,props.position.y, props.position.z );
 

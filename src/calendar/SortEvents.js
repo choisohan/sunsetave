@@ -50,8 +50,6 @@ export const GetDayArrayFromRRule = (event, _timezone)=>{
 
 
 export const SortCalendarData = async (_calendar)=>{
-    console.log('sort start', _calendar)
-
     // filter first
     const tz = _calendar.timezone;
     const weekRange = WeekRange(tz, 1);

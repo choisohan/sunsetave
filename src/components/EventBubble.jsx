@@ -38,7 +38,6 @@ function PlaneObject({text, timeout}){
   const [hidden, setHidden] = useState(false)
 
   useEffect(()=>{
-    console.log( timeout )
     if(timeout!=='infinite'){
       setTimeout(()=>{setHidden(true)},timeout)
     }

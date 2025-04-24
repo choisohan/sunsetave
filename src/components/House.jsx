@@ -40,10 +40,8 @@ export default function House(props){
     if( props.id  && props.id !== property.id ){
       setMesh()
       FindCalendar(props.id).then( calendar =>{
-        console.log(calendar)
         const updatedProperty = { ...property, ...calendar , id: props.id };
         setProperty(updatedProperty)
-        console.log( 'found')
         if( props.onUpdateProperty)props.onUpdateProperty( updatedProperty )
       }).catch(err =>{
         console.log( '🔴'+err)

@@ -15,54 +15,30 @@ import moment from 'moment-timezone';
 import { useTimestamp } from '../contexts/envContext';
 
 export default function HouseViewer(props) {
-  const divRef = useRef();
   const { param } = useParams();
-  const [ name , setName ] = useState('????')
-  const [timezone, setTimezone] = useState();
 
+  const divRef = useRef();
   const canvasRef = useRef();  
-  const [events, setEvents]= useState();
+
   const [darkMode, setDarkMode] = useState(false);
   const [isMobile , setIsMobile] = useState(false);
-  const [timeDiff, setTimeDiff] = useState(0);
   const [cameraPosition, setCameraPosition] = useState( );
   const [cameraTarget, setCameraTarget] = useState( );
   const [transform , setTransform ] = useState({}); 
   const timestamp = useTimestamp();
-  const [description, setDescription] = useState('')
+  const [loaded, setLoaded] = useState(false); 
+
+  const [property, setProperty] = useState({
+    name:'????',
+    description:'', 
+    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,
+    timeDiff: 0, 
+    events: []
+  });
 
   
-  const onUpdateProperty =( newProperty )=>{
-  
-    if(!newProperty){
-      setName( 'NOT FOUND');
-      return;
-    }
-    if(newProperty.name) setName(newProperty.name)
-    if(newProperty.description) setDescription(newProperty.description)
-
-    if(newProperty.events) setEvents(newProperty.events);
-
-    if(newProperty.timezone){
-      const diff = moment.tz( "2025-04-16 12:00" , newProperty.timezone ).diff(moment("2025-04-16 12:00"))
-      setTimeDiff(diff);
-      setTimezone( newProperty.timezone);
-    }
-
-  }
-
-  useEffect(()=>{
-    if(!timestamp || !timezone )return; 
-    const tf = timestampToHourFloat(timestamp, timezone);
-    setDarkMode( (tf < 7/24 || tf > 19/24))
-
-
-  },[timestamp, timezone])
-
-
   useEffect(() => {
     var _isMobile = false; 
-
     if (divRef.current) {
       const width = divRef.current.getBoundingClientRect().width;
       if( width < 768 ){
@@ -71,13 +47,15 @@ export default function HouseViewer(props) {
       else{
         _isMobile =window.matchMedia("(max-width: 768px)").matches;
       }
-
       setIsMobile(_isMobile)
-
     }
+  }, []);
 
-
-  }, [ ]);
+  useEffect(()=>{
+    if(!timestamp )return; 
+    const tf = timestampToHourFloat(timestamp, property.timezone);
+    setDarkMode( (tf < 7/24 || tf > 19/24))
+  },[timestamp, property.timezone])
 
 
   const getGrids =(grids)=>{
@@ -101,18 +79,23 @@ export default function HouseViewer(props) {
     
 
   }
-
+  const onUpdateProperty =( newProperty )=>{
+    setProperty( x=>({...x,
+      ...newProperty, 
+      timeDiff: moment.tz( "2025-04-16 12:00" , newProperty.timezone ).diff(moment("2025-04-16 12:00"))
+    }) )
+    setLoaded(true)
+  }
 
 return (
-<div className={`houseViewer ${ darkMode ? "darkMode" : ""} ${isMobile ? "small" :"" } ${props.className}`}
+<div className={`houseViewer ${ darkMode ? "darkMode" : ""} ${isMobile ? "small" :"" } ${props.className} `}
                 ref={divRef} >
 
-  <Canvas className="w-full h-full "  camera={{fov: 20}} ref={canvasRef}>
-    <TerrainMesh editMode={false} timeDiff={timeDiff} setGrids={getGrids}/>
-    <CameraControls position={cameraPosition} target={cameraTarget} enableZoom={false}/>
-
-    <Sky timeDiff={timeDiff}/>
+  <Canvas className={`w-full h-full transition-opacity duration-500 ${!loaded ? "opacity-0":"" }`}  camera={{fov: 20}} ref={canvasRef}>
     <Pixelate />
+    <CameraControls position={cameraPosition} target={cameraTarget} enableZoom={false}/>
+    <Sky timeDiff={property.timeDiff}/>
+    <TerrainMesh editMode={false} timeDiff={property.timeDiff } setGrids={getGrids}/>
     <House id={props.id|| param}  transform={transform} onUpdateProperty ={ onUpdateProperty } hoverable={false} />
   </Canvas>
 
@@ -124,14 +107,14 @@ return (
       <span className='inline-flex '>
         <img src='/images/userProfile.png' className='hidden w-[35px] h-[35px] lg:w-[70px] lg:h-[70px]' alt='profile'/>
        <a href={`/`+ props.id|| param  }>
-        <span className='whitespace-nowrap text-4xl'>{ name }</span>
+        <span className='whitespace-nowrap text-4xl'>{ property.name }</span>
        </a>
       </span>
     </div>
-    <span>{ description }</span>
+    <span>{ property.description }</span>
 
     <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black justify-self-end text-sm' >
-        <Clock /> {timezone}
+        <Clock /> {property.timezone}
     </div>
 
 
@@ -142,7 +125,7 @@ return (
       <Buttons.RecordButton canvasRef={canvasRef}/>
       <Buttons.ReloadButton />
     </div>
-    <EventTable events={events}/>
+    <EventTable events={property.events}/>
 
   </div>
 

@@ -90,7 +90,6 @@ export default function HouseBuilder(props) {
   }
 
   const itsValidHouse = ()=>{
-    console.log( property )
       if(props.onValidHouse)props.onValidHouse();
   }
 

@@ -1,4 +1,4 @@
-import React,{useContext,useEffect,useState} from "react";
+import React,{useContext,useState} from "react";
 
 const PopupContext = React.createContext();
 const UpdatePopupContext = React.createContext();
@@ -8,10 +8,6 @@ const UpdatePopupContext = React.createContext();
 export function PopupProvider({children}){
     const [ Popup,setPopup] = useState();
 
-
-    useEffect(()=>{
-        console.log( 'pop' , Popup)
-    },[Popup])
     return (
             <UpdatePopupContext.Provider value={setPopup}>
                 <PopupContext.Provider value={Popup}>
