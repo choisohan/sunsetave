@@ -8,7 +8,7 @@ import { Pixelate } from '../shaders/CustomPostProcessing';
 import Sky from '../components/Sky';
 import * as Buttons from '../components/Buttons';
 import {  Vector3 , Object3D } from 'three';
-import { Clock, timestampToHourFloat } from '../components/Clock';
+import { Clock, GetColorByTZ, timestampToHourFloat } from '../components/Clock';
 import { EventTable } from '../components/EventTable';
 import TerrainMesh from '../components/TerrainMesh';
 import moment from 'moment-timezone';
@@ -107,14 +107,14 @@ return (
       <span className='inline-flex '>
         <img src='/images/userProfile.png' className='hidden w-[35px] h-[35px] lg:w-[70px] lg:h-[70px]' alt='profile'/>
        <a href={`/`+ props.id|| param  }>
-        <span className='whitespace-nowrap text-4xl'>{ property.name }</span>
+        <span className='whitespace-nowrap text-3xl'>{ property.name }</span>
        </a>
       </span>
     </div>
     <span className='text-sm'>{ property.description.length > 60 ? property.description.slice(0, 55)+"..." : property.description}</span>
 
     <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black justify-self-end text-sm' >
-        <Clock /> {property.timezone}
+        <Clock timezone={property.timezone}/> <div  style={{color: GetColorByTZ(property.timezone)}}>{property.timezone}</div>
     </div>
 
 

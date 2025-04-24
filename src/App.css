@@ -159,6 +159,7 @@ img{
   padding: 2px 5px;
   max-width: 550px;
   position: relative !important;
+  color:black;
 }
 .bubble::after {
   content: "";
