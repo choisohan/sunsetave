@@ -1,6 +1,6 @@
 {
     "name": "☕Mùa Nắng Café",
-    "description": "'Season of Sun' in English. Tourists flock for their famous coconut coffee and cold-pressed citrus espresso.",
+    "description": "'Season of Sun' in English. Tourists flock for their famous coconut coffee and cold-pressed citrus espresso. {D:A1,W:LW,w:FRW,P:PerlinNoise,p:CW,mesh:2}",
     "timezone": "Asia/Ho_Chi_Minh",
     "events":[
         {

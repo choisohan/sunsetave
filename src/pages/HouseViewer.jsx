@@ -111,7 +111,7 @@ return (
        </a>
       </span>
     </div>
-    <span>{ property.description }</span>
+    <span className='text-sm'>{ property.description.length > 60 ? property.description.slice(0, 55)+"..." : property.description}</span>
 
     <div className='bg-[#748060] p-1 m-1 w-fit border-4 border-black justify-self-end text-sm' >
         <Clock /> {property.timezone}
