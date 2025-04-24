@@ -9,7 +9,7 @@ import Test from './pages/Test';
 import About from './pages/About';
 import Lookdev from './pages/Lookdev';
 import HouseBuilder, { HouseCodeOutput } from './components/HouseBuilder';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 
 function App() {
@@ -46,9 +46,11 @@ const Body = ({children})=>{
 }
 
 const Builder = ()=>{
-  const [property,setProperty] = useState();
+  const [design,setDesign] = useState();
+
   return <div>
-    <HouseBuilder onUpdateProperty={setProperty} /><HouseCodeOutput property={property}/>
+    <HouseBuilder onUpdateProperty={setDesign} />
+    <HouseCodeOutput design={design}/>
   </div>}
 
 

@@ -10,30 +10,33 @@ import { useThree , useFrame } from '@react-three/fiber';
 
 
 export default function HouseBuilder(props) {
-  const [property, setProperty]= useState( { ...props.property } );
+  const [design, setDesign] = useState({});
   const modelContext = useHouseModel(); 
   const textureContext = useTexture(); 
 
+  const GetMapOptions = (folderName)=>(
+    Object.keys(textureContext).filter( key=> key.split('/')[0]===folderName.toUpperCase() ).map(name=> name.split('/')[1])
+  )
 
   const swapGeometry=(changeNumb)=>{
-    const currentNumb = ('mesh' in property) ? parseInt(property.mesh) : 0 ; 
+    const currentNumb = ('mesh' in design) ? parseInt(design.mesh) : 0 ; 
     const maxNumb = Object.keys(modelContext).length-1; 
     var newNumb = currentNumb + changeNumb; 
     if(newNumb>maxNumb){ newNumb = 1}
     if(newNumb < 1){ newNumb = maxNumb}
-    setProperty(x=>({...x, mesh: newNumb }))
+    setDesign(x=>({...x, mesh: newNumb }))
   }
 
   const swapMap = ( selectedSection, changeNumb)=>{
-    var folderName = selectedSection;
-
-    const optionNames = Object.keys(textureContext).filter(key=> key.includes(folderName) ).map(name=> name.split('/')[1]);
-    var currentInt = optionNames.indexOf(property[selectedSection]);
+    const optionNames = GetMapOptions(selectedSection);
+    var currentInt = optionNames.indexOf(design[selectedSection]);
     if(!currentInt) currentInt = 0; 
     var nextIndex = currentInt + changeNumb;
+    if(nextIndex>=optionNames.length ) nextIndex = 0;  
 
-    setProperty(_property =>{
-      const copy = {..._property};
+
+    setDesign(design =>{
+      const copy = {...design};
       copy[selectedSection] = optionNames[nextIndex] ;
       return copy; 
     })
@@ -41,21 +44,22 @@ export default function HouseBuilder(props) {
 
   }
 
-  const swapRandomMap = (selectedSection)=>{
-    var folderName = selectedSection.toUpperCase();
-   const optionNames = Object.keys(textureContext).filter(key=> key.includes(folderName) ).map(name=> name.split('/')[1]);
-   const randomIndex = Math.floor(Math.random()*(optionNames.length-1));
-   setProperty(_property =>{
-    const copy = {..._property};
-    copy[selectedSection] = optionNames[randomIndex] ;
-    return copy; 
-  })
 
-  }
+
+  const swapRandomMap = (selectedSection)=>{
+   const optionNames = GetMapOptions(selectedSection);
+
+   const randomIndex = Math.floor(Math.random()*(optionNames.length-1));
+   setDesign(_design =>{
+      const copy = {..._design};
+      copy[selectedSection] = optionNames[randomIndex] ;
+      return copy; 
+    })
+    }
 
   const generateRandom = ()=>{
     if(!modelContext || !textureContext ) return;
-    swapGeometry(randInt(1,4));
+    swapGeometry(randInt(1,7));
     swapRandomMap('R')
     swapRandomMap('P')
     swapRandomMap('p')
@@ -68,13 +72,13 @@ export default function HouseBuilder(props) {
 
 
   useEffect(()=>{
-    generateRandom();
+   generateRandom();
   },[modelContext, textureContext ])
   
   useEffect(()=>{
-    if(!property) return;
-    if(props.onUpdateProperty) props.onUpdateProperty(property);
-  },[property])
+    if(!design) return;
+    if(props.onUpdateProperty) props.onUpdateProperty(design);
+  },[design])
 
   const onPointerMove =e=>{
     const selectedMaterial  = e.object.material[e.face.materialIndex];
@@ -104,7 +108,7 @@ export default function HouseBuilder(props) {
         <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,12], fov: 12 }} > 
             <CameraLookAt/>
             <Pixelate />
-            <House id={props.id} design={property} timeout={props.timeout} onClick={onClick}
+            <House id={props.id} design={design} timeout={props.timeout} onClick={onClick}
                   onPointerMove={onPointerMove}
                   onPointerOut ={onPointerOut}
                   updateTime={false} hoverable={false}
@@ -150,22 +154,22 @@ function CameraLookAt() {
 }
 
 
-export const HouseCodeOutput = ({property}) =>{
+export const HouseCodeOutput = ({design}) =>{
 
   const [code, setCode] = useState('');
   const [copying, setCopying] =useState(false);
 
   useEffect(()=>{
-    if(!property) return; 
+    if(!design) return; 
     const sections = ["D","W","w","P","p","mesh"]
     var string = '';
     sections.forEach(section=>{
-      string+= `${section}:${property[section]},`
+      string+= `${section}:${design[section]},`
     })
     string = '{'+ string.substring(0, string.length - 1)+'}';
 
     setCode(string);
-  },[property])
+  },[design])
 
   const CopyCode =()=>{
     setCopying(true);
@@ -176,7 +180,8 @@ export const HouseCodeOutput = ({property}) =>{
     },500)
   }
 
-  if(!property) return;
+
+  if(!design) return;
   return <div className=' flex ' >
     <div className ='[line-break:anywhere] bg-gray-100 p-2'>{code}</div>
     {copying? "Copied!" : <CozyButton className='pixelButton' onClick={CopyCode}>Copy</CozyButton> }
