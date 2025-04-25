@@ -32,7 +32,7 @@ export const GetDayArrayFromRRule = (event, _timezone)=>{
 
 
     const rule = new RRule(options);
-    const recentOccurrences = rule.between( DateFromNow(-3), DateFromNow(+3) , true);
+    const recentOccurrences = rule.between( DateFromNow(-10), DateFromNow(+10) , true); // todo: this matters. 
 
     return recentOccurrences.map( date => {
         const minutes = moment(event.end).diff( moment(event.start) ,'minutes' );
