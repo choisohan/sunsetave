@@ -3,7 +3,9 @@ import HouseBuilder, { HouseCodeOutput } from './HouseBuilder'
 import { CozyButton } from './Buttons'
 
 
-
+const SearchButton = ()=>{
+  return 
+}
 export default function StepByStep() {
 
   const icalInput = useRef();
@@ -29,7 +31,7 @@ export default function StepByStep() {
 
     <div className='text-2xl	leading-loose	'>
       1. Go to Google Calendar and click setting<br />
-      2. Make it public and save <br />
+      2. turn on "Make available to public" save (important!) <br />
       3  Copy and paste "PUBLIC ADDRESS IN ICAL FORMAT"<br />
     </div>
 
@@ -44,15 +46,17 @@ export default function StepByStep() {
 
 
 
+
+
     <div className={`mb-20 ${steps <4? "h-0 overflow-hidden":""}`}>
         
         <div className='text-2xl leading-loose	'>
         4. Design your house<br />
         </div>
 
-<div className='place-items-center'>
-<HouseBuilder id={id} className={`max-w-[400px]`} timeout='infinite'
-                        onUpdateProperty={setProperty} onValidHouse={()=>{setSteps(4)}} />
+  <div className='place-items-center'>
+    <HouseBuilder id={id} timeout='infinite'
+                            onUpdateProperty={setProperty} onValidHouse={()=>{setSteps(4)}} />
 
             <CozyButton className='pixelButton' onClick={()=>{setSteps(5)}}>I like it. Next</CozyButton>
 </div>
@@ -73,7 +77,10 @@ export default function StepByStep() {
 </div>
 
         <div className='text-2xl leading-loose	'>
-        6. save the calendar once again.<br />
+        6. Complete! I told you it's simple<br />
+        <a href={'/'+id}>
+        <CozyButton className='pixelButton'>Enter</CozyButton>
+        </a>
         </div>
     </div>
         

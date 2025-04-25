@@ -9,7 +9,8 @@ import {Clock} from '../components/Clock'
 import Ocean from '../components/Ocean'
 import CameraControls from '../components/CameraControls'
 import { Vector3 } from 'three'
-
+import { useUpdatePopup } from '../contexts/PopupContext'
+import HouseDetailWindow from '../components/HouseDetailWindow'
 
 
 const stored = localStorage.getItem("houses");
@@ -35,12 +36,9 @@ export default function Avenue() {
   const [grid, setGrid] = useState();
   const canvasRef = useRef ();
   const selectedRef = useRef();
-
-  console.log('🔄️RELOAD...')
+  const setPopup = useUpdatePopup();
 
   useEffect(()=>{
-    console.log('- grid or items are updated.')
-
     if(!grid) return;
     setItems( _items =>{
       return _items.map( _item =>{
@@ -49,9 +47,7 @@ export default function Avenue() {
         return {..._item, ...transform};
       })
     })
-  },[grid, items.length ])
-
-
+  },[grid ])
 
   const onEnterNewCell= i =>{
     if( editMode && selectedRef.current ){
@@ -85,6 +81,13 @@ export default function Avenue() {
   }
 
 
+  const OnClickHouse = (_property, _i ) =>{
+    if(editMode){
+      selectedRef.current = _i!== selectedRef.current ? _i : null
+    }else{
+      setPopup(<HouseDetailWindow property={_property} />);
+    }
+  }
 
   return (
     <>
@@ -99,7 +102,7 @@ export default function Avenue() {
           <House key={i} id={item.id} transform={{ position : item.position, rotation: item.rotation }}
                 detailWindowOpen={!editMode}
                 onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}
-                onClick={()=>{  selectedRef.current = i!= selectedRef.current ? i : null  }} />
+                onClick={(x)=>{OnClickHouse(x,i) }} />
         )}
         <Ocean />
     </Canvas>

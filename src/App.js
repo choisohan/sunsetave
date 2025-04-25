@@ -10,6 +10,7 @@ import About from './pages/About';
 import Lookdev from './pages/Lookdev';
 import HouseBuilder, { HouseCodeOutput } from './components/HouseBuilder';
 import { useState } from 'react';
+import StepByStep from './components/StepByStep';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                   <Route path="/test" element={<Test /> } />
                   <Route path="/about" element={<About /> } />
                   <Route path="/dev" element={<Lookdev /> } />
+                  <Route path="/stepbystep" element={<StepByStep /> } />
                   <Route path="/builder" element={<Builder />} />
                   <Route path="/:param" element={<HouseViewer className='!h-screen !w-screen'/> } />
               </Routes>

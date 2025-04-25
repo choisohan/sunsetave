@@ -36,6 +36,7 @@ export default function HouseViewer(props) {
     events: []
   });
 
+
   
   useEffect(() => {
     var _isMobile = false; 

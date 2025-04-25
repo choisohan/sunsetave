@@ -94,16 +94,20 @@ export default function HouseBuilder(props) {
   }
 
   const itsValidHouse = ()=>{
+    console.log('its valid')
       if(props.onValidHouse)props.onValidHouse();
   }
 
+  useEffect(()=>{
+    console.log( '🤔', props.id )
+  },[props.id])
 
   const onClick = e =>{
     const selectedMaterial  = e.object.material[e.face.materialIndex];
     swapMap( selectedMaterial.name.replace('_mat','') , e.nativeEvent.type ==="contextmenu" ? -1: 1 );
   }
 
-  return <div className={'relative max-w-[800px] ' +props.className} >
+  return <div className={'relative  w-full max-w-[800px] ' +props.className} >
 
         <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,12], fov: 12 }} > 
             <CameraLookAt/>
