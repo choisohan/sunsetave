@@ -112,7 +112,7 @@ export const AddNewHouseButton =(props)=>{
   </CozyButton>
   {opened ? <AddNewHouseForm currentIds={props.currentIds} onClose={()=>{setOpened(false)}} onAddNew={newProperty=>{
     setOpened(false);
-    props.onAddNew(newProperty);
+    props.onAddNew(newProperty.id);
   }}/> :null }
   </>
 }
@@ -129,12 +129,32 @@ export const InfoButton = (props)=>{
 
 
 
-export const EditModeButton = (props)=>{
-  return <CozyButton  className='pixelButton'  tooltip="Edit My sunset Avenue" onClick={()=>{props.setEditMode(!props.editMode)}}>
+export const EditModeButton = ({setEditMode})=>{
+
+  const setTimezoneOverride = useSetTimezoneOverride();
+
+  const onClick =()=>{
+    setEditMode(true)
+    setTimezoneOverride( Intl.DateTimeFormat().resolvedOptions().timeZone);
+  }
+
+  return <CozyButton  className='pixelButton'  tooltip="Edit My sunset Avenue" onClick={onClick}>
         <img alt='edit' src='/images/hammer_and_pick.png' />    
     </CozyButton>
 }
 
+export const SaveButton = (props)=>{
+  const setTimezoneOverride = useSetTimezoneOverride();
+
+  const onClick =()=>{
+    setTimezoneOverride();
+    props.onClick();
+  }
+
+  return <CozyButton  className='pixelButton'  tooltip="Save and Leave" onClick={onClick}>
+        <img alt='save' src='/images/save.png' />    
+    </CozyButton>
+}
 
 export const RecordButton = (props)=>{
 

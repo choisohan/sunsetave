@@ -165,7 +165,6 @@ const ReplaceMaterial= _mat=>{
 
     if(_mat.name.includes('tree')){
         const mat =  LeavesMaterial();
-        console.log( _mat  )
         mat.uniforms.uMap.value = map;
         _mat = mat; 
     }

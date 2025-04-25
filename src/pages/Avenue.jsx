@@ -11,28 +11,36 @@ import CameraControls from '../components/CameraControls'
 import { Vector3 } from 'three'
 
 
-const SAMPLES = [
-  {id : 'sample&&paris' , cellNumb : 0  },
-  {id : 'sample&&tokyo' , cellNumb : 1 },   
-  {id : 'sample&&ny' , cellNumb : 2 },
-  {id : 'sample&&hoian' , cellNumb : 3},
-  {id : 'sample&&fes' , cellNumb : 4},
-  {id : 'sample&&van' , cellNumb : 5},
-  {id : 'sample&&nz' , cellNumb : 6},
-  {id : 'sample&&bs' , cellNumb : 7},
-]
+
+const stored = localStorage.getItem("houses");
+var array = [] ;
+if (stored) {
+  array = JSON.parse(stored);
+} else {
+  array = [  {id : 'sample&&paris' , cellNumb : 0  },
+    {id : 'sample&&tokyo' , cellNumb : 1 },   
+    {id : 'sample&&ny' , cellNumb : 2 },
+    {id : 'sample&&hoian' , cellNumb : 3},
+    {id : 'sample&&fes' , cellNumb : 4},
+    {id : 'sample&&van' , cellNumb : 5},
+    {id : 'sample&&nz' , cellNumb : 6},
+    {id : 'sample&&bs' , cellNumb : 7},]
+}
+
 
 
 export default function Avenue() {
-  const [items, setItems] = useState(SAMPLES)
-  const [editMode, setEditMode] = useState(true)
+  const [items, setItems] = useState(array)
+  const [editMode, setEditMode] = useState(false)
   const [grid, setGrid] = useState();
-  const [ selected , setSelected] = useState();
   const canvasRef = useRef ();
+  const selectedRef = useRef();
 
-  console.log('reload')
+  console.log('🔄️RELOAD...')
 
   useEffect(()=>{
+    console.log('- grid or items are updated.')
+
     if(!grid) return;
     setItems( _items =>{
       return _items.map( _item =>{
@@ -46,18 +54,16 @@ export default function Avenue() {
 
 
   const onEnterNewCell= i =>{
-
-    if( editMode && selected ){
+    if( editMode && selectedRef.current ){
       const transform = grid[i];
       setItems(_arr =>{
         const copied = [..._arr];
-        copied[selected] = {...copied[selected],  cellNumb : i , ...transform  }
+        copied[selectedRef.current] = {...copied[selectedRef.current],  cellNumb : i , ...transform  }
         return copied; 
       })
 
     }
   }
-
 
   const onHouseUpdate = (newProperty, i ) =>{
     if(!newProperty){
@@ -67,11 +73,17 @@ export default function Avenue() {
     }
   }
 
-  const AddNewHouse = (newProperty)=>{
-    setItems(_arr=> [..._arr, newProperty])
-    setSelected( items.length )
+  const AddNewHouse = (newID )=>{
+    setItems(_arr=> [..._arr, { id : newID }])
+    selectedRef.current = ( items.length )
     setEditMode(true)
   }
+
+  const OnSaveUpdate = ()=>{
+    setEditMode(false)
+    localStorage.setItem( "houses" , JSON.stringify(items));
+  }
+
 
 
   return (
@@ -82,12 +94,12 @@ export default function Avenue() {
         <Pixelate size={3} />    
 
         <Sky />
-        <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell}   onClick={()=>{setSelected() }} />
+        <TerrainMesh editMode={editMode} setGrids={setGrid} onEnterNewCell={onEnterNewCell}  />
         {items.map( (item,i) =>
           <House key={i} id={item.id} transform={{ position : item.position, rotation: item.rotation }}
                 detailWindowOpen={!editMode}
                 onUpdateProperty={(x)=>{onHouseUpdate(x,i)}}
-                onClick={()=>{setSelected(i) }} />
+                onClick={()=>{  selectedRef.current = i!= selectedRef.current ? i : null  }} />
         )}
         <Ocean />
     </Canvas>
@@ -97,17 +109,30 @@ export default function Avenue() {
         <Clock />
       </div>
       <div className='flex max-w-full gap-0 lg:gap-1 '>
-        <Buttons.InfoButton />
-        <Buttons.SkipBackwardButton /><Buttons.SkipForwardButton /> <Buttons.FastForwardButton />
-        <Buttons.TimeShiftButton />
-        <Buttons.RecordButton canvasRef={canvasRef} />
-
-        <Buttons.EditModeButton editMode={editMode} setEditMode={setEditMode}/>
-        <Buttons.AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
-        <Buttons.ReloadButton onClick={()=>{ setItems(x=>[...x] )}} /> {/* todos : Reload needs more works */}
+        {!editMode? <ControlPannel canvasRef ={canvasRef} editMode={editMode} setEditMode={setEditMode}/>:
+                    <EditPannel AddNewHouse={AddNewHouse} items={items} OnSaveUpdate={OnSaveUpdate}/>}
       </div>
     </div>
     </>)
 
 }
 
+
+
+const ControlPannel = ({ canvasRef , setEditMode })=>{
+  return <>
+        <Buttons.InfoButton />
+        <Buttons.SkipBackwardButton /><Buttons.SkipForwardButton /> <Buttons.FastForwardButton />
+        <Buttons.TimeShiftButton />
+        <Buttons.RecordButton canvasRef={canvasRef} />
+        <Buttons.EditModeButton setEditMode={setEditMode}/>
+  </>
+}
+
+const EditPannel = ({AddNewHouse,items, OnSaveUpdate})=>{
+  return <>
+      <Buttons.AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
+      <Buttons.SaveButton onClick={OnSaveUpdate}/>
+
+  </>
+}
