@@ -82,6 +82,7 @@ export default function Avenue() {
 
 
   const OnClickHouse = (_property, _i ) =>{
+    console.log(_property, _i  )
     if(editMode){
       selectedRef.current = _i!== selectedRef.current ? _i : null
     }else{

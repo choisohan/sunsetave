@@ -4,7 +4,7 @@ import { EmojiParticles, extractEmojis , findEmojiType, particleStyles  } from '
 import { Html } from '@react-three/drei';
 
 
-export default function EventBubble({ calName, event , isHovered, timeout = 2800 }) {
+export default function EventBubble({ calName, position,  event , isHovered, timeout = 2800 }) {
 
     const [emojis, setEmojis ] = useState();
     const [bubbles, setBubbles] = useState();
@@ -32,7 +32,8 @@ export default function EventBubble({ calName, event , isHovered, timeout = 2800
     
   },[ event ])
 
-  return <>
+
+  return <group position={position}>
   
   {emojis}
 
@@ -45,7 +46,9 @@ export default function EventBubble({ calName, event , isHovered, timeout = 2800
         }
 
   </Html>
-  </>; 
+  </group>; 
+
+
 
 }
 

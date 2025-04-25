@@ -129,7 +129,8 @@ export default function House(props){
 
 
   const onClick = e =>{
-    if(props.onClick)props.onClick(e)}
+    console.log('house is clicked')
+    if(props.onClick)props.onClick(property)}
 
 
   const onPointerOut = (e)=>{
@@ -152,21 +153,18 @@ export default function House(props){
                 onClick={onClick} onContextMenu={onClick}
                 >
 
-      {mesh ? <>
-            
-            <primitive object={mesh} scale={[.75,.75,.75] } />
-            <Html><audio ref={audioRef} src="/audios/jump.wav" /></Html>
-            
-            
-            <group position={[ 0 , getMeshHeight(meshRef.current) -.75  , -.5 ]}>
-                <EventBubble calName={property.name }
-                            event={ property.events && currentEventIndex  ? property.events[currentEventIndex] : null }
-                            timeout={props.timeout}
-                            isHovered={isHovered}/>
-            </group> 
+      <EventBubble calName={property.name }
+                    event={ property.events && currentEventIndex  ? property.events[currentEventIndex] : null }
+                    position={[ 0 , getMeshHeight(meshRef.current) -.75  , -.5 ]}
+                    timeout={props.timeout}
+                    isHovered={isHovered}/>   
 
-          </>
-          : <Html>Loading</Html>}
+
+      <Html><audio ref={audioRef} src="/audios/jump.wav" /></Html>
+
+      {mesh ? <primitive object={mesh} scale={[.75,.75,.75] } /> : <Html>Loading</Html>}
+
+      
     </mesh>
   }
 
