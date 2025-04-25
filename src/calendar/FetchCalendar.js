@@ -35,6 +35,7 @@ export const fetchCalendar = async (icalUrl) => {
             const vevent = new ICAL.Event(event);
             const rruleProp = event.getFirstPropertyValue("rrule");
             const rrule = rruleProp ? new ICAL.Recur(rruleProp) : null;
+            if( !rrule ) return; // filter whole day event
             return {
                 summary: vevent.summary,
                 description: vevent.description,
@@ -42,7 +43,7 @@ export const fetchCalendar = async (icalUrl) => {
                 end: vevent.endDate.toString(),
                 rrule: rrule ? rrule.toString() : null 
             };
-        });
+        }).filter ( x=> x )
 
         return Promise.resolve(parsedEvents).then(eventArray=>
         {

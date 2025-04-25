@@ -56,7 +56,6 @@ export const SortCalendarData = async (_calendar)=>{
 
     const events =  _calendar.events.filter(evt => moment(evt.start).isBefore(weekRange.end))
                                     .map(evt => ({...evt, days: GetDayArrayFromRRule(evt, tz) }) )
-   
     var arr = [];
     const promises = events.map(evt =>
         new Promise((resolve,reject)=>{
