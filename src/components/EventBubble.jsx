@@ -4,10 +4,11 @@ import { EmojiParticles, extractEmojis , findEmojiType, particleStyles  } from '
 import { Html } from '@react-three/drei';
 
 
-export default function EventBubble({ calName, position,  event , isHovered, timeout = 2800 }) {
+export default function EventBubble({ calName, position,  event , isHovered, timeout = 1800 }) {
 
     const [emojis, setEmojis ] = useState();
     const [bubbles, setBubbles] = useState();
+
 
   useEffect(()=>{
     if(!event) return; 
@@ -25,7 +26,6 @@ export default function EventBubble({ calName, position,  event , isHovered, tim
       _emojis.push(<EmojiParticles key={_emojis.length} emoji={emj} style={style}/>)
 
     })
-
     _bubbles.push(<PlaneObject key={_bubbles.length} text={ timeout === 'infinite'? calName :  event.summary} timeout={timeout} />)
     setBubbles(_bubbles);
     setEmojis(_emojis)
@@ -57,11 +57,16 @@ function PlaneObject({text, timeout}){
   const [hidden, setHidden] = useState(false)
 
   useEffect(()=>{
-    if(timeout!=='infinite'){
-      setTimeout(()=>{setHidden(true)},timeout)
-    }
-  },[])
+    setHidden(false)
 
-  return <span className={`bubble ${hidden ? '':''}`}>{ text }</span>
+    if(timeout==='infinite') return; 
+
+    setTimeout(()=>{
+      setHidden(true)
+    },timeout)
+
+  },[text])
+
+  return <span className={`bubble ${hidden ? 'hidden':''}`}>{ text }</span>
 
 }

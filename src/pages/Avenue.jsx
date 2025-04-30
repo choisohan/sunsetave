@@ -12,20 +12,22 @@ import { Vector3 } from 'three'
 import { useUpdatePopup } from '../contexts/PopupContext'
 import HouseDetailWindow from '../components/HouseDetailWindow'
 
+const defaultItems =  [  {id : 'sample&&paris' , cellNumb : 0  },
+  {id : 'sample&&tokyo' , cellNumb : 1 },   
+  {id : 'sample&&ny' , cellNumb : 2 },
+  {id : 'sample&&hoian' , cellNumb : 3},
+  {id : 'sample&&fes' , cellNumb : 4},
+  {id : 'sample&&van' , cellNumb : 5},
+  {id : 'sample&&nz' , cellNumb : 6},
+  {id : 'sample&&bs' , cellNumb : 7},
+  {id : 'sample&&gk' , cellNumb : 10},]
 
 const stored = localStorage.getItem("houses");
 var array = [] ;
 if (stored) {
   array = JSON.parse(stored);
 } else {
-  array = [  {id : 'sample&&paris' , cellNumb : 0  },
-    {id : 'sample&&tokyo' , cellNumb : 1 },   
-    {id : 'sample&&ny' , cellNumb : 2 },
-    {id : 'sample&&hoian' , cellNumb : 3},
-    {id : 'sample&&fes' , cellNumb : 4},
-    {id : 'sample&&van' , cellNumb : 5},
-    {id : 'sample&&nz' , cellNumb : 6},
-    {id : 'sample&&bs' , cellNumb : 7},]
+  array = defaultItems;
 }
 
 
@@ -37,6 +39,9 @@ export default function Avenue() {
   const canvasRef = useRef ();
   const selectedRef = useRef();
   const setPopup = useUpdatePopup();
+
+  
+  console.log('render again')
 
   useEffect(()=>{
     if(!grid) return;
@@ -51,6 +56,9 @@ export default function Avenue() {
 
   const onEnterNewCell= i =>{
     if( editMode && selectedRef.current ){
+      const isOccupiedItems = items.filter( item=> item.cellNumb === i )
+      if(isOccupiedItems.length > 0 ) return; 
+
       const transform = grid[i];
       setItems(_arr =>{
         const copied = [..._arr];
@@ -82,7 +90,6 @@ export default function Avenue() {
 
 
   const OnClickHouse = (_property, _i ) =>{
-    console.log(_property, _i  )
     if(editMode){
       selectedRef.current = _i!== selectedRef.current ? _i : null
     }else{
@@ -94,7 +101,7 @@ export default function Avenue() {
     <>
     <Canvas camera={{ fov: 20}} style={{width:'100vw', height:'100vh'}}  >
 
-        <CameraControls position={new Vector3(-35,  25 ,-15)} target={new Vector3(-7  , 0 , 5)} />
+        <CameraControls position={new Vector3(-34, 5,-22)} target={new Vector3(-8  ,-1 , 5)} />
         <Pixelate size={3} />    
 
         <Sky />
@@ -113,8 +120,13 @@ export default function Avenue() {
         <Clock />
       </div>
       <div className='flex max-w-full gap-0 lg:gap-1 '>
-        {!editMode? <ControlPannel canvasRef ={canvasRef} editMode={editMode} setEditMode={setEditMode}/>:
-                    <EditPannel AddNewHouse={AddNewHouse} items={items} OnSaveUpdate={OnSaveUpdate}/>}
+        {!editMode? <ControlPannel canvasRef ={canvasRef} editMode={editMode} setEditMode={setEditMode} AddNewHouse={AddNewHouse} items={items}/>:
+                    <EditPannel  OnSaveUpdate={OnSaveUpdate} onLeave={()=>{setEditMode(false)}}
+                    onReset={()=>{
+                      setItems(defaultItems);
+                      setEditMode(false)
+                      localStorage.setItem( "houses" , JSON.stringify(defaultItems));
+                                            }}/>}
       </div>
     </div>
     </>)
@@ -123,20 +135,21 @@ export default function Avenue() {
 
 
 
-const ControlPannel = ({ canvasRef , setEditMode })=>{
+const ControlPannel = ({ canvasRef , items , setEditMode , AddNewHouse })=>{
   return <>
         <Buttons.InfoButton />
         <Buttons.SkipBackwardButton /><Buttons.SkipForwardButton /> <Buttons.FastForwardButton />
         <Buttons.TimeShiftButton />
         <Buttons.RecordButton canvasRef={canvasRef} />
+        <Buttons.AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
         <Buttons.EditModeButton setEditMode={setEditMode}/>
   </>
 }
 
-const EditPannel = ({AddNewHouse,items, OnSaveUpdate})=>{
+const EditPannel = ({OnSaveUpdate , onLeave , onReset })=>{
   return <>
-      <Buttons.AddNewHouseButton onAddNew={AddNewHouse} currentIds={items.map(item=> item.id )} />
       <Buttons.SaveButton onClick={OnSaveUpdate}/>
-
+      <Buttons.CozyButton className='pixelButton' onClick={onLeave}>Releave</Buttons.CozyButton>
+      <Buttons.CozyButton className='pixelButton' onClick={onReset}>Reset</Buttons.CozyButton>
   </>
 }

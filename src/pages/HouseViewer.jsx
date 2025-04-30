@@ -94,7 +94,7 @@ return (
 
   <Canvas className={`w-full h-full transition-opacity duration-500 ${!loaded ? "opacity-0":"" }`}  camera={{fov: 20}} ref={canvasRef}>
     <Pixelate />
-    <CameraControls position={cameraPosition} target={cameraTarget} enableZoom={false}/>
+    {!cameraPosition ? null : <CameraControls position={cameraPosition} target={cameraTarget} enableZoom={false}/>}
     <Sky timeDiff={property.timeDiff}/>
     <TerrainMesh editMode={false} timeDiff={property.timeDiff } setGrids={getGrids}/>
     <House id={props.id|| param}  transform={transform} onUpdateProperty ={ onUpdateProperty } hoverable={false} />

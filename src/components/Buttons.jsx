@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSetTimezoneOverride, useTimestamp, useTimezoneOverride, useUpdateTimestamp } from "../contexts/envContext"
 import AddNewHouseForm from "./AddNewHouseForm";
-import Info from "./Info";
 import { useUpdatePopup } from "../contexts/PopupContext";
 
 
@@ -32,17 +31,22 @@ export const FastForwardButton = ()=>{
   useEffect(() => {
     if (!isPlaying) return;
 
+    updateTimestamp( new Date().valueOf() - (3600000* 24* 7 ) ); //jump to a week ago
+
     const interval = setInterval(() => {
-      updateTimestamp(x => x + 3600000 / 5);
+      updateTimestamp(x =>{
+        if( x >=  new Date().valueOf() ){
+          setIsPlaying(false)
+        }
+        return x + 3600000 / 5
+      });
     }, 200); // update every 200ms
   
     return () => clearInterval(interval);
   }, [isPlaying, updateTimestamp]);
 
 
-
-
-  return <CozyButton className='pixelButton' tooltip="Play fast forward" onClick={()=>{setIsPlaying(!isPlaying);}} >
+  return <CozyButton className='pixelButton' tooltip="Recap last week" onClick={()=>{setIsPlaying(!isPlaying);}} >
    <img alt='fast_forward' src={!isPlaying? '/images/fast_forward.png' : '/images/pause.png' } />
      </CozyButton>
   
@@ -104,26 +108,31 @@ export const ReloadButton = (props)=>{
 
 
 export const AddNewHouseButton =(props)=>{
-  const [opened, setOpened] = useState(false);
 
-  return <>
-  <CozyButton  className='pixelButton'  tooltip="Add new calendar as a house" onClick={()=>{setOpened(true)}}>
+  const updatePopup = useUpdatePopup();
+
+  const onClick = ()=>{
+    updatePopup(<AddNewHouseForm currentIds={props.currentIds}
+                                  onAddNew={newProperty=>{
+                                    props.onAddNew(newProperty.id);
+                                    updatePopup()
+                                  }}/>
+  )
+  }
+  return <CozyButton  className='pixelButton'  tooltip="Add new calendar as a house" onClick={onClick}>
     <img alt='add' src='/images/plus_sign.png' />
   </CozyButton>
-  {opened ? <AddNewHouseForm currentIds={props.currentIds} onClose={()=>{setOpened(false)}} onAddNew={newProperty=>{
-    setOpened(false);
-    props.onAddNew(newProperty.id);
-  }}/> :null }
-  </>
+
 }
 
 export const InfoButton = (props)=>{
 
-  return <a href='/about'>
-<CozyButton  className='pixelButton'  tooltip="About" >
+  const onClick = ()=>{
+    document.location.href = '/about'
+  }
+  return <CozyButton  className='pixelButton'  tooltip="About" onClick={onClick} >
         <img alt='info' src='/images/house.png' />    
   </CozyButton>
-</a>
       
 }
 
@@ -167,8 +176,15 @@ export const RecordButton = (props)=>{
   useEffect(() => {
     if (!isRecording) return;
 
+    updateTimestamp( new Date().valueOf() - (3600000* 24* 7 ) ); //jump to a week ago
+
     const interval = setInterval(() => {
-      updateTimestamp(x => x + 3600000 / 5);
+      updateTimestamp(x =>{
+        if( x >=  new Date().valueOf() ){
+          setIsRecording(false)
+        }
+        return x + 3600000 / 5
+      });
     }, 200); // update every 200ms
   
     return () => clearInterval(interval);
@@ -224,7 +240,7 @@ export const RecordButton = (props)=>{
       {!isRecording ? (
         <CozyButton
           className={`pixelButton red  ${isRecording? 'pressed':''}`}
-          tooltip="Start Record"
+          tooltip="Record last 7 days recap"
           onClick={StartRecording}
         >
           <img src="/images/record.png" alt="Start Recording" />

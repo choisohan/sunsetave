@@ -57,6 +57,7 @@ const Pixelate = ({size = 4 })=> {
 
   const [pixelSize, setPixelSize] = useState(size); 
   const {gl } = useThree();
+
   gl.setClearColor('white')
     // Listen for camera zoom or FOV changes
 
@@ -65,20 +66,13 @@ const Pixelate = ({size = 4 })=> {
     };
 
     useEffect(() => {
-      window.addEventListener('wheel', updatePixelSize)
+      gl.domElement.addEventListener('wheel', updatePixelSize)
     }, []);
 
 
   return <EffectComposer>
 <primitive object={new PixelationEffect({pixelSize: pixelSize})} />
 <primitive object={new BloomEffect({luminanceThreshold : .5 , intensity:.075  , blendFunction : NoBlending })} />
-
-{/*
-
-// Todos: I omit this buecause this bloom effects cause "CANNOT READ PROPERTIES OF NULL(READING 'ALPHA')...
-*/}
-
-
       </EffectComposer>
 }
 

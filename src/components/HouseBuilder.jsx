@@ -98,10 +98,6 @@ export default function HouseBuilder(props) {
       if(props.onValidHouse)props.onValidHouse();
   }
 
-  useEffect(()=>{
-    console.log( '🤔', props.id )
-  },[props.id])
-
   const onClick = e =>{
     const selectedMaterial  = e.object.material[e.face.materialIndex];
     swapMap( selectedMaterial.name.replace('_mat','') , e.nativeEvent.type ==="contextmenu" ? -1: 1 );
@@ -112,7 +108,8 @@ export default function HouseBuilder(props) {
         <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,12], fov: 12 }} > 
             <CameraLookAt/>
             <Pixelate />
-            <House id={props.id} design={design} timeout={props.timeout} onClick={onClick}
+            <House id={props.id} design={design} timeout={props.timeout}
+                  onClickSurface={onClick}
                   onPointerMove={onPointerMove}
                   onPointerOut ={onPointerOut}
                   updateTime={false} hoverable={false}

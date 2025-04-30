@@ -4,7 +4,7 @@
     "timezone": "America/Vancouver",
     "events" :[
         {
-          "summary": "Morning Ritual: Mug Wall Rearranging",
+          "summary": "Opening",
           "description": "Maz spends 20 minutes color-sorting mugs that no one buys. Claims it's 'feng shui for capitalist ghosts.'",
           "start": "2024-03-06T10:00:00",
           "end": "2024-03-06T10:30:00",
@@ -36,6 +36,13 @@
           "description": "Kids and adults alike fiddle with ancient board games and a Furby that *shouldn’t* be talking. It is. Nobody questions it anymore.",
           "start": "2024-03-06T18:00:00",
           "end": "2024-03-06T19:00:00",
+          "rrule": "FREQ=DAILY;INTERVAL=1"
+        },
+        {
+          "summary": "Closed",
+          "description": "",
+          "start": "2024-03-06T20:00:00",
+          "end": "2024-03-07T10:00:00",
           "rrule": "FREQ=DAILY;INTERVAL=1"
         },
         {

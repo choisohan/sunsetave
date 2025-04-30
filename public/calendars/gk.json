@@ -1,0 +1,63 @@
+{
+    "name": "Theodoros’s Pharmacy",
+    "description": "Mr. Theodoros, late 60s, grumpy but extremely dramatic. Wears a thick beige cardigan even in summer, insists it’s “for the draft.” {D:C1,W:FRB,w:F12PF,P:CW,p:CW,mesh:5} ", 
+    "timezone": "Europe/Athens",
+    "events":[
+        {
+          "summary": "Pharmacy Closed",
+          "description": "Shutters drawn. Silence inside. Theodoros hasn't arrived yet. Only the cats on the stoop.",
+          "start": "2024-03-06T00:00:00",
+          "end": "2024-03-06T08:59:00",
+          "rrule": "FREQ=DAILY"
+        },
+        {
+          "summary": "Pharmacy Opens (Morning Shift)",
+          "description": "Theodoros arrives grumbling about humidity. Opens with a dramatic sigh, adjusts his cardigan, and turns on the bouzouki radio. First customer is always old Marina asking for sea-sickness pills 'just in case.'",
+          "start": "2024-03-06T09:00:00",
+          "end": "2024-03-06T13:30:00",
+          "rrule": "FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR,SA"
+        },
+        {
+          "summary": "Pharmacy Closed for Siesta",
+          "description": "Shutters clack shut. A paper taped to the door reads: 'Μην ενοχλείτε, ξεκουράζομαι!' ('Do not disturb, I am resting!') Even the street cats lie still in the shade.",
+          "start": "2024-03-06T13:30:00",
+          "end": "2024-03-06T17:00:00",
+          "rrule": "FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR,SA"
+        },
+        {
+          "summary": "Pharmacy Opens (Evening Shift)",
+          "description": "Theodoros returns, holding a cold espresso and wiping his forehead. Street cats trail in hoping for kibble. A fisherman’s wife needs ointment for her sunburnt husband again. Gossip brews with the heat.",
+          "start": "2024-03-06T17:00:00",
+          "end": "2024-03-06T21:00:00",
+          "rrule": "FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR,SA"
+        },
+        {
+          "summary": "Pharmacy Closed (Evening)",
+          "description": "Lights off. Cardigan left draped over the chair. Theodoros has gone home to eat soup and yell at the TV. One cat remains, curled under the stool.",
+          "start": "2024-03-06T21:00:00",
+          "end": "2024-03-07T09:00:00",
+          "rrule": "FREQ=DAILY"
+        },
+        {
+          "summary": "Cleaning Day (Reluctantly)",
+          "description": "Theodoros sweeps while dramatically reciting a poem about death and dust. Argues with the broom, calls it 'traitor of my spine.'",
+          "start": "2024-03-06T12:00:00",
+          "end": "2024-03-06T12:45:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=FR"
+        },
+        {
+          "summary": "Local Boy Sneaks in to Ask for Acne Cream",
+          "description": "Teen boy enters blushing. Theodoros loudly guesses it's for love. Gives unsolicited advice about heartbreak. Cat yawns from the scale.",
+          "start": "2024-03-06T18:15:00",
+          "end": "2024-03-06T18:25:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=WE"
+        },
+        {
+          "summary": "Tourist Walks In Mistaking It for a Café",
+          "description": "Confused tourist enters and asks for coffee. Theodoros raises an eyebrow so high it disappears. Points silently to the paracetamol. The cat meows at them in judgment.",
+          "start": "2024-03-06T10:30:00",
+          "end": "2024-03-06T10:40:00",
+          "rrule": "FREQ=WEEKLY;BYDAY=TU"
+        }
+      ]
+      }

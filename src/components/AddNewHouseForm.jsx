@@ -45,10 +45,10 @@ export default function AddNewHouseForm(props) {
     }
 
   return (
-    <PopupWindow isOpened={true} setIsOpened={()=>{props.onClose()}} >
+    <PopupWindow>
 
 
-      <h3 className='flex pt-5' >Add a new house to my avenue</h3>
+      <h3 className='flex pt-5' >Search House</h3>
 
 
       <div className='flex pt-5'>
@@ -79,4 +79,12 @@ export default function AddNewHouseForm(props) {
 
     </PopupWindow>
   )
+}
+
+
+const AvailableCalendars = ()=>{
+
+  return <div>
+    availableCalendars
+  </div>
 }

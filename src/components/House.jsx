@@ -129,8 +129,9 @@ export default function House(props){
 
 
   const onClick = e =>{
-    console.log('house is clicked')
-    if(props.onClick)props.onClick(property)}
+    if(props.onClick) props.onClick (property)
+    if(props.onClickSurface) props.onClickSurface (e)
+  }
 
 
   const onPointerOut = (e)=>{

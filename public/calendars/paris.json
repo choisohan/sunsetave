@@ -3,76 +3,77 @@
     "description": "owner :Jean-Claude Baguette , Grumpy, proud, traditional, secretly sentimental (only toward his chihuahua: Bijou) {D:B1,W:F8G,w:WN,P:FG,p:FB,mesh:5}",
     "timezone":  "Europe/Paris",
     "events": [
-        {
-          "summary": "Morning 🥐Bake - Boulangerie du Soleil Levain",
-          "description": "Early morning baking prep and oven duty.",
-          "start": "2024-03-06T04:00:00",
-          "end": "2024-03-06T08:00:00",
-          "rrule": "FREQ=DAILY;INTERVAL=1"
-        },
-        {
-          "summary": "Open Shop",
-          "description": "Boulangerie opens to the public.",
-          "start": "2024-03-06T08:00:00",
-          "end": "2024-03-06T12:00:00",
-          "rrule": "FREQ=DAILY;INTERVAL=1"
-        },
-        {
-          "summary": "Lunch + Nap",
-          "description": "Simple meal followed by a short nap.",
-          "start": "2024-03-06T12:30:00",
-          "end": "2024-03-06T14:00:00",
-          "rrule": "FREQ=DAILY;INTERVAL=1"
-        },
-        {
-          "summary": "Delivery Check + Admin",
-          "description": "Check flour delivery, respond to supplier calls, avoid emails.",
-          "start": "2024-03-06T14:00:00",
-          "end": "2024-03-06T15:30:00",
-          "rrule": "FREQ=DAILY;INTERVAL=1"
-        },
-        {
-          "summary": "Walk with Bijou",
-          "description": "Quiet stroll with his chihuahua.",
-          "start": "2024-03-06T16:00:00",
-          "end": "2024-03-06T16:45:00",
-          "rrule": "FREQ=DAILY;INTERVAL=1"
-        },
-        {
-          "summary": "Mom's Surprise Visit",
-          "description": "Jean-Claude pretends to be busy while mom complains about his love life.",
-          "start": "2024-03-06T17:00:00",
-          "end": "2024-03-06T17:45:00",
-          "rrule": "FREQ=DAILY;INTERVAL=1"
-        },
-        {
-          "summary": "Farmers Market Visit",
-          "description": "Chat with local vendors, inspect produce, complain about prices.",
-          "start": "2024-03-09T10:00:00",
-          "end": "2024-03-09T11:30:00",
-          "rrule": "FREQ=WEEKLY;BYDAY=SA"
-        },
-        {
-          "summary": "Blind Date (Reluctant)",
-          "description": "Mutual friend insists. He wears his best beret. It ends awkwardly.",
-          "start": "2024-03-09T19:00:00",
-          "end": "2024-03-09T20:30:00",
-          "rrule": "FREQ=WEEKLY;BYDAY=SA"
-        },
-        {
-          "summary": "Morning Bike Ride",
-          "description": "Solitary bike ride along the river. Wears a vintage cap.",
-          "start": "2024-03-10T07:30:00",
-          "end": "2024-03-10T08:30:00",
-          "rrule": "FREQ=WEEKLY;BYDAY=SU"
-        },
-        {
-          "summary": "🐶Sit in Park with Bijou",
-          "description": "Feeds pigeons and listens to Charles Aznavour on a crackling radio.",
-          "start": "2024-03-10T16:00:00",
-          "end": "2024-03-10T17:00:00",
-          "rrule": "FREQ=WEEKLY;BYDAY=SU"
-        }
-      ]
+      {
+        "summary": "Closed",
+        "description": "The shop is closed before baking starts.",
+        "start": "2024-03-06T00:00:00",
+        "end": "2024-03-06T04:00:00",
+        "rrule": "FREQ=DAILY;INTERVAL=1"
+      },
+      {
+        "summary": "Morning Bake - Boulangerie du Soleil Levain",
+        "description": "Baking begins. Warm smells of bread fill the shop.",
+        "start": "2024-03-06T04:00:00",
+        "end": "2024-03-06T08:00:00",
+        "rrule": "FREQ=DAILY;INTERVAL=1"
+      },
+      {
+        "summary": "Open to Customers",
+        "description": "Fresh baguettes, croissants, and scowls from the counter.",
+        "start": "2024-03-06T08:00:00",
+        "end": "2024-03-06T12:00:00",
+        "rrule": "FREQ=DAILY;INTERVAL=1"
+      },
+      {
+        "summary": "Closed (Lunch + Nap Break)",
+        "description": "Closed for lunch and existential rest upstairs.",
+        "start": "2024-03-06T12:00:00",
+        "end": "2024-03-06T14:00:00",
+        "rrule": "FREQ=DAILY;INTERVAL=1"
+      },
+      {
+        "summary": "Open (Afternoon Counter Service)",
+        "description": "Light afternoon pastries and local gossip.",
+        "start": "2024-03-06T14:00:00",
+        "end": "2024-03-06T17:00:00",
+        "rrule": "FREQ=DAILY;INTERVAL=1"
+      },
+      {
+        "summary": "Closed",
+        "description": "Shop closes. The smell of flour lingers in silence.",
+        "start": "2024-03-06T17:00:00",
+        "end": "2024-03-07T00:00:00",
+        "rrule": "FREQ=DAILY;INTERVAL=1"
+      },
+      {
+        "summary": "Saturday: Farmers Market Supply Run",
+        "description": "Closed for morning while Jean-Claude visits farmers market.",
+        "start": "2024-03-09T10:00:00",
+        "end": "2024-03-09T11:30:00",
+        "rrule": "FREQ=WEEKLY;BYDAY=SA"
+      },
+      {
+        "summary": "Saturday Evening: Closed (Blind Date)",
+        "description": "Closed. Jean-Claude is out on another doomed blind date.",
+        "start": "2024-03-09T19:00:00",
+        "end": "2024-03-09T20:30:00",
+        "rrule": "FREQ=WEEKLY;BYDAY=SA"
+      },
+      {
+        "summary": "Sunday Morning: Closed (Bike Ride)",
+        "description": "Closed. Jean-Claude rides his vintage bike along the river.",
+        "start": "2024-03-10T07:30:00",
+        "end": "2024-03-10T08:30:00",
+        "rrule": "FREQ=WEEKLY;BYDAY=SU"
+      },
+      {
+        "summary": "Sunday Afternoon: Closed (Park Hour)",
+        "description": "Closed. Owner sits in the park with Bijou and a radio.",
+        "start": "2024-03-10T16:00:00",
+        "end": "2024-03-10T17:00:00",
+        "rrule": "FREQ=WEEKLY;BYDAY=SU"
+      }
+    ]
+    
       
 }

@@ -1,11 +1,11 @@
-import React, {useEffect , useState } from 'react'
+import React, {useEffect  , useRef } from 'react'
 import { OrbitControls } from '@react-three/drei'
 import { useThree } from '@react-three/fiber';
 
 export default function CameraControls(props) {
 
   const { camera } = useThree();
-  const [target, setTarget] = useState();
+  const controlsRef = useRef();
 
   const onEnd = (e)=>{
     /*
@@ -26,19 +26,17 @@ export default function CameraControls(props) {
 
     }
     if(props.target){
-      setTarget([props.target.x,props.target.y,props.target.z]);
+      controlsRef.current.target.set(props.target.x,props.target.y,props.target.z);
+      controlsRef.current.update();
     }
 
     //camera.updateProjectionMatrix(); // optional but good to call
 
-  },[  props.position , props.target  ])
+  },[ camera  ])
 
-
-  
   return (
-        <OrbitControls
+        <OrbitControls ref={controlsRef} 
           onEnd={onEnd}
-          target={target}
           maxDolly ={0}
           minPolarAngle={-Math.PI / 2} 
           maxPolarAngle={Math.PI / 2} 
