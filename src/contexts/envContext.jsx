@@ -14,6 +14,8 @@ document.body.appendChild(audio)
 audio.src = '/audios/cars-on-the-road.mp3'
 audio.loop = true; 
 audio.id = 'bgAudio';
+audio.volume = .2; 
+
 
 export function EnvProvider({children}){
     const [ timestamp,setTimeStamp] = useState( new Date().valueOf()  );

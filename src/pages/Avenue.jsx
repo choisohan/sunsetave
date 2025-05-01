@@ -39,9 +39,9 @@ export default function Avenue() {
   const canvasRef = useRef ();
   const selectedRef = useRef();
   const setPopup = useUpdatePopup();
+  const [loaded, setLoaded] = useState(false)
 
   
-  console.log('render again')
 
   useEffect(()=>{
     if(!grid) return;
@@ -52,6 +52,7 @@ export default function Avenue() {
         return {..._item, ...transform};
       })
     })
+    setLoaded(true)
   },[grid ])
 
   const onEnterNewCell= i =>{
@@ -99,7 +100,7 @@ export default function Avenue() {
 
   return (
     <>
-    <Canvas camera={{ fov: 20}} style={{width:'100vw', height:'100vh'}}  >
+    <Canvas camera={{ fov: 20}} style={{width:'100vw', height:'100vh'}} className={ `transition-opacity duration-500 ${!loaded ? "opacity-0":"" }` } >
 
         <CameraControls position={new Vector3(-34, 5,-22)} target={new Vector3(-8  ,-1 , 5)} />
         <Pixelate size={3} />    

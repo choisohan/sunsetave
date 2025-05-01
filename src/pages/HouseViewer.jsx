@@ -94,16 +94,19 @@ return (
 
   <Canvas className={`w-full h-full transition-opacity duration-500 ${!loaded ? "opacity-0":"" }`}  camera={{fov: 20}} ref={canvasRef}>
     <Pixelate />
-    {!cameraPosition ? null : <CameraControls position={cameraPosition} target={cameraTarget} enableZoom={false}/>}
-    <Sky timeDiff={property.timeDiff}/>
+    {!cameraPosition ? null : <>
+      <CameraControls position={cameraPosition} target={cameraTarget} enableZoom={false}/>
+      <Sky timeDiff={property.timeDiff}/>
+
+    </>}
     <TerrainMesh editMode={false} timeDiff={property.timeDiff } setGrids={getGrids}/>
     <House id={props.id|| param}  transform={transform} onUpdateProperty ={ onUpdateProperty } hoverable={false} />
   </Canvas>
 
 
 
-
-  <div className="houseInfo p-3" >
+  {!loaded ? <div class="loading-screen">LOADING...</div> : 
+    <div className="houseInfo p-3" >
     <div className='text-left title'>
       <span className='inline-flex '>
         <img src='/images/userProfile.png' className='hidden w-[35px] h-[35px] lg:w-[70px] lg:h-[70px]' alt='profile'/>
@@ -129,9 +132,13 @@ return (
     <EventTable events={property.events}/>
 
   </div>
+  
+  } 
+
 
 
 </div>
+
 )
 
 }
