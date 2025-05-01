@@ -65,9 +65,11 @@ export const FastForwardButton = ()=>{
 export const SkipBackwardButton = ()=>{
   const timestamp = useTimestamp();
   const updateTimestamp = useUpdateTimestamp();
-  
+  const setPlaymode = useUpdateTimePlayMode(); 
+
   const onClick = ()=>{
     updateTimestamp( timestamp - 3600000 ); // subtract one hour
+    setPlaymode('backward')
   }
   return(<CozyButton  className='pixelButton'  tooltip="An hour backward" onClick={ onClick} ><img alt='backward' src='/images/arrow_skip_backward.png' />
 </CozyButton>)
@@ -76,9 +78,11 @@ export const SkipBackwardButton = ()=>{
 export const SkipForwardButton = ()=>{
   const timestamp = useTimestamp();
   const updateTimestamp = useUpdateTimestamp();
+  const setPlaymode = useUpdateTimePlayMode(); 
   
   const onClick = ()=>{
     updateTimestamp( timestamp + 3600000 ); //add one hour
+    setPlaymode('forward')
   }
   return<CozyButton  className='pixelButton'  tooltip="An hour forward" onClick={ onClick}  >
 

@@ -107,13 +107,20 @@ export default function InstanceOnPath({ name,  curve , mesh, material,  maxCoun
 
 
     useEffect(()=>{
-        console.log( 'playMode : ', playMode)
         const multiplier = playMode==='fast'?20: 1; 
         setSpeed(.03 * multiplier);
 
+        if(playMode==='forward'){
+            updatePositions(2);
+        }else if(playMode==='backward'){
+            updatePositions(-2);
+        }
     },[playMode])
 
-    useFrame((_, delta) => {
+
+
+
+    const updatePositions =(delta)=>{
         const dummy = new Object3D();
 
         progressRef.current = progressRef.current.map(p => {
@@ -140,7 +147,11 @@ export default function InstanceOnPath({ name,  curve , mesh, material,  maxCoun
         });
 
         meshRef.current.instanceMatrix.needsUpdate = true;
+    }
 
+
+    useFrame((_, delta) => {
+        updatePositions(delta)
     });
 
     return (<instancedMesh ref={meshRef} args={ [mesh, material ,maxCount]} />)

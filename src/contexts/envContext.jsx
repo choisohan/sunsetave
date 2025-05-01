@@ -30,6 +30,9 @@ export function EnvProvider({children}){
         return () => window.removeEventListener('click', handleClick, true);
     }, []);
 
+    useEffect(()=>{
+        if(playmode === 'forward'|| playmode === 'backward') setPlayMode('normal')
+    },[playmode])
 
       
     return (
