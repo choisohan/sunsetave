@@ -11,3 +11,5 @@ To genenerate the array of textures, run this command in terminal
 ## Souces
 - Sound from [jsfxr](https://sfxr.me/)
 - PixelArt from [OpenGameArt](https://opengameart.org/)
+
+- Sound effects from Pixabay : author [AudioPapkin](https://pixabay.com/sound-effects/cars-on-the-road-2-302877/)

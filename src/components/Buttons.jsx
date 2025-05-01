@@ -45,6 +45,13 @@ export const FastForwardButton = ()=>{
     return () => clearInterval(interval);
   }, [isPlaying, updateTimestamp]);
 
+  useEffect(()=>{
+    const audio = document.getElementById('bgAudio');
+    console.log( 'audio', audio )
+    if(! audio )return; 
+    audio.playbackRate = isPlaying ?  10.  : 1; 
+  },[isPlaying])
+
 
   return <CozyButton className='pixelButton' tooltip="Recap last week" onClick={()=>{setIsPlaying(!isPlaying);}} >
    <img alt='fast_forward' src={!isPlaying? '/images/fast_forward.png' : '/images/pause.png' } />

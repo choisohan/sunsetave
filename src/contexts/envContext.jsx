@@ -1,4 +1,4 @@
-import React,{useContext,useState} from "react";
+import React,{useContext,useState, useEffect, useRef} from "react";
 
 const TimestampContext = React.createContext();
 const UpdateTimestampContext = React.createContext();
@@ -7,13 +7,30 @@ const SetTimezoneOVerride = React.createContext();
 
 
 
+const audio = document.createElement('audio');
+document.body.appendChild(audio)
+audio.src = '/audios/cars-on-the-road.mp3'
+audio.loop = true; 
+audio.id = 'bgAudio';
+
 export function EnvProvider({children}){
-    const [ timestamp,setTimeSamp] = useState( new Date().valueOf()  );
+    const [ timestamp,setTimeStamp] = useState( new Date().valueOf()  );
     const [ timezoneOverride, setTimezoneOverride] = useState();
 
+    useEffect(() => {
+        const handleClick = (e) => {
+            audio.play();
+            window.removeEventListener('click', handleClick, true);
+        };
+        window.addEventListener('click', handleClick, true);
 
+        return () => window.removeEventListener('click', handleClick, true);
+    }, []);
+
+
+      
     return (
-            <UpdateTimestampContext.Provider value={setTimeSamp}>
+            <UpdateTimestampContext.Provider value={setTimeStamp}>
                 <TimestampContext.Provider value={timestamp}>
                     <TimezoneOverride.Provider value={timezoneOverride}>
                         <SetTimezoneOVerride.Provider value={setTimezoneOverride}>

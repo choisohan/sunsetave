@@ -12,6 +12,7 @@ import { timestampToHourFloat } from './Clock';
 const counts = {"car": 2, "bus":1 };
 
 export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
+
     const _fbxFile = useLoader(FBXLoader, meshPath); 
     const [objects, setObjects] = useState([]);
     const textureContext = useTexture();
@@ -23,7 +24,6 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
         }
         return new CatmullRomCurve3(points);
       }, [lineGeometry]);
-
 
 
     useEffect(()=>{
@@ -102,6 +102,7 @@ export default function InstanceOnPath({ name,  curve , mesh, material,  maxCoun
             mat.uniforms.uTime.value= timestampToHourFloat(timestamp, tz )
         })
     },[timestamp, timezoneOverride ])
+
 
 
     useFrame((_, delta) => {
