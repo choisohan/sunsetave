@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSetTimezoneOverride, useTimestamp, useTimezoneOverride, useUpdateTimestamp } from "../contexts/envContext"
+import { useSetTimezoneOverride, useTimePlayMode, useTimestamp, useTimezoneOverride, useUpdateTimePlayMode, useUpdateTimestamp } from "../contexts/envContext"
 import AddNewHouseForm from "./AddNewHouseForm";
 import { useUpdatePopup } from "../contexts/PopupContext";
 
@@ -26,6 +26,7 @@ export const CozyButton = (props)=>{
 
 export const FastForwardButton = ()=>{
   const updateTimestamp = useUpdateTimestamp();
+  const setTimeMode = useUpdateTimePlayMode();
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -46,8 +47,9 @@ export const FastForwardButton = ()=>{
   }, [isPlaying, updateTimestamp]);
 
   useEffect(()=>{
+    setTimeMode(isPlaying ?'fast': 'normal');
+
     const audio = document.getElementById('bgAudio');
-    console.log( 'audio', audio )
     if(! audio )return; 
     audio.playbackRate = isPlaying ?  10.  : 1; 
   },[isPlaying])
@@ -179,6 +181,8 @@ export const RecordButton = (props)=>{
   const chunksRef = useRef([]);  // Ref to store video chunks
   const downloadLink= useRef(document.createElement('a'));
   const updateTimestamp = useUpdateTimestamp();
+  const setTimeMode = useUpdateTimePlayMode();
+
 
   useEffect(() => {
     if (!isRecording) return;
@@ -196,6 +200,10 @@ export const RecordButton = (props)=>{
   
     return () => clearInterval(interval);
   }, [isRecording, updateTimestamp]);
+
+  useEffect(()=>{
+    setTimeMode(isRecording?'fast':'normal');
+  },[isRecording])
 
 
   const StartRecording = ()=>{

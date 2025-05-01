@@ -1,9 +1,11 @@
-import React,{useContext,useState, useEffect, useRef} from "react";
+import React,{useContext,useState, useEffect} from "react";
 
 const TimestampContext = React.createContext();
 const UpdateTimestampContext = React.createContext();
 const TimezoneOverride = React.createContext();
 const SetTimezoneOVerride = React.createContext();
+const TimePlayModeContext = React.createContext();
+const SetTimePlayModeContext = React.createContext();
 
 
 
@@ -15,6 +17,7 @@ audio.id = 'bgAudio';
 
 export function EnvProvider({children}){
     const [ timestamp,setTimeStamp] = useState( new Date().valueOf()  );
+    const [ playmode , setPlayMode] = useState('normal'); //fast
     const [ timezoneOverride, setTimezoneOverride] = useState();
 
     useEffect(() => {
@@ -30,15 +33,19 @@ export function EnvProvider({children}){
 
       
     return (
-            <UpdateTimestampContext.Provider value={setTimeStamp}>
-                <TimestampContext.Provider value={timestamp}>
-                    <TimezoneOverride.Provider value={timezoneOverride}>
-                        <SetTimezoneOVerride.Provider value={setTimezoneOverride}>
-                            {children}
-                        </SetTimezoneOVerride.Provider>
-                    </TimezoneOverride.Provider>
-                </TimestampContext.Provider>                
-            </UpdateTimestampContext.Provider>
+        <SetTimePlayModeContext.Provider value={setPlayMode}>
+            <TimePlayModeContext.Provider value={playmode}>
+                <UpdateTimestampContext.Provider value={setTimeStamp}>
+                    <TimestampContext.Provider value={timestamp}>
+                        <TimezoneOverride.Provider value={timezoneOverride}>
+                            <SetTimezoneOVerride.Provider value={setTimezoneOverride}>
+                                {children}
+                            </SetTimezoneOVerride.Provider>
+                        </TimezoneOverride.Provider>
+                    </TimestampContext.Provider>                
+                </UpdateTimestampContext.Provider>
+        </TimePlayModeContext.Provider>                
+    </SetTimePlayModeContext.Provider>
     )
 }
 
@@ -55,3 +62,9 @@ export function useSetTimezoneOverride(){
     return useContext(SetTimezoneOVerride)
 }
 
+export function useTimePlayMode(){
+    return useContext(TimePlayModeContext)
+}
+export function useUpdateTimePlayMode(){
+    return useContext(SetTimePlayModeContext)
+}

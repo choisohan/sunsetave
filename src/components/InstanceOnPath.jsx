@@ -5,7 +5,7 @@ import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
 import { HouseMaterial } from '../shaders/houseMaterial';
 import { useTexture } from '../contexts/modelContext';
-import { useTimestamp, useTimezoneOverride } from '../contexts/envContext';
+import { useTimePlayMode, useTimestamp, useTimezoneOverride } from '../contexts/envContext';
 import { timestampToHourFloat } from './Clock';
 
 
@@ -75,12 +75,14 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
     return <>{objects}</>
 }
 
-export default function InstanceOnPath({ name,  curve , mesh, material,  maxCount = 10 ,speed=.03, offset=0.0    }) {
+export default function InstanceOnPath({ name,  curve , mesh, material,  maxCount = 10 ,speed=.05, offset=0.0    }) {
 
     const meshRef = useRef();
     const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => ((i / maxCount)+(offset*0.35))%1.  ));
     const timestamp = useTimestamp();
     const timezoneOverride = useTimezoneOverride(); 
+    const playMode = useTimePlayMode();
+    const [SPEED, setSpeed] = useState(speed);
 
     useEffect(()=>{
         if(name === "car"){
@@ -104,12 +106,18 @@ export default function InstanceOnPath({ name,  curve , mesh, material,  maxCoun
     },[timestamp, timezoneOverride ])
 
 
+    useEffect(()=>{
+        console.log( 'playMode : ', playMode)
+        const multiplier = playMode==='fast'?20: 1; 
+        setSpeed(.03 * multiplier);
+
+    },[playMode])
 
     useFrame((_, delta) => {
         const dummy = new Object3D();
 
         progressRef.current = progressRef.current.map(p => {
-            let next = p + delta * speed; 
+            let next = p + delta * SPEED; 
             return next > 1 ? next - 1 : next; // loop
         });
 
