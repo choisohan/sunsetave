@@ -105,7 +105,7 @@ return (
 
 
 
-  {!loaded ? <div class="loading-screen">LOADING...</div> : 
+  {!loaded ? <div className="loading-screen">LOADING...</div> : 
     <div className="houseInfo p-3" >
     <div className='text-left title'>
       <span className='inline-flex '>
