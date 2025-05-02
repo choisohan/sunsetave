@@ -85,7 +85,7 @@ export default function LeavesMaterial() {
             uv = fract(uv ); 
 
             //Apply Normal map
-            vec3 normalMap = texture2D( uPerlinNoiseNormal, uv).xyz * 2. -1. ;
+            vec3 normalMap = texture2D( uPerlinNoiseNormal, uv *uMapRepeat ).xyz * 2. -1. ;
             normalMap = normalMap * .25+.75; 
             normalMap.xy *= uNormalStrength;
             normalMap.z = sqrt(1.0 - clamp(dot(normalMap.xy, normalMap.xy), 0.0, 1.0)); // Re-normalize Z
