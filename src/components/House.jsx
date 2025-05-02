@@ -40,14 +40,17 @@ export default function House(props){
 
 
   useEffect(()=>{
-      FindCalendar(props.id).then( calendar =>{
-        const updatedProperty = { ...property, ...calendar , id: props.id };
-        setProperty(updatedProperty)
-        if( props.onUpdateProperty)props.onUpdateProperty( updatedProperty )
-      }).catch(err =>{
-        console.log( '🔴'+err)
-        if( props.onUpdateProperty) props.onUpdateProperty();
-      })
+    if(!props.id) return; 
+
+    console.log('search  -> ' , props.id )
+    FindCalendar(props.id).then( calendar =>{
+      const updatedProperty = { ...property, ...calendar , id: props.id };
+      setProperty(updatedProperty)
+      if( props.onUpdateProperty)props.onUpdateProperty( updatedProperty )
+    }).catch(err =>{
+      console.log( '🔴'+err)
+      if( props.onUpdateProperty) props.onUpdateProperty();
+    })
   },[props.id])
   
 

@@ -18,8 +18,15 @@ export default function StepByStep() {
     const calendarId = match ? match[1] : null;
     if(calendarId){
       setId(calendarId)
+      setSteps(3)
     }
-    setSteps(3)
+    else{
+
+    }
+  }
+  const onValidHouse = (result)=>{
+    setSteps(result ? 4: 0 )
+    console.log('result', result)
   }
 
 
@@ -54,7 +61,7 @@ export default function StepByStep() {
         </div>
 
   <div className='place-items-center'>
-    <HouseBuilder id={id} timeout='infinite' onUpdateProperty={setProperty} onValidHouse={(result)=>{setSteps(result ? 4: 0 )}} />
+    <HouseBuilder id={id} timeout='infinite' onUpdateProperty={setProperty} onValidHouse={onValidHouse} />
     <CozyButton className='pixelButton' onClick={()=>{setSteps(5)}}>I like it. Next</CozyButton>
 </div>
 

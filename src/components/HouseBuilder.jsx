@@ -142,7 +142,7 @@ const OptionSelector = props =>{
     </div>
 } 
 
-function CameraLookAt() {
+export function CameraLookAt() {
   const { camera } = useThree()
 
   useFrame(() => {

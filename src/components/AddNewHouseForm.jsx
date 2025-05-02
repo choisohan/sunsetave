@@ -3,16 +3,15 @@ import PopupWindow from './PopupWindow'
 import { CozyButton } from './Buttons';
 import House from './House';
 import { Canvas } from '@react-three/fiber';
-import { Vector3 } from 'three';
 import { Pixelate } from '../shaders/CustomPostProcessing';
-import { FindCalendar } from '../calendar/FetchCalendar';
-
+import { CameraLookAt } from './HouseBuilder';
 export default function AddNewHouseForm(props) {
 
     const icalInput = useRef();
-    const [ property, setProperty ] = useState(null);
     const [ msg , setMsg ] = useState() 
-
+    const [valid, setValid] = useState(false);
+    const [id,setId] = useState();
+    const [property , setProperty]= useState()
 
     const Search = ()=>{
       const currentIds =  props.currentIds|| [] ;
@@ -28,13 +27,18 @@ export default function AddNewHouseForm(props) {
           setMsg("This house exists in your avenue already.")
         }
         else{
+          setId(iCalID);
+          /*
+          console.log( iCalID )
           FindCalendar(iCalID).then( calendar =>{
+            console.log( calendar )
             const newProperty = {...property, ...props.property , ...calendar, id: iCalID   }; 
             newProperty.position = new Vector3(0,-1,0);
             setProperty(newProperty);
           }).catch(err =>{
             setMsg("Invalid Ical ID. Check it again.");
           })
+            */ 
         }
 
 
@@ -43,6 +47,12 @@ export default function AddNewHouseForm(props) {
       }
 
     }
+
+  const itsValidHouse = (result)=>{
+    console.log('result : ', result )
+    setValid(result ? true : false);
+    setProperty(result)
+  }
 
   return (
     <PopupWindow>
@@ -65,13 +75,19 @@ export default function AddNewHouseForm(props) {
 
 
       <div className='pt-10  flex flex-col self-center gap-2 justify-center items-center'>
-        { property ?
+        { id ?
 <>
-      <Canvas camera={{position: [-0, 0 ,10], fov: 15 }} style={{width:'200px', height: '200px' }} >
+      <Canvas camera={{position: [6,1,12], fov: 15 }} style={{width:'200px', height: '200px' }} >
         <Pixelate />
-        <House property={ property }  onClick={()=>{}} onMouseEnter={()=>{}} />
+        <CameraLookAt />
+        <House id={id} onUpdateProperty={itsValidHouse} />
+        <mesh><boxGeometry args={[10,.1,10]} /></mesh>
+
       </Canvas>
-        <CozyButton className='pixelButton' onClick={()=>{props.onAddNew(property)}} ><div>Add to My Avenue</div></CozyButton>
+        {valid ? <div className='w-full'>
+          <span>{property.name}</span><br />
+          <CozyButton className='pixelButton' onClick={()=>{props.onAddNew({id:id})}} ><div>Add to My Avenue</div></CozyButton>
+        </div> : null}
 
   </> :
         <div>{msg}</div>}
