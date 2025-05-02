@@ -27,7 +27,7 @@ export default function TerrainMesh(props){
     const timeRef = useRef(0);
 
     const [geos, setGeos] = useState([])
-    const [objects, setObjects] = useState()
+    const [objects, setObjects] = useState([])
 
 
 
@@ -82,7 +82,10 @@ export default function TerrainMesh(props){
                 }
             }
             else if(_child.isLine){
-                _objects.push(<LoadInstanceAlongPath meshPath="/models/commuters.fbx" key={_objects.length} lineGeometry={child.geometry} offset={_objects.length/3} />)
+                _objects.push(
+                    {lineGeometry:child.geometry , offset: _objects.length/3 }
+                )
+                //<LoadInstanceAlongPath timeDiff={props.timeDiff} meshPath="/models/commuters.fbx" key={_objects.length} lineGeometry={child.geometry} offset={_objects.length/3} />)
             }
             
 
@@ -111,12 +114,13 @@ export default function TerrainMesh(props){
     useEffect(()=>{
         const tz = timezoneOverride || Intl.DateTimeFormat().resolvedOptions().timeZone; 
         var _timestamp = timestamp;
-        if(props.timeDiff) _timestamp += props.timeDiff;
+        if(props.timeDiff) _timestamp -= props.timeDiff;
         
         const uTime =  timestampToHourFloat(_timestamp , tz ); 
         materials.forEach(mat=>{
             mat.uniforms.uTime.value =uTime;
         })
+
     },[ timestamp , materials , timezoneOverride , props.timeDiff ])
 
 
@@ -131,7 +135,12 @@ export default function TerrainMesh(props){
     return <>
 
     <group rotation={[-Math.PI / 2, 0, 0]} >
-    {geos}{objects}
+    {geos}
+
+    {objects.map((obj,i) =>(
+        <LoadInstanceAlongPath timeDiff={props.timeDiff} meshPath="/models/commuters.fbx" key={i} lineGeometry={obj.lineGeometry} offset={obj.offset} />
+    ))}
+
     <Grid meshes={grids}
             onClick={ (x)=>{if(props.onClick) props.onClick(x)}}
             onMouseEnter={x=>{
@@ -152,7 +161,6 @@ export default function TerrainMesh(props){
 
 
 const ReplaceMaterial= _mat=>{
-    console.log(_mat)
     var map;     
     if(_mat.map){
         map = _mat.map;

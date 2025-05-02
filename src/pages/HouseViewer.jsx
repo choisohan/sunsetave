@@ -12,7 +12,7 @@ import { Clock, GetColorByTZ, timestampToHourFloat } from '../components/Clock';
 import { EventTable } from '../components/EventTable';
 import TerrainMesh from '../components/TerrainMesh';
 import moment from 'moment-timezone';
-import { useTimestamp } from '../contexts/envContext';
+import { useSetTimezoneOverride, useTimestamp } from '../contexts/envContext';
 
 export default function HouseViewer(props) {
   const { param } = useParams();
@@ -27,7 +27,6 @@ export default function HouseViewer(props) {
   const [transform , setTransform ] = useState({}); 
   const timestamp = useTimestamp();
   const [loaded, setLoaded] = useState(false); 
-
   const [property, setProperty] = useState({
     name:'????',
     description:'', 

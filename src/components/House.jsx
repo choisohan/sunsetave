@@ -42,7 +42,6 @@ export default function House(props){
   useEffect(()=>{
     if(!props.id) return; 
 
-    console.log('search  -> ' , props.id )
     FindCalendar(props.id).then( calendar =>{
       const updatedProperty = { ...property, ...calendar , id: props.id };
       setProperty(updatedProperty)

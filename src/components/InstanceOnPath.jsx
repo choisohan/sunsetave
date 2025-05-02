@@ -11,7 +11,7 @@ import { timestampToHourFloat } from './Clock';
 
 const counts = {"car": 2, "bus":1};
 
-export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
+export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 , timeDiff}) =>{
 
     const _fbxFile = useLoader(FBXLoader, meshPath); 
     const [objects, setObjects] = useState([]);
@@ -61,6 +61,7 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
                 curve={curve}
                 offset={ offset+(_objects.length/5 )}
                 key={_objects.length}
+                timeDiff={timeDiff}
                 />
             )
         })
@@ -75,7 +76,7 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
     return <>{objects}</>
 }
 
-export default function InstanceOnPath({ name,  curve , mesh, material,  maxCount = 10 ,speed=.05, offset=0.0    }) {
+export default function InstanceOnPath({ name,  curve , mesh, material,  maxCount = 10 ,speed=.05, offset=0.0 , timeDiff = 0 }) {
 
     const meshRef = useRef();
     const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => ((i / maxCount)+(offset))%1.  ));
@@ -99,9 +100,9 @@ export default function InstanceOnPath({ name,  curve , mesh, material,  maxCoun
     } ,[maxCount , name ] )
 
     useEffect(()=>{
-        const tz = timezoneOverride || Intl.DateTimeFormat().resolvedOptions().timeZone; 
+        const time = timestamp - timeDiff; 
         meshRef.current.material.forEach(mat=>{
-            mat.uniforms.uTime.value= timestampToHourFloat(timestamp, tz )
+            mat.uniforms.uTime.value= timestampToHourFloat( time, Intl.DateTimeFormat().resolvedOptions().timeZone )
         })
     },[timestamp, timezoneOverride ])
 

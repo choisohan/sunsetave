@@ -26,7 +26,6 @@ export default function StepByStep() {
   }
   const onValidHouse = (result)=>{
     setSteps(result ? 4: 0 )
-    console.log('result', result)
   }
 
 

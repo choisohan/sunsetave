@@ -14,7 +14,7 @@ export default function Sky(props) {
       const tz =  props.timezone  || Intl.DateTimeFormat().resolvedOptions().timeZone; 
 
       var _timestamp = timestamp;
-      if(props.timeDiff) _timestamp += props.timeDiff; 
+      if(props.timeDiff) _timestamp -= props.timeDiff; 
       matRef.current.uniforms.uTime.value = timestampToHourFloat( _timestamp , tz );
       matRef.current.uniforms.uTimestamp.value =  (Math.floor(_timestamp/100000)%1000)/1000;
     },[  props.timezone  , timestamp,props.timeDiff ])
