@@ -64,21 +64,27 @@ export const SkyMaterial =  (  )=>{
             return  result;
         }
 
-        vec2 Clouds( float x, float y ){
+        vec2 Clouds( float x, float y , float scale , float skyRamp){
             vec2 offset; 
             offset.x +=  uTimestamp; 
             offset.y = y; 
 
-            vec2 uv = vUv;
-            uv.x += floor(uv.y * uCloudScale * 5. );// *.1;
-            uv += texture2D( uPerlinNoiseMap, fract(vUv *2.)  ).x  *.02 ; //Distortion
-            uv = fract(uv + offset); 
+            vec2 uv = (vUv + offset) * scale  ;
+            uv += texture2D( uPerlinNoiseMap, fract(uv)  ).x  *.05; //Distortion
 
+            uv.x += sin(floor(  uv.y  * 5. ));// *.1;
+            uv = fract(uv ); 
 
-            uv =  fract( uv * vec2(uCloudScale))  ;
 
             vec4 map = texture2D( uCloudMap,   uv );
             float shaded = dot( vec3( 0.0,1.0,.0 ) , map.xyz );
+
+            shaded =  step( .25, shaded) *.5 +  smoothstep( .0, .6, shaded )*1.5;
+            map.a *=  CloudScale(skyRamp) ;
+            map.a *= 1.- step(skyRamp,.0 ); 
+            map.a = step( .5, map.a ); // cloudAlpha
+
+
             return vec2(shaded , map.a);
         }
 
@@ -100,26 +106,18 @@ export const SkyMaterial =  (  )=>{
 
             float bottomMask =smoothstep(0.0,1. ,(skyRamp * 10. )-.1 ); 
             color = mix( skyColorBottom, skyColorMiddle , bottomMask ) ; 
-
-
-            float topMask =smoothstep(0.0,1. ,(skyRamp * 10. )-.25 ); 
+            float topMask = smoothstep(0.0,1. ,(skyRamp * 10. )-.25 ); 
             color = mix( color, skyColorTop , topMask ) ; 
 
 
-            vec2 clouds1 = Clouds( .0 ,.0);
+            vec2 clouds1 = Clouds( .0 ,.0 , uCloudScale , skyRamp);
+            vec2 clouds2 = Clouds( .0 , 0. , uCloudScale*.79  , skyRamp);
 
-            vec2 clouds2 = Clouds( .73 , .33 );
-
-            vec2 cloudsMixed = mix(clouds1, clouds2, (clouds2.y) );
-            cloudsMixed.x =  step( .25, cloudsMixed.x ) *.5 +  smoothstep( .0, .6, cloudsMixed.x )*1.5;
-           // cloudsMixed.x -=  step( .2, -cloudsMixed.x )*.25; // shaded
-
-            cloudsMixed.y *=  CloudScale(skyRamp) ;
-            cloudsMixed.y = step( .5, cloudsMixed.y ); // cloudAlpha
-
+            vec2 cloudsMixed = mix(clouds1, clouds2, clouds2.y);
 
             vec3 cloudColored = mix(cloudShadow, cloudHighlight, cloudsMixed.x );
             color =  mix(color, cloudColored, cloudsMixed.y);
+
 
 
 

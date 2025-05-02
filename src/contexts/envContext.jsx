@@ -7,14 +7,22 @@ const SetTimezoneOVerride = React.createContext();
 const TimePlayModeContext = React.createContext();
 const SetTimePlayModeContext = React.createContext();
 
+const addSound = (path, volume) => {
+    const audio = document.createElement('audio');
+    document.body.appendChild(audio)
+    audio.src = path
+    audio.loop = true; 
+    audio.classList.add('bgAudio');
+    audio.volume = volume; 
+    return   audio;  
+}
 
 
-const audio = document.createElement('audio');
-document.body.appendChild(audio)
-audio.src = '/audios/cars-on-the-road.mp3'
-audio.loop = true; 
-audio.id = 'bgAudio';
-audio.volume = .2; 
+const audios = [];
+audios.push(addSound('/audios/cars-on-the-road.mp3', .1))
+audios.push(addSound('/audios/seagulls-distant.mp3', 1.))
+
+
 
 
 export function EnvProvider({children}){
@@ -24,7 +32,7 @@ export function EnvProvider({children}){
 
     useEffect(() => {
         const handleClick = (e) => {
-            audio.play();
+            audios.forEach( a=> a.play() )
             window.removeEventListener('click', handleClick, true);
         };
         window.addEventListener('click', handleClick, true);

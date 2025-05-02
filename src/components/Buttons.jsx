@@ -49,9 +49,12 @@ export const FastForwardButton = ()=>{
   useEffect(()=>{
     setTimeMode(isPlaying ?'fast': 'normal');
 
-    const audio = document.getElementById('bgAudio');
-    if(! audio )return; 
-    audio.playbackRate = isPlaying ?  10.  : 1; 
+    const audios = document.querySelectorAll('.bgAudio');
+  
+    audios.forEach( aud =>{
+      aud.playbackRate = isPlaying ?  10.  : 1;
+    })
+    
   },[isPlaying])
 
 
