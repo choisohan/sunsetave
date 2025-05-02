@@ -44,7 +44,7 @@ export const EventTable = ({events})=>{
 
 
     
-    <div className='w-full h-[400px]'>
+    <div className='hideOnSmall w-full h-[400px]'>
         {currentEventIndex ?
     <>
     <h3>{events[currentEventIndex].summary}</h3>

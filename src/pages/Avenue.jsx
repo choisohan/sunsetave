@@ -12,15 +12,15 @@ import { Vector3 } from 'three'
 import { useUpdatePopup } from '../contexts/PopupContext'
 import HouseDetailWindow from '../components/HouseDetailWindow'
 
-const defaultItems =  [  {id : 'sample&&paris' , cellNumb : 0  },
-  {id : 'sample&&tokyo' , cellNumb : 1 },   
+const defaultItems =  [  {id : 'sample&&paris' , cellNumb :3  },
+  {id : 'sample&&tokyo' , cellNumb : 20 },   
   {id : 'sample&&ny' , cellNumb : 2 },
-  {id : 'sample&&hoian' , cellNumb : 3},
-  {id : 'sample&&fes' , cellNumb : 4},
-  {id : 'sample&&van' , cellNumb : 5},
-  {id : 'sample&&nz' , cellNumb : 6},
-  {id : 'sample&&bs' , cellNumb : 7},
-  {id : 'sample&&gk' , cellNumb : 10},]
+  {id : 'sample&&hoian' , cellNumb : 35},
+  {id : 'sample&&fes' , cellNumb : 55 },
+  {id : 'sample&&van' , cellNumb : 32},
+  {id : 'sample&&nz' , cellNumb : 12},
+  {id : 'sample&&bs' , cellNumb : 1},
+  {id : 'sample&&gk' , cellNumb :63},]
 
 const stored = localStorage.getItem("houses");
 var array = [] ;
@@ -86,6 +86,7 @@ export default function Avenue() {
 
   const OnSaveUpdate = ()=>{
     setEditMode(false)
+    console.log( items )
     localStorage.setItem( "houses" , JSON.stringify(items));
   }
 

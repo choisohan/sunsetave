@@ -82,7 +82,7 @@ export default function TerrainMesh(props){
                 }
             }
             else if(_child.isLine){
-                _objects.push(<LoadInstanceAlongPath meshPath="/models/commuters.fbx" key={_objects.length} lineGeometry={child.geometry} offset={_objects.length/2} />)
+                _objects.push(<LoadInstanceAlongPath meshPath="/models/commuters.fbx" key={_objects.length} lineGeometry={child.geometry} offset={_objects.length/3} />)
             }
             
 
@@ -152,7 +152,7 @@ export default function TerrainMesh(props){
 
 
 const ReplaceMaterial= _mat=>{
-    
+    console.log(_mat)
     var map;     
     if(_mat.map){
         map = _mat.map;
@@ -170,9 +170,13 @@ const ReplaceMaterial= _mat=>{
     }
     else{
         _mat = BasicMaterial();
-        _mat.uniforms.uMap.value = map;
-        _mat.uniforms.uMapRepeat.value = map.repeat; 
+        if(map){
+            _mat.uniforms.uMap.value = map;
+            _mat.uniforms.uMapRepeat.value = map.repeat; 
+        }
+
     }
+
    // setMaterials(arr=> ([...arr, _mat]))
     return _mat;
 }

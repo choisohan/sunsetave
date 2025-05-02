@@ -9,7 +9,7 @@ import { useTimePlayMode, useTimestamp, useTimezoneOverride } from '../contexts/
 import { timestampToHourFloat } from './Clock';
 
 
-const counts = {"car": 2, "bus":1 };
+const counts = {"car": 2, "bus":1};
 
 export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
 
@@ -44,7 +44,7 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
         }
         
         const _objects =[] ; 
-        _fbxFile.traverse( child =>{
+        _fbxFile.traverse( child  =>{
             if(!child.isMesh) return;
             var material = child.material;
             if(Array.isArray(material)){
@@ -59,7 +59,7 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
                 name ={child.name}
                 maxCount={counts[child.name]}
                 curve={curve}
-                offset={offset}
+                offset={ offset+(_objects.length/5 )}
                 key={_objects.length}
                 />
             )
@@ -78,7 +78,7 @@ export const LoadInstanceAlongPath = ({meshPath, lineGeometry, offset =.0 }) =>{
 export default function InstanceOnPath({ name,  curve , mesh, material,  maxCount = 10 ,speed=.05, offset=0.0    }) {
 
     const meshRef = useRef();
-    const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => ((i / maxCount)+(offset*0.35))%1.  ));
+    const progressRef = useRef(new Array(maxCount).fill(0).map((_, i) => ((i / maxCount)+(offset))%1.  ));
     const timestamp = useTimestamp();
     const timezoneOverride = useTimezoneOverride(); 
     const playMode = useTimePlayMode();
@@ -154,7 +154,7 @@ export default function InstanceOnPath({ name,  curve , mesh, material,  maxCoun
         updatePositions(delta)
     });
 
-    return (<instancedMesh ref={meshRef} args={ [mesh, material ,maxCount]} />)
+    return (<instancedMesh ref={meshRef} args={ [mesh, material ,maxCount]} frustumCulled={false} />) 
     
 
 }
