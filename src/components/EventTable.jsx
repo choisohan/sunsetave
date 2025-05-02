@@ -17,7 +17,7 @@ export const EventTable = ({events})=>{
         setNextEventIndex(_currentIndex+1);
     
         const _currentEvent = events[_currentIndex];
-        if( new moment().isBetween(_currentEvent.startMoment, _currentEvent.endMoment ) ) setCurrentEventIndex(_currentIndex);  
+        if( new moment(timestamp).isBetween(_currentEvent.startMoment, _currentEvent.endMoment ) ) setCurrentEventIndex(_currentIndex);  
 
     },[events, timestamp])
 
@@ -32,7 +32,7 @@ export const EventTable = ({events})=>{
   
     const bgColor =(i)=>{
       if(i=== currentEventIndex)return 'bg-gray-200';
-      if(i=== nextEventIndex)return 'bg-blue-100';
+     // if(i=== nextEventIndex)return 'bg-blue-100';
     }
 
     const opacity =(i) =>{
@@ -40,7 +40,24 @@ export const EventTable = ({events})=>{
     }
   
     if(!events) return; 
-    return <div ref={parentDivRef} className='p-1 m-1 border-2 border-black overflow-auto min-h-[100px] h-[100px] lg:h-full hideOnSmall'>
+    return <>
+
+
+    
+    <div className='w-full h-[400px]'>
+        {currentEventIndex ?
+    <>
+    <h3>{events[currentEventIndex].summary}</h3>
+    <span className='overflow-y-scroll'>{events[currentEventIndex].description}</span>
+
+    </>:null    
+    }
+      
+    </div>
+
+
+
+    <div ref={parentDivRef} className='p-1 m-1 border-2 border-black overflow-auto min-h-[100px] h-[100px] lg:h-full hideOnSmall'>
     {events.map((evt, i)=>
         <div key={i} className={`flex cursor-pointer hover:bg-gray-200 ${bgColor(i)} ${opacity(i)} ${nextEventIndex=== i ? 'nextEvent' :'' }`}>
           <span style={{width:'200px'}}>{evt.startMoment.format("MM/DD hh:mm A")}</span>
@@ -48,4 +65,7 @@ export const EventTable = ({events})=>{
         </div>
     )}
     </div>
+    
+    
+    </>
   }

@@ -3,9 +3,7 @@ import HouseBuilder, { HouseCodeOutput } from './HouseBuilder'
 import { CozyButton } from './Buttons'
 
 
-const SearchButton = ()=>{
-  return 
-}
+
 export default function StepByStep() {
 
   const icalInput = useRef();
@@ -21,6 +19,7 @@ export default function StepByStep() {
     if(calendarId){
       setId(calendarId)
     }
+    setSteps(3)
   }
 
 
@@ -35,7 +34,7 @@ export default function StepByStep() {
       3  Copy and paste "PUBLIC ADDRESS IN ICAL FORMAT"<br />
     </div>
 
-    <div className="mb-20 flex w-full max-w-[650px] place-self-center">
+    <div className={`mb-20 flex w-full max-w-[650px] place-self-center ${ steps<3 ? '' :'opacity-20' }`}>
       <input type="text"  ref = {icalInput}
             className="w-full border-2 border-gray-300 p-1 rounded-lg"
             placeholder="https://calendar.google.com/calendar/ical/......ics"          
@@ -55,10 +54,8 @@ export default function StepByStep() {
         </div>
 
   <div className='place-items-center'>
-    <HouseBuilder id={id} timeout='infinite'
-                            onUpdateProperty={setProperty} onValidHouse={()=>{setSteps(4)}} />
-
-            <CozyButton className='pixelButton' onClick={()=>{setSteps(5)}}>I like it. Next</CozyButton>
+    <HouseBuilder id={id} timeout='infinite' onUpdateProperty={setProperty} onValidHouse={(result)=>{setSteps(result ? 4: 0 )}} />
+    <CozyButton className='pixelButton' onClick={()=>{setSteps(5)}}>I like it. Next</CozyButton>
 </div>
 
 

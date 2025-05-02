@@ -129,6 +129,8 @@ return (
       <Buttons.RecordButton canvasRef={canvasRef}/>
       <Buttons.ReloadButton />
     </div>
+
+
     <EventTable events={property.events}/>
 
   </div>

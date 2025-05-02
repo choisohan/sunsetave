@@ -93,9 +93,8 @@ export default function HouseBuilder(props) {
     })
   }
 
-  const itsValidHouse = ()=>{
-    console.log('its valid')
-      if(props.onValidHouse)props.onValidHouse();
+  const itsValidHouse = (result)=>{
+    if(props.onValidHouse)props.onValidHouse(result ? true : false);
   }
 
   const onClick = e =>{
@@ -105,7 +104,7 @@ export default function HouseBuilder(props) {
 
   return <div className={'relative  w-full max-w-[800px] ' +props.className} >
 
-        <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={{position: [6,1,12], fov: 12 }} > 
+        <Canvas className='self-center aspect-[4/3]	lg:aspect-[1/1]' camera={ {position: [6,1,12] , fov: 12 }} > 
             <CameraLookAt/>
             <Pixelate />
             <House id={props.id} design={design} timeout={props.timeout}
@@ -114,11 +113,9 @@ export default function HouseBuilder(props) {
                   onPointerOut ={onPointerOut}
                   updateTime={false} hoverable={false}
                   onUpdateProperty={itsValidHouse}
-                  
                   />
-            <mesh>
-              <boxGeometry args={[10,0,10]} />
-          </mesh>
+
+            <mesh><boxGeometry args={[10,0,10]} /></mesh>
      
        
         </Canvas>

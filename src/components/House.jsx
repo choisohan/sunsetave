@@ -46,6 +46,7 @@ export default function House(props){
         if( props.onUpdateProperty)props.onUpdateProperty( updatedProperty )
       }).catch(err =>{
         console.log( '🔴'+err)
+        if( props.onUpdateProperty) props.onUpdateProperty();
       })
   },[props.id])
   
