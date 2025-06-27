@@ -1,6 +1,6 @@
 {
-    "name": "👗Wild Pickle",
-    "description": "Thrift Store & Local Chaos Depot in Vancouver,Canada. Open daily 10AM–8PM {D:B1,W:F4W,w:W30,P:CP,p:RW,mesh:2}",
+    "name": "Wild Pickle",
+    "description": "Thrift Store & Local Chaos Depot in Vancouver,Canada. Open daily 10AM–8PM {D:B1,W:FRWPF,w:W30,P:CU,p:RW,mesh:2}",
     "timezone": "America/Vancouver",
     "events" :[
         {

@@ -1,6 +1,6 @@
 {
-    "name": "👵Lalla's house",
-    "description": "Legendary fabric dye artisan in the Fes medina. Three sons, but only Amir stayed. {D:B1,W:S1,w:S1,P:CR,p:CR,mesh:5}",
+    "name": "Lalla's house",
+    "description": "Legendary fabric dye artisan in the Fes medina. Three sons, but only Amir stayed. {D:A1,W:S1,w:S1,P:CU,p:CR,mesh:5}",
     "timezone": "Africa/Casablanca",
     "events" :[
         {
